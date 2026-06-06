@@ -96,6 +96,10 @@ async function preScanPage(pageId, pageTitle, ancestors = []) {
   
   // Resolve category folder
   const folder = resolveFolder(pageTitle, ancestors);
+  if (folder !== '관람객(유저)서비스' && folder !== '상위기획 및 방향성') {
+    console.log(`Skipping page (Non-user category): ${pageTitle}`);
+    return;
+  }
   const targetDir = path.join(outputBaseDir, folder);
   
   let filename;
