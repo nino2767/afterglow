@@ -176,13 +176,29 @@ export default function OnboardingPage() {
               ))}
             </div>
 
-            <button
-              id="btn-welcome-start"
-              className="btn btn-primary btn-full btn-lg"
-              onClick={() => setStep(1)}
-            >
-              시작하기
-            </button>
+            <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)", marginBottom: "var(--space-4)" }}>
+              <button
+                id="btn-welcome-start"
+                className="btn btn-primary btn-full btn-lg"
+                onClick={() => setStep(1)}
+              >
+                가이드 시작하기
+              </button>
+              <button
+                className="btn btn-outline btn-full"
+                onClick={() => router.push("/home")}
+                style={{ fontSize: 13.5 }}
+              >
+                게스트로 홈(하단 탭) 둘러보기
+              </button>
+              <button
+                className="btn btn-link"
+                onClick={() => router.push("/login")}
+                style={{ alignSelf: "center", fontSize: 12.5, marginTop: 4 }}
+              >
+                이미 계정이 있으신가요? 로그인하기
+              </button>
+            </div>
           </div>
         )}
 
