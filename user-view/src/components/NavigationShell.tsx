@@ -1,10 +1,11 @@
 "use client";
 
 /**
- * NavigationShell.tsx — 상단바 및 뒤로가기/계정 아이콘 공통 셸 (Next.js TSX 버포트)
+ * NavigationShell.tsx — 상단바 및 뒤로가기/계정 아바타 공통 셸 (Next.js TSX)
+ * 상세기획-00-로그인계정-내비게이션.md 스펙 반영
  */
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowLeft, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -25,8 +26,26 @@ export default function NavigationShell({
 }: NavigationShellProps) {
   const router = useRouter();
 
-  // 데이터 레이어 충돌에 기인한 임시 mock 로그인 상태 (정적 UI용)
-  const isLogged = false; 
+  const [isLogged, setIsLogged] = useState(false);
+  const [userInitial, setUserInitial] = useState("G");
+
+  useEffect(() => {
+    try {
+      const account = localStorage.getItem("afterglow_account");
+      if (account) {
+        const parsed = JSON.parse(account);
+        setIsLogged(true);
+        // 이름 첫 글자를 아바타 이니셜로 활용
+        const name = parsed.nickname || "관람객";
+        setUserInitial(name.charAt(0).toUpperCase());
+      } else {
+        setIsLogged(false);
+        setUserInitial("G");
+      }
+    } catch (e) {
+      setIsLogged(false);
+    }
+  }, []);
 
   const handleBack = () => {
     if (onBack) {
@@ -40,7 +59,13 @@ export default function NavigationShell({
     if (onUserIconClick) {
       onUserIconClick();
     } else {
-      router.push("/login");
+      if (isLogged) {
+        // 로그인 상태이면 설정 마이페이지(S7)로 이동
+        router.push("/mypage");
+      } else {
+        // 비로그인 상태이면 로그인 화면(S0)에 트리거 카피를 달아 이동
+        router.push("/login?trigger=user_icon");
+      }
     }
   };
 
@@ -95,13 +120,13 @@ export default function NavigationShell({
           {title}
         </span>
 
-        {/* 계정 아이콘 */}
+        {/* 계정 아바타 아이콘 */}
         <div style={{ width: "40px", display: "flex", justifyContent: "flex-end" }}>
           <button
             onClick={handleUserClick}
             style={{
               background: isLogged ? "var(--accent-dim)" : "transparent",
-              border: isLogged ? "1px solid rgba(139,46,74,0.2)" : "1px solid var(--border-mid)",
+              border: isLogged ? "1px solid rgba(139,46,74,0.3)" : "1px solid var(--border-mid)",
               cursor: "pointer",
               width: 32,
               height: 32,
@@ -113,8 +138,8 @@ export default function NavigationShell({
             }}
           >
             {isLogged ? (
-              <span className="t-mono" style={{ fontSize: 11, fontWeight: "bold", color: "var(--accent)" }}>
-                M
+              <span className="t-mono" style={{ fontSize: 12, fontWeight: "bold", color: "var(--accent)" }}>
+                {userInitial}
               </span>
             ) : (
               <User size={15} color="var(--ink-muted)" />

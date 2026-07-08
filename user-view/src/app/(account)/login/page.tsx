@@ -1,44 +1,102 @@
 "use client";
 
 /**
- * app/(account)/login/page.tsx — S0 로그인 정적 포팅 (Next.js TSX)
+ * app/(account)/login/page.tsx — S0 로그인 정적 고도화 포팅 (Next.js TSX)
+ * 상세기획-00-로그인계정-내비게이션.md 스펙 반영
  */
 
 import React, { useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { X, Mail, MessageSquare } from "lucide-react";
-
+import { X, MessageSquare, Check, Sparkles } from "lucide-react";
 
 function LoginContent() {
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const trigger = searchParams.get("trigger") || "mypage";
+  const trigger = searchParams.get("trigger") || "default";
 
   const [isSignUpMode, setIsSignUpMode] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
   const [marketingConsent, setMarketingConsent] = useState(false);
+  const [showMergeToast, setShowMergeToast] = useState(false);
+
+  // ── 트리거별 전환율 최적화 동적 카피 ──
+  const getHeaderCopy = () => {
+    switch (trigger) {
+      case "report":
+        return {
+          title: "이 여운, 잃어버리지 않게 저장해두세요",
+          desc: "오늘 감상하신 소중한 여운 리포트가 계정에 영구 보관됩니다."
+        };
+      case "spinoff_locked":
+        return {
+          title: "팝업 소식, 잊지 않고 알려드릴게요",
+          desc: "어비스 티 라운지 오픈 일정과 현장 쿠폰 혜택을 챙겨드려요."
+        };
+      case "user_icon":
+        return {
+          title: "다시 만나서 반가워요",
+          desc: "이전 여정 기록과 초대장을 불러옵니다."
+        };
+      default:
+        return {
+          title: "당신의 여운을 저장해두세요",
+          desc: "간단한 연동만으로 모든 관람 여정과 팝업 혜택이 이어집니다."
+        };
+    }
+  };
+
+  const copy = getHeaderCopy();
 
   function handleLoginSuccess() {
-    // 데이터 레이어 보류 지침에 따라 로컬 계정 mock 정보 기록
+    // 1. 기존 게스트 세션 정보 유무 판단 (단방향 병합 시뮬레이션)
+    let guestVisitorId = null;
+    let guestKeywords = [];
     try {
-      localStorage.setItem("afterglow_account", JSON.stringify({
-        account_id: `acc_${Date.now()}`,
-        email: email || "kakao_user@kakao.com",
-        nickname: nickname || "여운 탐험가",
-        marketing_consent: marketingConsent,
-        registered_at: Date.now(),
-        exhibitions: [],
-        invites: []
-      }));
+      const savedSession = localStorage.getItem("afterglow_session");
+      if (savedSession) {
+        const parsed = JSON.parse(savedSession);
+        guestVisitorId = parsed.visitor_id;
+        guestKeywords = parsed.initial_keywords || [];
+      }
     } catch (e) {
       //
     }
-    // 성공 시 계정 홈(S10)으로 전환
-    router.push("/home");
+
+    // 2. 가상 계정 생성 및 게스트 정보 병합 (account.visitor_merged 이벤트 모사)
+    const newAccount = {
+      account_id: `acc_${Date.now()}`,
+      email: email || "kakao_user@kakao.com",
+      nickname: nickname || (isSignUpMode ? nickname : "여운 탐험가"),
+      marketing_consent: marketingConsent || (trigger === "spinoff_locked"),
+      registered_at: Date.now(),
+      merged_visitor_id: guestVisitorId,
+      taste_profile: guestKeywords.length > 0 ? {
+        personaTitle: "고요함을 머금은 감성 탐구자",
+        personaCopy: "물결 위에서 일렁이는 빛들을 바라보며, 내면의 잔잔함에 머무른 탐구자입니다.",
+        topKeywords: guestKeywords.map((k: any) => k.emotion),
+        bgGradient: "linear-gradient(135deg, #7B9EE8 0%, #C9A84C 100%)",
+        longestArtwork: { title: "윤슬", dwell_sec: 720 },
+        topAxis: "serene"
+      } : null
+    };
+
+    localStorage.setItem("afterglow_account", JSON.stringify(newAccount));
+    console.log(`[Event: account.visitor_merged] Merged visitor ${guestVisitorId} into account ${newAccount.account_id}`);
+
+    // 3. 병합 완료 토스트 연출 후 홈으로 이동
+    setShowMergeToast(true);
+    setTimeout(() => {
+      if (trigger === "report") {
+        router.push("/report");
+      } else if (trigger === "spinoff_locked") {
+        router.push("/spinoff");
+      } else {
+        router.push("/home");
+      }
+    }, 1500);
   }
 
   function handleEmailSubmit(e: React.FormEvent) {
@@ -53,9 +111,10 @@ function LoginContent() {
       padding: "var(--space-6) var(--space-6) var(--space-12)",
       display: "flex",
       flexDirection: "column",
-      height: "100vh"
+      height: "100vh",
+      position: "relative"
     }}>
-      {/* 닫기 버튼 */}
+      {/* 닫기 버튼: ✕ 클릭 시 이전 화면으로 복귀 (게스트 유지) */}
       <button
         onClick={() => router.back()}
         style={{
@@ -72,7 +131,7 @@ function LoginContent() {
         <X size={20} color="var(--ink)" />
       </button>
 
-      {/* 헤더 */}
+      {/* 헤더 카피 영역 */}
       <div style={{ textAlign: "center", marginBottom: "var(--space-8)" }}>
         <div style={{
           width: 48, height: 48, borderRadius: "50%", background: "var(--accent-dim)",
@@ -81,18 +140,18 @@ function LoginContent() {
         }}>
           ✦
         </div>
-        <h1 className="t-heading" style={{ fontSize: 24 }}>
-          {isSignUpMode ? "여정의 동반자 되기" : "나의 여운 이어가기"}
+        <h1 className="t-heading" style={{ fontSize: 22, lineHeight: 1.35, wordBreak: "keep-all" }}>
+          {copy.title}
         </h1>
-        <p className="t-caption" style={{ marginTop: 4, color: "var(--ink-muted)" }}>
-          {isSignUpMode ? "계정을 만들고 취향과 초대장을 보관하세요" : "가입했던 이메일 또는 카카오로 로그인하세요"}
+        <p className="t-caption" style={{ marginTop: 8, color: "var(--ink-muted)", wordBreak: "keep-all" }}>
+          {copy.desc}
         </p>
       </div>
 
       {/* 소셜 및 일반 폼 */}
       <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-5)" }}>
         
-        {/* 카카오 Mock 로그인 */}
+        {/* 카카오 원탭 간편로그인 */}
         <button
           className="btn btn-full"
           onClick={handleLoginSuccess}
@@ -107,7 +166,7 @@ function LoginContent() {
           }}
         >
           <MessageSquare size={16} fill="#191919" />
-          카카오로 3초 만에 시작하기
+          카카오로 시작하기
         </button>
 
         <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>
@@ -169,7 +228,7 @@ function LoginContent() {
             className="btn btn-primary btn-full"
             style={{ marginTop: "var(--space-4)" }}
           >
-            {isSignUpMode ? "회원가입하기" : "이메일 로그인"}
+            {isSignUpMode ? "회원가입하고 저장하기" : "이메일 로그인"}
           </button>
         </form>
 
@@ -180,8 +239,36 @@ function LoginContent() {
         >
           {isSignUpMode ? "이미 계정이 있으신가요? 로그인" : "처음이신가요? 가입하기"}
         </button>
-
       </div>
+
+      {/* 병합 완료 가상 피드백 토스트 */}
+      {showMergeToast && (
+        <div className="anim-scale" style={{
+          position: "absolute",
+          bottom: 30,
+          left: "var(--space-6)",
+          right: "var(--space-6)",
+          background: "var(--ink)",
+          color: "#FFFFFF",
+          padding: "12px 18px",
+          borderRadius: "var(--radius-md)",
+          display: "flex",
+          alignItems: "center",
+          gap: 10,
+          boxShadow: "var(--shadow-md)",
+          zIndex: 100
+        }}>
+          <div style={{
+            width: 20, height: 20, borderRadius: "50%", background: "var(--accent)",
+            display: "flex", alignItems: "center", justifyContent: "center"
+          }}>
+            <Check size={12} color="#FFFFFF" />
+          </div>
+          <span style={{ fontSize: 13.5, fontWeight: 500 }}>
+            관람 기록이 성공적으로 안전하게 저장되었습니다!
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -197,4 +284,3 @@ export default function LoginPage() {
     </Suspense>
   );
 }
-
