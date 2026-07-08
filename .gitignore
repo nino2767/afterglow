@@ -1,0 +1,6 @@
+# Backup directories
+user-view-old/
+
+# System files
+.DS_Store
+Thumbs.db
