@@ -2,11 +2,13 @@
 
 /**
  * app/(guide)/onboarding/page.tsx — S1 온보딩 정적 포팅 (Next.js TSX)
+ * 내비게이션 셸 적용
  */
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import EmotionChip from "../../../components/EmotionChip";
+import NavigationShell from "../../../components/NavigationShell";
 
 // SSOT 임시 하드코딩 (데이터 레이어 보류 지침에 따라 로컬 mock 상수로 격리)
 const EXHIBITION = {
@@ -89,32 +91,35 @@ export default function OnboardingPage() {
 
   if (step === "declined") {
     return (
-      <div className="screen" style={{
-        background: "var(--bg)",
-        alignItems: "center",
-        justifyContent: "center",
-        textAlign: "center",
-        padding: "var(--space-12)",
-      }}>
-        <p style={{ fontSize: 32, marginBottom: "var(--space-6)", color: "var(--ink-faint)" }}>✦</p>
-        <h2 className="t-heading" style={{ marginBottom: "var(--space-4)" }}>그래도 좋아요</h2>
-        <p className="t-body">
-          전시를 자유롭게 감상하세요.<br />
-          언제든 입구 QR을 다시 스캔하면<br />AI 큐레이터를 만날 수 있어요.
-        </p>
-      </div>
+      <NavigationShell title="AFTERGLOW" showBack={false}>
+        <div className="screen" style={{
+          background: "var(--bg)",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "var(--space-12)",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column"
+        }}>
+          <p style={{ fontSize: 32, marginBottom: "var(--space-6)", color: "var(--ink-faint)" }}>✦</p>
+          <h2 className="t-heading" style={{ marginBottom: "var(--space-4)" }}>그래도 좋아요</h2>
+          <p className="t-body">
+            전시를 자유롭게 감상하세요.<br />
+            언제든 입구 QR을 다시 스캔하면<br />AI 큐레이터를 만날 수 있어요.
+          </p>
+        </div>
+      </NavigationShell>
     );
   }
 
   return (
-    <div className="screen" style={{ background: "var(--bg)" }}>
+    <NavigationShell title="AFTERGLOW" showBack={false}>
       <div style={{
         flex: 1,
         display: "flex",
         flexDirection: "column",
-        padding: "0 var(--space-6)",
-        paddingTop: "calc(var(--safe-top) + var(--space-12))",
-        paddingBottom: "var(--space-8)",
+        padding: "var(--space-6) var(--space-6) var(--space-8)",
       }}>
 
         {/* ── STEP 0: 웰컴 ── */}
@@ -359,7 +364,7 @@ export default function OnboardingPage() {
         )}
 
       </div>
-    </div>
+    </NavigationShell>
   );
 }
 

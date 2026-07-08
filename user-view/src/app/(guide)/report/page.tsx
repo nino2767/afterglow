@@ -2,18 +2,19 @@
 
 /**
  * app/(guide)/report/page.tsx — S4 여운 리포트 정적 포팅 (Next.js TSX)
+ * 내비게이션 셸 적용
  */
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Download, Share2, Compass, Award, ArrowRight, Sparkles, Calendar, MapPin, UserPlus } from "lucide-react";
 import BottomBar from "../../../components/BottomBar";
+import NavigationShell from "../../../components/NavigationShell";
 
 export default function ReportPage() {
   const router = useRouter();
 
   const [nickname, setNickname] = useState("관람객");
-  const [isMinimal, setIsMinimal] = useState(false);
   const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
@@ -76,7 +77,7 @@ export default function ReportPage() {
   }, []);
 
   return (
-    <div className="screen" style={{ background: "var(--bg)", overflowY: "auto", display: "flex", flexDirection: "column", height: "100vh" }}>
+    <NavigationShell title="오늘의 여운" showBack={true} onBack={() => router.push("/artwork")}>
       <div style={{
         padding: "var(--space-6) var(--space-5) var(--space-12)",
         display: "flex",
@@ -84,13 +85,6 @@ export default function ReportPage() {
         gap: "var(--space-6)",
         flex: 1
       }}>
-
-        {/* ── 헤더 ── */}
-        <header style={{ textAlign: "center", marginBottom: "var(--space-2)" }}>
-          <p className="t-micro" style={{ marginBottom: 4 }}>전시 여정 리포트</p>
-          <h1 className="t-heading" style={{ fontSize: 24 }}>오늘의 여운</h1>
-          <p className="t-caption" style={{ color: "var(--ink-muted)" }}>{nickname}님의 전시 발자국</p>
-        </header>
 
         {/* ── 페르소나 취향 카드 ── */}
         <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
@@ -262,6 +256,6 @@ export default function ReportPage() {
         </div>
 
       </div>
-    </div>
+    </NavigationShell>
   );
 }

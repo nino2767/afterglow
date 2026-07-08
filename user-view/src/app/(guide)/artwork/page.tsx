@@ -2,6 +2,7 @@
 
 /**
  * app/(guide)/artwork/page.tsx — S2 작품 정보 카드 정적 포팅 (Next.js TSX)
+ * 내비게이션 셸 적용
  */
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
@@ -9,7 +10,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { MessageCircle, Camera, ChevronRight } from "lucide-react";
 import EmotionChip from "../../../components/EmotionChip";
 import BottomBar from "../../../components/BottomBar";
-
+import NavigationShell from "../../../components/NavigationShell";
 
 // SSOT 임시 하드코딩 (데이터 레이어 보류 지침에 따라 로컬 mock 상수로 격리)
 const EXHIBITION = {
@@ -67,7 +68,6 @@ const ARTWORKS_LIST: Artwork[] = [
 ];
 
 function ArtworkCardContent() {
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -147,208 +147,192 @@ function ArtworkCardContent() {
   }
 
   return (
-    <div className="screen" style={{ backgroundColor: "var(--bg)", display: "flex", flexDirection: "column", height: "100vh" }}>
-      {/* ── 헤더 ── */}
-      <header style={{
-        padding: "var(--space-5) var(--space-5) var(--space-4)",
-        borderBottom: "1px solid var(--border)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        background: "var(--bg)",
-        zIndex: 10
-      }}>
-        <div>
-          <p className="t-micro" style={{ marginBottom: 2 }}>{EXHIBITION.name}</p>
-          <p className="t-title" style={{ fontSize: 16 }}>
+    <NavigationShell
+      title={selectedArtwork ? selectedArtwork.title : "빛의 심연"}
+      showBack={true}
+      onBack={selectedArtwork ? closeCard : () => router.push("/onboarding")}
+    >
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", background: "var(--bg)" }}>
+        {/* 본문 메시지 안내 */}
+        <div style={{ padding: "12px var(--space-5) 0" }}>
+          <p className="t-caption">
             {nickname ? `${nickname}님` : "안녕하세요"} 👋
           </p>
         </div>
-        {selectedArtwork && (
-          <button
-            id="btn-close-card"
-            className="btn btn-ghost"
-            onClick={closeCard}
-            style={{ fontSize: 13, padding: "var(--space-2) var(--space-3)" }}
-          >
-            ← 목록
-          </button>
-        )}
-      </header>
 
-      {/* ── 콘텐츠 ── */}
-      <div style={{ flex: 1, overflowY: "auto" }}>
-        {/* 대기 상태 */}
-        {!selectedArtwork && (
-          <div className="anim-fade">
-            {/* QR 스캔 CTA */}
-            <div style={{
-              margin: "var(--space-5)",
-              padding: "var(--space-6)",
-              background: "#0D0D0F", // 다크 배경
-              borderRadius: "var(--radius-lg)",
-              textAlign: "center",
-              position: "relative",
-              overflow: "hidden",
-            }}>
+        {/* ── 콘텐츠 ── */}
+        <div style={{ flex: 1, overflowY: "auto" }}>
+          {/* 대기 상태 */}
+          {!selectedArtwork && (
+            <div className="anim-fade">
+              {/* QR 스캔 CTA */}
               <div style={{
-                position: "absolute", inset: 0, zIndex: 0,
-                background: "radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.15) 0%, transparent 70%)",
-                pointerEvents: "none",
-              }} />
-              <div style={{ position: "relative", zIndex: 1 }}>
-                <div style={{
-                  width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.06)",
-                  display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px"
-                }}>
-
-                  <Camera size={20} color="#C9A84C" style={{ margin: "auto" }} />
-                </div>
-                <p className="t-title" style={{ color: "#FFFFFF", marginBottom: "var(--space-2)" }}>
-                  작품 QR을 스캔하세요
-                </p>
-                <p className="t-caption" style={{ color: "rgba(255,255,255,0.5)", marginBottom: "var(--space-5)" }}>
-                  작품 옆 QR 코드를 스캔하면<br />AI 큐레이터 해설이 바로 시작돼요
-                </p>
-                <button
-                  id="btn-scan-qr"
-                  className="btn btn-primary"
-                  onClick={handleScanQR}
-                >
-                  <Camera size={16} />
-                  QR 스캔하기
-                </button>
-                {cameraPermission === "denied" && (
-                  <p style={{ color: "#E87B7B", fontSize: 12, marginTop: "var(--space-3)" }}>
-                    카메라 권한이 없어요. 아래 목록을 탭해서 선택해주세요.
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* 작품 목록 */}
-            <div style={{ padding: "0 var(--space-5) var(--space-5)" }}>
-              <p className="t-micro" style={{ marginBottom: "var(--space-4)" }}>또는 작품 골라보기</p>
-              <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-                {ARTWORKS_LIST.map(artwork => (
-                  <button
-                    key={artwork.id}
-                    className="card"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "var(--space-4)",
-                      padding: "var(--space-4)",
-                      width: "100%",
-                      textAlign: "left",
-                      background: "var(--surface)",
-                      border: "1px solid var(--border)",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => openCard(artwork)}
-                  >
-                    <div style={{
-                      width: 56, height: 56, borderRadius: "var(--radius-sm)",
-                      background: "linear-gradient(135deg, #1E1520, #0D0D0F)",
-                      flexShrink: 0,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      color: "#C9A84C",
-                      fontSize: 20,
-                    }}>
-                      ✦
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p className="t-title" style={{ marginBottom: 2, fontSize: 15 }}>{artwork.title}</p>
-                      <p className="t-caption">{artwork.artist} · {artwork.section}</p>
-                    </div>
-                    <ChevronRight size={16} color="var(--ink-muted)" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 정보 카드 상태 */}
-        {selectedArtwork && (
-          <div className="anim-fade">
-            <div>
-              <div style={{
-                width: "100%", height: 240,
-                background: "linear-gradient(135deg, #0D0D0F 0%, #1E1520 100%)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 64, color: "rgba(201,168,76,0.3)",
+                margin: "var(--space-5)",
+                padding: "var(--space-6)",
+                background: "#0D0D0F", // 다크 배경
+                borderRadius: "var(--radius-lg)",
+                textAlign: "center",
                 position: "relative",
+                overflow: "hidden",
               }}>
-                ✦
                 <div style={{
-                  position: "absolute", bottom: 0, left: 0, right: 0, height: 60,
-                  background: "linear-gradient(to top, var(--bg), transparent)",
+                  position: "absolute", inset: 0, zIndex: 0,
+                  background: "radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.15) 0%, transparent 70%)",
+                  pointerEvents: "none",
                 }} />
+                <div style={{ position: "relative", zIndex: 1 }}>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: "50%", background: "rgba(255,255,255,0.06)",
+                    display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px"
+                  }}>
+                    <Camera size={20} color="#C9A84C" style={{ margin: "auto" }} />
+                  </div>
+                  <p className="t-title" style={{ color: "#FFFFFF", marginBottom: "var(--space-2)" }}>
+                    작품 QR을 스캔하세요
+                  </p>
+                  <p className="t-caption" style={{ color: "rgba(255,255,255,0.5)", marginBottom: "var(--space-5)" }}>
+                    작품 옆 QR 코드를 스캔하면<br />AI 큐레이터 해설이 바로 시작돼요
+                  </p>
+                  <button
+                    id="btn-scan-qr"
+                    className="btn btn-primary"
+                    onClick={handleScanQR}
+                  >
+                    <Camera size={16} />
+                    QR 스캔하기
+                  </button>
+                  {cameraPermission === "denied" && (
+                    <p style={{ color: "#E87B7B", fontSize: 12, marginTop: "var(--space-3)" }}>
+                      카메라 권한이 없어요. 아래 목록을 탭해서 선택해주세요.
+                    </p>
+                  )}
+                </div>
               </div>
 
-              <div style={{ padding: "var(--space-5)" }}>
-                <p className="t-micro" style={{ marginBottom: "var(--space-2)" }}>{selectedArtwork.section}</p>
-                <h2 className="t-heading" style={{ marginBottom: 4 }}>{selectedArtwork.title}</h2>
-                <p className="t-caption" style={{ marginBottom: "var(--space-5)" }}>
-                  {selectedArtwork.artist} · {selectedArtwork.year}
-                </p>
-
-                <div className="divider" />
-
-                <p className="t-body" style={{ marginBottom: "var(--space-6)", lineHeight: 1.75 }}>
-                  {selectedArtwork.docent_script}
-                </p>
-
-                <div style={{ marginBottom: "var(--space-6)" }}>
-                  <p className="t-micro" style={{ marginBottom: "var(--space-3)" }}>
-                    지금 어떤 느낌이세요?
-                  </p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-                    {selectedArtwork.default_emotion_chips.map(item => (
-                      <EmotionChip
-                        key={item.emotion}
-                        item={item}
-                        active={(selectedEmotions[selectedArtwork.id] || []).some(e => e.emotion === item.emotion)}
-                        onToggle={handleEmotionToggle}
-                      />
-                    ))}
-                  </div>
+              {/* 작품 목록 */}
+              <div style={{ padding: "0 var(--space-5) var(--space-5)" }}>
+                <p className="t-micro" style={{ marginBottom: "var(--space-4)" }}>또는 작품 골라보기</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
+                  {ARTWORKS_LIST.map(artwork => (
+                    <button
+                      key={artwork.id}
+                      className="card"
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "var(--space-4)",
+                        padding: "var(--space-4)",
+                        width: "100%",
+                        textAlign: "left",
+                        background: "var(--surface)",
+                        border: "1px solid var(--border)",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => openCard(artwork)}
+                    >
+                      <div style={{
+                        width: 56, height: 56, borderRadius: "var(--radius-sm)",
+                        background: "linear-gradient(135deg, #1E1520, #0D0D0F)",
+                        flexShrink: 0,
+                        display: "flex", alignItems: "center", justifyContent: "center",
+                        color: "#C9A84C",
+                        fontSize: 20,
+                      }}>
+                        ✦
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <p className="t-title" style={{ marginBottom: 2, fontSize: 15 }}>{artwork.title}</p>
+                        <p className="t-caption">{artwork.artist} · {artwork.section}</p>
+                      </div>
+                      <ChevronRight size={16} color="var(--ink-muted)" />
+                    </button>
+                  ))}
                 </div>
-
-                <button
-                  id={`btn-open-chat-${selectedArtwork.id}`}
-                  className="btn btn-primary btn-full"
-                  style={{ gap: "var(--space-3)" }}
-                  onClick={() => router.push(`/curator?artwork=${selectedArtwork.id}`)}
-                >
-                  <MessageCircle size={18} />
-                  AI 큐레이터와 대화하기
-                </button>
-
-                <p className="t-caption" style={{
-                  textAlign: "center",
-                  marginTop: "var(--space-3)",
-                  color: "var(--ink-muted)",
-                  fontSize: 12,
-                }}>
-                  더 깊은 이야기를 나눠보세요
-                </p>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
 
-      <BottomBar>
-        <button
-          className="btn btn-outline btn-full btn-lg"
-          onClick={() => router.push("/report")}
-        >
-          오늘의 관람 완료
-        </button>
-      </BottomBar>
-    </div>
+          {/* 정보 카드 상태 */}
+          {selectedArtwork && (
+            <div className="anim-fade">
+              <div>
+                <div style={{
+                  width: "100%", height: 240,
+                  background: "linear-gradient(135deg, #0D0D0F 0%, #1E1520 100%)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 64, color: "rgba(201,168,76,0.3)",
+                  position: "relative",
+                }}>
+                  ✦
+                  <div style={{
+                    position: "absolute", bottom: 0, left: 0, right: 0, height: 60,
+                    background: "linear-gradient(to top, var(--bg), transparent)",
+                  }} />
+                </div>
+
+                <div style={{ padding: "var(--space-5)" }}>
+                  <p className="t-micro" style={{ marginBottom: "var(--space-2)" }}>{selectedArtwork.section}</p>
+                  <h2 className="t-heading" style={{ marginBottom: 4 }}>{selectedArtwork.title}</h2>
+                  <p className="t-caption" style={{ marginBottom: "var(--space-5)" }}>
+                    {selectedArtwork.artist} · {selectedArtwork.year}
+                  </p>
+
+                  <div className="divider" />
+
+                  <p className="t-body" style={{ marginBottom: "var(--space-6)", lineHeight: 1.75 }}>
+                    {selectedArtwork.docent_script}
+                  </p>
+
+                  <div style={{ marginBottom: "var(--space-6)" }}>
+                    <p className="t-micro" style={{ marginBottom: "var(--space-3)" }}>
+                      지금 어떤 느낌이세요?
+                    </p>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
+                      {selectedArtwork.default_emotion_chips.map(item => (
+                        <EmotionChip
+                          key={item.emotion}
+                          item={item}
+                          active={(selectedEmotions[selectedArtwork.id] || []).some(e => e.emotion === item.emotion)}
+                          onToggle={handleEmotionToggle}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <button
+                    id={`btn-open-chat-${selectedArtwork.id}`}
+                    className="btn btn-primary btn-full"
+                    style={{ gap: "var(--space-3)" }}
+                    onClick={() => router.push(`/curator?artwork=${selectedArtwork.id}`)}
+                  >
+                    <MessageCircle size={18} />
+                    AI 큐레이터와 대화하기
+                  </button>
+
+                  <p className="t-caption" style={{
+                    textAlign: "center",
+                    marginTop: "var(--space-3)",
+                    color: "var(--ink-muted)",
+                    fontSize: 12,
+                  }}>
+                    더 깊은 이야기를 나눠보세요
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <BottomBar>
+          <button
+            className="btn btn-outline btn-full btn-lg"
+            onClick={() => router.push("/report")}
+          >
+            오늘의 관람 완료
+          </button>
+        </BottomBar>
+      </div>
+    </NavigationShell>
   );
 }
 
@@ -363,4 +347,3 @@ export default function ArtworkCardPage() {
     </Suspense>
   );
 }
-

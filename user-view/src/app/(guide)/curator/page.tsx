@@ -2,14 +2,15 @@
 
 /**
  * app/(guide)/curator/page.tsx — S3 AI 큐레이터 채팅 정적 포팅 (Next.js TSX)
+ * 내비게이션 셸 적용
  */
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Send, ChevronLeft, Sparkles } from "lucide-react";
-
+import { Send, Sparkles } from "lucide-react";
 import EmotionChip from "../../../components/EmotionChip";
 import BottomBar from "../../../components/BottomBar";
+import NavigationShell from "../../../components/NavigationShell";
 
 interface Artwork {
   id: string;
@@ -70,7 +71,6 @@ interface ChatMessage {
 }
 
 function CuratorChatContent() {
-
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -121,7 +121,7 @@ function CuratorChatContent() {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
-  // AI 모의 스트리밍 시뮬레이터 (데이터 수집은 격리)
+  // AI 모의 RAG 스트리밍 시뮬레이션
   function simulateAiResponse(userText: string) {
     setIsTyping(true);
 
@@ -182,197 +182,185 @@ function CuratorChatContent() {
 
   function handleEmotionSelect(emotion: string, axis: string) {
     console.log(`Emotion tagged via Chat: ${emotion} (${axis}) (Data layer bypassed)`);
-    alert(`'#${emotion}' 감정이 가상 기록되었습니다. (데이터 레이어 보류 상태)`);
+    alert(`'#${emotion}' 감정이 가상 기록되었습니다.`);
   }
 
   return (
-    <div className="screen" style={{ background: "var(--bg)", height: "100vh", display: "flex", flexDirection: "column" }}>
-      {/* 헤더 */}
-      <header style={{
-        padding: "var(--space-5) var(--space-6) var(--space-4)",
-        borderBottom: "1px solid var(--border)",
-        background: "var(--bg)",
-        display: "flex",
-        alignItems: "center",
-        gap: "var(--space-3)"
-      }}>
-        <button className="btn btn-ghost" onClick={() => router.push("/artwork")} style={{ padding: "var(--space-2)" }}>
-          <ChevronLeft size={20} color="var(--ink)" />
-        </button>
-        <div style={{ flex: 1 }}>
-          <p className="t-micro" style={{ marginBottom: 2 }}>AI 큐레이터 동행</p>
-          <p className="t-title" style={{ fontSize: 16 }}>《{currentArtwork.title}》 대화 중</p>
-        </div>
-      </header>
+    <NavigationShell
+      title={`《${currentArtwork.title}》 큐레이션`}
+      showBack={true}
+      onBack={() => router.push(`/artwork?artwork=${currentArtwork.id}`)}
+    >
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "calc(100vh - 60px)" }}>
+        {/* 대화 스크롤 영역 */}
+        <div style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "var(--space-5) var(--space-6)",
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--space-5)"
+        }}>
+          {messages.map((m) => {
+            const isAi = m.sender === "ai";
+            return (
+              <div
+                key={m.id}
+                className="anim-fade"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignSelf: isAi ? "flex-start" : "flex-end",
+                  alignItems: isAi ? "flex-start" : "flex-end",
+                  maxWidth: "85%"
+                }}
+              >
+                {isAi && (
+                  <span className="t-micro" style={{ marginBottom: 4, display: "flex", alignItems: "center", gap: 4 }}>
+                    <Sparkles size={10} color="var(--accent)" /> AI 큐레이터
+                  </span>
+                )}
 
-      {/* 대화 스크롤 영역 */}
-      <div style={{
-        flex: 1,
-        overflowY: "auto",
-        padding: "var(--space-5) var(--space-6)",
-        display: "flex",
-        flexDirection: "column",
-        gap: "var(--space-5)"
-      }}>
-        {messages.map((m) => {
-          const isAi = m.sender === "ai";
-          return (
-            <div
-              key={m.id}
-              className="anim-fade"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                alignSelf: isAi ? "flex-start" : "flex-end",
-                alignItems: isAi ? "flex-start" : "flex-end",
-                maxWidth: "85%"
-              }}
-            >
-              {isAi && (
-                <span className="t-micro" style={{ marginBottom: 4, display: "flex", alignItems: "center", gap: 4 }}>
-                  <Sparkles size={10} color="var(--accent)" /> AI 큐레이터
-                </span>
-              )}
-
-              <div style={{
-                background: isAi ? "var(--surface-2)" : "var(--accent)",
-                color: isAi ? "var(--ink)" : "#FFFFFF",
-                padding: "12px 18px",
-                borderRadius: isAi ? "0 var(--radius-lg) var(--radius-lg) var(--radius-lg)" : "var(--radius-lg) var(--radius-lg) 0 var(--radius-lg)",
-                fontSize: 14.5,
-                lineHeight: 1.6,
-                border: isAi ? "1px solid var(--border)" : "none",
-                wordBreak: "break-all"
-              }}>
-                {m.text}
-              </div>
-
-              {isAi && !m.isStreaming && m.emotionChips && m.emotionChips.length > 0 && (
-                <div className="anim-fade" style={{ marginTop: "var(--space-3)", width: "100%" }}>
-                  <p className="t-micro" style={{ marginBottom: 6, fontSize: 10 }}>어떤 여운이 남으시나요?</p>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-                    {m.emotionChips.map((chip) => (
-                      <button
-                        key={chip.emotion}
-                        className="emotion-chip"
-                        onClick={() => handleEmotionSelect(chip.emotion, chip.axis)}
-                        style={{ padding: "6px 12px", fontSize: 12 }}
-                      >
-                        ✦ {chip.emotion}
-                      </button>
-                    ))}
-                  </div>
+                <div style={{
+                  background: isAi ? "var(--surface-2)" : "var(--accent)",
+                  color: isAi ? "var(--ink)" : "#FFFFFF",
+                  padding: "12px 18px",
+                  borderRadius: isAi ? "0 var(--radius-lg) var(--radius-lg) var(--radius-lg)" : "var(--radius-lg) var(--radius-lg) 0 var(--radius-lg)",
+                  fontSize: 14.5,
+                  lineHeight: 1.6,
+                  border: isAi ? "1px solid var(--border)" : "none",
+                  wordBreak: "break-all"
+                }}>
+                  {m.text}
                 </div>
-              )}
-            </div>
-          );
-        })}
 
-        {isTyping && (
-          <div style={{ display: "flex", flexDirection: "column", alignSelf: "flex-start", maxWidth: "85%" }}>
-            <span className="t-micro" style={{ marginBottom: 4 }}>AI 큐레이터 생각 중...</span>
-            <div style={{
-              background: "var(--surface-2)",
-              border: "1px solid var(--border)",
-              padding: "12px 18px",
-              borderRadius: "0 var(--radius-lg) var(--radius-lg) var(--radius-lg)",
-              display: "flex",
-              gap: 4
-            }}>
-              <span className="dot-blink" style={{ width: 6, height: 6, background: "var(--ink-muted)", borderRadius: "50%" }} />
-              <span className="dot-blink" style={{ width: 6, height: 6, background: "var(--ink-muted)", borderRadius: "50%", animationDelay: "0.2s" }} />
-              <span className="dot-blink" style={{ width: 6, height: 6, background: "var(--ink-muted)", borderRadius: "50%", animationDelay: "0.4s" }} />
+                {isAi && !m.isStreaming && m.emotionChips && m.emotionChips.length > 0 && (
+                  <div className="anim-fade" style={{ marginTop: "var(--space-3)", width: "100%" }}>
+                    <p className="t-micro" style={{ marginBottom: 6, fontSize: 10 }}>어떤 여운이 남으시나요?</p>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
+                      {m.emotionChips.map((chip) => (
+                        <button
+                          key={chip.emotion}
+                          className="emotion-chip"
+                          onClick={() => handleEmotionSelect(chip.emotion, chip.axis)}
+                          style={{ padding: "6px 12px", fontSize: 12 }}
+                        >
+                          ✦ {chip.emotion}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {isTyping && (
+            <div style={{ display: "flex", flexDirection: "column", alignSelf: "flex-start", maxWidth: "85%" }}>
+              <span className="t-micro" style={{ marginBottom: 4 }}>AI 큐레이터 생각 중...</span>
+              <div style={{
+                background: "var(--surface-2)",
+                border: "1px solid var(--border)",
+                padding: "12px 18px",
+                borderRadius: "0 var(--radius-lg) var(--radius-lg) var(--radius-lg)",
+                display: "flex",
+                gap: 4
+              }}>
+                <span className="dot-blink" style={{ width: 6, height: 6, background: "var(--ink-muted)", borderRadius: "50%" }} />
+                <span className="dot-blink" style={{ width: 6, height: 6, background: "var(--ink-muted)", borderRadius: "50%", animationDelay: "0.2s" }} />
+                <span className="dot-blink" style={{ width: 6, height: 6, background: "var(--ink-muted)", borderRadius: "50%", animationDelay: "0.4s" }} />
+              </div>
             </div>
+          )}
+
+          <div ref={chatEndRef} />
+        </div>
+
+        {!isTyping && (
+          <div style={{
+            padding: "0 var(--space-6)",
+            display: "flex",
+            gap: "var(--space-2)",
+            overflowX: "auto",
+            whiteSpace: "nowrap",
+            paddingBottom: "var(--space-3)"
+          }}>
+            {quickReplies.map((qr, idx) => (
+              <button
+                key={idx}
+                className="btn btn-outline btn-sm"
+                onClick={() => handleSendMessage(qr)}
+                style={{
+                  borderRadius: "var(--radius-full)",
+                  fontSize: 12,
+                  background: "var(--surface)",
+                  border: "1px solid var(--border-mid)",
+                  padding: "6px 14px"
+                }}
+              >
+                {qr}
+              </button>
+            ))}
           </div>
         )}
 
-        <div ref={chatEndRef} />
-      </div>
-
-      {!isTyping && (
-        <div style={{
-          padding: "0 var(--space-6)",
-          display: "flex",
-          gap: "var(--space-2)",
-          overflowX: "auto",
-          whiteSpace: "nowrap",
-          paddingBottom: "var(--space-3)"
-        }}>
-          {quickReplies.map((qr, idx) => (
-            <button
-              key={idx}
-              className="btn btn-outline btn-sm"
-              onClick={() => handleSendMessage(qr)}
-              style={{
-                borderRadius: "var(--radius-full)",
-                fontSize: 12,
-                background: "var(--surface)",
-                border: "1px solid var(--border-mid)",
-                padding: "6px 14px"
-              }}
-            >
-              {qr}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <footer style={{
-        padding: "var(--space-3) var(--space-5)",
-        paddingBottom: "calc(var(--space-4) + var(--safe-bottom))",
-        borderTop: "1px solid var(--border)",
-        background: "var(--bg)",
-        display: "flex",
-        alignItems: "center",
-        gap: "var(--space-3)"
-      }}>
-        <div style={{
-          flex: 1,
+        <footer style={{
+          padding: "var(--space-3) var(--space-5)",
+          paddingBottom: "calc(var(--space-4) + var(--safe-bottom))",
+          borderTop: "1px solid var(--border)",
+          background: "var(--bg)",
           display: "flex",
           alignItems: "center",
-          background: "var(--surface-2)",
-          borderRadius: "var(--radius-md)",
-          padding: "4px var(--space-3)",
-          border: "1px solid var(--border)"
+          gap: "var(--space-3)"
         }}>
-          <input
-            type="text"
-            placeholder="메시지를 입력하세요..."
-            value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") handleSendMessage(inputValue); }}
-            style={{
-              flex: 1,
-              border: "none",
-              background: "transparent",
-              outline: "none",
-              padding: "10px 0",
-              fontSize: 14.5,
-              color: "var(--ink)"
-            }}
-          />
-          <button
-            className="btn btn-ghost"
-            onClick={() => handleSendMessage(inputValue)}
-            disabled={!inputValue.trim()}
-            style={{ padding: "var(--space-2)" }}
-          >
-            <Send size={18} color={inputValue.trim() ? "var(--accent)" : "var(--ink-faint)"} />
-          </button>
-        </div>
-      </footer>
+          <div style={{
+            flex: 1,
+            display: "flex",
+            alignItems: "center",
+            background: "var(--surface-2)",
+            borderRadius: "var(--radius-md)",
+            padding: "4px var(--space-3)",
+            border: "1px solid var(--border)"
+          }}>
+            <input
+              type="text"
+              placeholder="메시지를 입력하세요..."
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleSendMessage(inputValue); }}
+              style={{
+                flex: 1,
+                border: "none",
+                background: "transparent",
+                outline: "none",
+                padding: "10px 0",
+                fontSize: 14.5,
+                color: "var(--ink)"
+              }}
+            />
+            <button
+              className="btn btn-ghost"
+              onClick={() => handleSendMessage(inputValue)}
+              disabled={!inputValue.trim()}
+              style={{ padding: "var(--space-2)" }}
+            >
+              <Send size={18} color={inputValue.trim() ? "var(--accent)" : "var(--ink-faint)"} />
+            </button>
+          </div>
+        </footer>
 
-      <style>{`
-        .dot-blink {
-          animation: dotBlink 1.4s infinite both;
-        }
-        @keyframes dotBlink {
-          0% { opacity: .2; transform: scale(0.8); }
-          20% { opacity: 1; transform: scale(1); }
-          100% { opacity: .2; transform: scale(0.8); }
-        }
-      `}</style>
-    </div>
+        <style>{`
+          .dot-blink {
+            animation: dotBlink 1.4s infinite both;
+          }
+          @keyframes dotBlink {
+            0% { opacity: .2; transform: scale(0.8); }
+            20% { opacity: 1; transform: scale(1); }
+            100% { opacity: .2; transform: scale(0.8); }
+          }
+        `}</style>
+      </div>
+    </NavigationShell>
   );
 }
 

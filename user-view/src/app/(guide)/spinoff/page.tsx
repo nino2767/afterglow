@@ -2,11 +2,13 @@
 
 /**
  * app/(guide)/spinoff/page.tsx — S5 스핀오프 랜딩 정적 포팅 (Next.js TSX)
+ * 내비게이션 셸 적용
  */
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar, MapPin, CheckCircle2, Ticket, ShoppingBag, BellRing } from "lucide-react";
+import NavigationShell from "../../../components/NavigationShell";
 
 interface Goods {
   id: string;
@@ -31,7 +33,6 @@ export default function SpinoffLandingPage() {
   const [isLogged, setIsLogged] = useState(false);
   const [nickname, setNickname] = useState("관람객");
 
-  // 팝업 오픈 상태 정의 (임시 ready로 설정하여 로그인 알림 받기 테스트 노출 가능하게 처리)
   const spinoffStatus = "ready"; // 'ready'|'planning'|'open'
 
   useEffect(() => {
@@ -61,37 +62,27 @@ export default function SpinoffLandingPage() {
   }
 
   return (
-    <div className="screen" style={{ background: "var(--bg)", overflowY: "auto", display: "flex", flexDirection: "column", height: "100vh" }}>
-      
-      {/* ── 히어로 배너 ── */}
-      <div style={{
-        width: "100%",
-        padding: "var(--space-12) var(--space-6) var(--space-8)",
-        background: "linear-gradient(135deg, #0D0D0F 0%, #1e1215 100%)",
-        color: "#FFFFFF",
-        textAlign: "center",
-        position: "relative"
-      }}>
-        <button
-          className="btn btn-ghost"
-          onClick={() => router.push("/report")}
-          style={{ position: "absolute", top: "var(--space-4)", left: "var(--space-4)", color: "rgba(255,255,255,0.7)", fontSize: 13 }}
-        >
-          ← 리포트 다시보기
-        </button>
-
-        <p className="t-micro" style={{ color: "var(--accent-light)", marginBottom: 6 }}>SPIN-OFF POPUP</p>
-        <h1 className="t-display" style={{ color: "#FFFFFF", fontSize: 28, marginBottom: "var(--space-4)", fontFamily: "var(--font-display)" }}>
-          어비스 티 라운지
-        </h1>
-        <p className="t-caption" style={{ color: "var(--accent-light)", fontSize: 13, marginBottom: "var(--space-3)" }}>
-          {nickname}님을 위한 공간 큐레이션
-        </p>
-      </div>
-
-      {/* ── 본문 콘텐츠 ── */}
-      <div style={{ padding: "var(--space-6) var(--space-5) var(--space-12)", display: "flex", flexDirection: "column", gap: "var(--space-6)" }}>
+    <NavigationShell title="어비스 티 라운지" showBack={true} onBack={() => router.push("/report")}>
+      <div style={{ flex: 1, padding: "var(--space-6) var(--space-5) var(--space-12)", display: "flex", flexDirection: "column", gap: "var(--space-6)" }}>
         
+        {/* 히어로 웰컴 영역 */}
+        <div style={{
+          padding: "var(--space-8) var(--space-4)",
+          background: "linear-gradient(135deg, #0D0D0F 0%, #1e1215 100%)",
+          color: "#FFFFFF",
+          borderRadius: "var(--radius-lg)",
+          textAlign: "center",
+          position: "relative"
+        }}>
+          <p className="t-micro" style={{ color: "var(--accent-light)", marginBottom: 6 }}>SPIN-OFF POPUP</p>
+          <h1 className="t-display" style={{ color: "#FFFFFF", fontSize: 24, marginBottom: "var(--space-3)", fontFamily: "var(--font-display)" }}>
+            어비스 티 라운지
+          </h1>
+          <p className="t-caption" style={{ color: "var(--accent-light)", fontSize: 13 }}>
+            {nickname}님을 위한 팝업 공간 가이드
+          </p>
+        </div>
+
         {/* 팝업 운영 정보 */}
         <div className="card" style={{ padding: "var(--space-4)", background: "var(--surface-2)", border: "1px solid var(--border)" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
@@ -215,6 +206,6 @@ export default function SpinoffLandingPage() {
         </div>
 
       </div>
-    </div>
+    </NavigationShell>
   );
 }
