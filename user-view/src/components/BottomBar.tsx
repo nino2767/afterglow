@@ -15,8 +15,8 @@ export default function BottomBar({ children }: BottomBarProps) {
     <div style={{
       position: "sticky",
       bottom: 0,
-      left: 0,
-      right: 0,
+      width: "100%",
+      boxSizing: "border-box",
       padding: "var(--space-4) var(--space-5)",
       paddingBottom: "calc(var(--space-4) + var(--safe-bottom))",
       background: "linear-gradient(to top, var(--bg) 70%, transparent)",

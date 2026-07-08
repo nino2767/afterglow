@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
 export default function RootPage() {
-  // B2C 첫 화면인 온보딩 경로로 자동 리다이렉트 처리
-  redirect("/onboarding");
+  // 기본 루트 접속 시 계정 홈(/home)으로 자동 랜딩 처리
+  redirect("/home");
 }
