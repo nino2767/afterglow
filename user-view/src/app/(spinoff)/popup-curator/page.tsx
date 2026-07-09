@@ -114,7 +114,7 @@ export default function PopupCuratorPage() {
   }
 
   return (
-    <NavigationShell title="어비스 티 라운지 가이드" showBack={true} onBack={() => router.push("/spinoff")}>
+    <NavigationShell title="어비스 티 라운지 가이드" showBack={true} onBack={() => router.push("/spinoff/landing")}>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "calc(100vh - 60px)" }}>
         
         {/* ── 스크롤 본문 ── */}

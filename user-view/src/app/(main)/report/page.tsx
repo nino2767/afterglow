@@ -234,7 +234,7 @@ export default function ReportPage() {
           <button
             id="btn-go-spinoff"
             className="btn btn-primary btn-full btn-lg"
-            onClick={() => router.push("/spinoff")}
+            onClick={() => router.push("/spinoff/landing")}
             style={{ gap: 6 }}
           >
             초대장 열어보기

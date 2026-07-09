@@ -8,7 +8,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Calendar, MapPin, CheckCircle2, Ticket, ShoppingBag, BellRing } from "lucide-react";
-import NavigationShell from "../../../components/NavigationShell";
+import NavigationShell from "../../../../components/NavigationShell";
 
 interface Goods {
   id: string;

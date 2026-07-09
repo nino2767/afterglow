@@ -4,6 +4,10 @@
 - **정밀 타겟 편집 (Precise File Editing):** 코드를 수정할 때 전체 파일 내용을 출력하거나 덮어쓰는(Overwrite) 비효율적 행위를 일절 금지합니다. 오직 수정이 필요한 라인 범위만 지정하여 `replace_file_content` 또는 `multi_replace_file_content` 도구를 통해 정밀하게 수정(Diff 반영)하세요.
 - **답변 컴팩트화 (Compact Communication):** 답변 시 장황한 서론, 결론, 코드 해설 및 불필요한 미사여구는 생략하고 실행 결과와 핵심 코드 블록/Diff 위주로 간결하게 소통하세요.
 - **탐색 범위 최소화 (Targeted Directory Search):** 전체 파일 시스템을 습관적으로 검색하거나 루핑을 돌지 마십시오. 오직 작업 대상이 되는 컴포넌트나 디렉토리(`/src`, `/docs` 등)로 범위를 좁혀 도구를 실행하세요.
+- **Git Diff 기반 자가 검증 (Self-Verification via Git Diff):** 코드를 수정한 후 전체 파일을 다시 읽지 말고, `git diff`를 통해 수정한 변경사항(Diff)만 컴팩트하게 확인합니다.
+- **컴팩트 CLI 실행 (Command Output Minimization):** 로그가 많이 발생하는 명령어 실행 시 quiet/silent 옵션을 적극적으로 활용하거나 `grep`, `head`, `tail` 등으로 필터링하여 에러 메시지나 핵심 요약만 컨텍스트에 남기도록 합니다.
+- **타겟 린트 실행 (Targeted Linting):** 사소한 수정 후 프로젝트 전체 린트를 돌리는 대신, 수정한 특정 파일만 대상으로 린트를 수행하여 불필요한 스타일 경고 로그가 누적되는 것을 방지합니다.
+
 
 ## 2. 프로젝트 코어 방향성 정렬 (Unified Core Alignment)
 - **Zero-Draft 원칙 준수:** B2B 기획자와 운영자가 빈 화면(Blank Page)에서 시작하지 않도록 모든 UI와 에이전트 제안은 항상 AI가 작성한 '0번째 초안'을 먼저 제시하는 가치를 최우선으로 설계합니다.

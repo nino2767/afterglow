@@ -13,8 +13,8 @@
 [
   {
     "name": "verify_responsive_css",
-    "description": "Vite React 컴포넌트의 반응형 및 테마 CSS 변수 사용성 점검",
-    "command": "find src -name \"*.jsx\" -o -name \"*.css\" | xargs grep -E \"(var\\(--|@media|anim-)\""
+    "description": "Next.js React 컴포넌트의 반응형 및 테마 CSS 변수 사용성 점검",
+    "command": "find user-view/src -name \"*.tsx\" -o -name \"*.css\" | xargs grep -E \"(var\\(--|@media|anim-)\""
   }
 ]
 ```
