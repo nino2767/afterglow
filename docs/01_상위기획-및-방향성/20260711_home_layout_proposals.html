@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Afterglow 홈 화면 기획 대안 쇼케이스</title>
+  <!-- 구글 폰트 적용 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #0D0D0F;
+      --bg-gradient: linear-gradient(135deg, #0D0D0F 0%, #17151C 100%);
+      --accent: #8B2E4A; /* 버건디 */
+      --accent-light: #A53E5C;
+      --gold: #C9A84C;
+      --gold-dim: rgba(201, 168, 76, 0.15);
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-border: rgba(255, 255, 255, 0.07);
+      --card-border-gold: rgba(201, 168, 76, 0.3);
+      --text: #F7F5F0;
+      --text-muted: #9E9C98;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', 'Outfit', sans-serif;
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ── PAGE BASE WRAPPER ── */
+    #page-app-wrapper {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      padding: 40px 20px 100px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative; /* 중요: 핀 좌표 정렬의 기준 */
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center;
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #FFFFFF;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #FFFFFF 30%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .badge-proposal {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      background: var(--gold-dim);
+      padding: 6px 16px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    /* ── SECTION: CONCEPT MAP ── */
+    .section-block {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #FFFFFF;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-left: 4px solid var(--gold);
+      padding-left: 15px;
+    }
+
+    /* ── BEHAVIOR MAP GRIDS ── */
+    .grid-behaviors {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .behavior-card {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .behavior-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--card-border-gold);
+      box-shadow: 0 10px 30px rgba(201, 168, 76, 0.08);
+    }
+
+    .behavior-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--gold);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .behavior-card:hover::before {
+      opacity: 1;
+    }
+
+    .behavior-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+    }
+
+    .behavior-card h3 {
+      font-size: 1.15rem;
+      color: #FFFFFF;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .behavior-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .behavior-feature {
+      margin-top: 12px;
+      font-size: 0.85rem;
+      color: var(--gold);
+      font-weight: 500;
+      background: rgba(201, 168, 76, 0.05);
+      padding: 6px 10px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    /* ── INTERACTIVE TAB SWITCHER ── */
+    .tab-switcher {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      padding: 8px;
+      border-radius: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      flex: 1;
+      text-align: center;
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #FFFFFF;
+      box-shadow: 0 4px 15px rgba(139, 46, 74, 0.4);
+    }
+
+    /* ── SHOWCASE LAYOUT ── */
+    .showcase-wrapper {
+      display: none;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 50px;
+      animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      align-items: start;
+    }
+
+    .showcase-wrapper.active {
+      display: grid;
+    }
+
+    /* ── MOBILE MOCKUP CONTAINER ── */
+    .mockup-outer {
+      position: relative;
+      justify-self: center;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .mockup-container {
+      position: relative;
+      background: #000;
+      border-radius: 48px;
+      padding: 12px;
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.8), 0 0 0 4px rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      width: 100%;
+      aspect-ratio: 9 / 18.5;
+      overflow: hidden;
+    }
+
+    /* Notch */
+    .mockup-notch {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 24px;
+      background: #000;
+      border-radius: 12px;
+      z-index: 100;
+    }
+
+    .mockup-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 38px;
+      overflow: hidden;
+      position: relative;
+      background: #0D0D0F;
+    }
+
+    .mockup-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      user-select: none;
+    }
+
+    /* ── CONTENT DETAILS ── */
+    .details-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .concept-title-tag {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .details-container h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: #FFFFFF;
+      line-height: 1.25;
+    }
+
+    .details-container p.summary-text {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .pros-cons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 10px;
+    }
+
+    .box-pros, .box-cons {
+      padding: 20px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid var(--card-border);
+    }
+
+    .box-pros {
+      border-left: 4px solid #10B981;
+    }
+
+    .box-cons {
+      border-left: 4px solid #EF4444;
+    }
+
+    .box-pros h4, .box-cons h4 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .box-pros h4 { color: #10B981; }
+    .box-cons h4 { color: #EF4444; }
+
+    .box-pros ul, .box-cons ul {
+      list-style-type: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .box-pros li::before {
+      content: "✓";
+      color: #10B981;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    .box-cons li::before {
+      content: "✗";
+      color: #EF4444;
+      margin-right: 8px;
+      font-weight: bold;
+    }
+
+    .box-pros li, .box-cons li {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .details-container .scenario-box {
+      background: rgba(201, 168, 76, 0.03);
+      border: 1px solid var(--card-border-gold);
+      border-radius: 16px;
+      padding: 24px;
+    }
+
+    .details-container .scenario-box h4 {
+      color: var(--gold);
+      font-size: 1rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .details-container .scenario-box ol {
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .details-container .scenario-box li {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .details-container .scenario-box li strong {
+      color: #FFFFFF;
+    }
+
+    /* ── 💬 COMMENT SECTION STYLE ── */
+    .comment-section {
+      margin-top: 60px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 40px;
+    }
+
+    .export-json-btn {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-left: 10px;
+    }
+
+    .export-json-btn:hover {
+      background: var(--gold-dim);
+      transform: translateY(-2px);
+    }
+
+    .comment-list-title {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #FFFFFF;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .comment-item {
+      background: rgba(255, 255, 255, 0.015);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      animation: fadeInUp 0.4s ease forwards;
+    }
+
+    .comment-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+    }
+
+    .comment-author {
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .comment-date {
+      color: var(--text-muted);
+    }
+
+    .comment-content {
+      font-size: 0.95rem;
+      color: var(--text);
+      word-break: break-all;
+    }
+
+    .comment-concept-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      background: rgba(139, 46, 74, 0.12);
+      color: var(--accent-light);
+      border: 1px solid rgba(139, 46, 74, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-right: 8px;
+    }
+
+    .empty-comments {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 30px 0;
+      font-size: 0.9rem;
+    }
+
+    /* ── 📍 PAGE WIDE FEEDBACK PIN SYSTEMS ── */
+    #feedback-write-overlay {
+      display: none; /* 토글 켜질때만 노출 */
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.02);
+      z-index: 10000;
+      cursor: crosshair;
+    }
+
+    /* 플로팅 피드백 가이드 배너 */
+    .wide-feedback-banner {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      color: #FFFFFF;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      pointer-events: none;
+      z-index: 10005;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1.5px solid rgba(255,255,255,0.25);
+    }
+
+    /* 피드백 쓰기 FAB 버튼 */
+    .feedback-fab-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 10010;
+      background: linear-gradient(135deg, #1A1A1C 0%, #000000 100%);
+      border: 1px solid var(--card-border-gold);
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+      transition: all 0.3s;
+    }
+
+    .feedback-fab-btn.active {
+      background: var(--accent);
+      border-color: #FFFFFF;
+      box-shadow: 0 8px 25px rgba(139, 46, 74, 0.5);
+    }
+
+    /* 핀 렌더링 스타일 */
+    .wide-rendered-pin {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      background: rgba(232, 123, 123, 0.9);
+      border: 2px solid #FFFFFF;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9990;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      color: #FFF;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(232,123,123,0.8);
+      animation: pulsePin 1.5s infinite alternate;
+    }
+
+    .wide-rendered-pin:hover {
+      background: var(--accent);
+      z-index: 9999;
+    }
+
+    /* 와이드 핀 툴팁 */
+    .wide-pin-tooltip {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 210px;
+      background: rgba(15, 15, 18, 0.98);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      padding: 10px;
+      color: #FFFFFF;
+      font-size: 12px;
+      z-index: 10002;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+      pointer-events: auto; /* 마우스 오버 시 클릭이 가능하도록 auto로 지정 */
+      display: none;
+      text-align: left;
+      line-height: 1.4;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .wide-rendered-pin:hover .wide-pin-tooltip {
+      display: flex;
+    }
+
+    /* 핀 폼 팝업 */
+    .wide-pin-popup-form {
+      position: absolute;
+      background: #111115;
+      border: 1.5px solid var(--gold);
+      border-radius: 16px;
+      padding: 14px;
+      width: 200px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+      z-index: 10001;
+      transform: translate(-50%, -100%);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: -10px;
+    }
+
+    .wide-pin-popup-form textarea {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      color: #FFF;
+      font-size: 12px;
+      padding: 8px;
+      outline: none;
+      width: 100%;
+      height: 60px;
+      resize: none;
+    }
+
+    .wide-pin-popup-form button {
+      background: var(--gold);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 7px;
+      cursor: pointer;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .showcase-wrapper.active {
+        grid-template-columns: 1fr;
+      }
+      .mockup-container {
+        max-width: 380px;
+        margin-bottom: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── PAGE WIDE FEEDBACK PINNING WRAPPER ── -->
+  <div id="page-app-wrapper">
+    
+    <!-- 💬 피드백 쓰기 FAB 버튼 -->
+    <button class="feedback-fab-btn" id="feedback-fab" onclick="toggleFeedbackMode()">
+      <span>💬 피드백 쓰기 모드</span>
+    </button>
+
+    <div class="container" id="main-content-container">
+      
+      <!-- 📍 기획서 본문 컨테이너 덮는 오버레이 감지기 (컨테이너 내부 정렬용) -->
+      <div id="feedback-write-overlay" onclick="handlePageOverlayClick(event)">
+        <div class="wide-feedback-banner">
+          <span>📍 의견을 등록할 기획서 영역(어디든지)을 터치해주세요.</span>
+        </div>
+      </div>
+
+      <!-- HEADER -->
+      <header>
+        <span class="badge-proposal">Interactive Design Review</span>
+        <h1>Afterglow 홈 화면 기획 대안 쇼케이스</h1>
+        <p>전시 관람의 여운을 극대화하기 위해, 기존의 복잡한 포털형 홈화면을 대체할 3가지 사용자 행동 중심의 대안 레이아웃입니다.</p>
+      </header>
+
+      <!-- SECTION 1: 전체 여정 및 핵심 사용자 행동 -->
+      <section class="section-block">
+        <div class="section-title">서비스의 전체 순환 여정 &amp; 사용자 행동 매핑</div>
+        
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+          Afterglow는 관람 전(전시 탐색) ↔ 관람 중(도슨트 및 감정 사진 수집) ↔ 관람 후(여운 리포트 아카이빙) ↔ 확장된 공간(스핀오프 F&B 및 굿즈숍) 간의 <strong>순환 관계</strong>를 연결합니다. 각 기능들이 어떻게 유기적으로 동작하는지 스터디해보세요.
+        </p>
+
+        <div class="grid-behaviors">
+          <div class="behavior-card">
+            <div class="behavior-icon">📸</div>
+            <h3>1. 전시 관람 &amp; 감정 수집</h3>
+            <p>홈 화면에 우측 하단 카메라 FAB 버튼을 상시 노출하여 즉시 사진을 찍고 감정을 담을 수 있게 합니다.</p>
+            <span class="behavior-feature">카메라 FAB 1초 진입</span>
+          </div>
+
+          <div class="behavior-card">
+            <div class="behavior-icon">🛒</div>
+            <h3>2. 굿즈 / F&amp;B 탐색 &amp; 구매</h3>
+            <p>관람을 마치자마자 혹은 관람 전에 모바일을 통해 전시 스핀오프 카페 코스와 굿즈를 유기적으로 확인·구매합니다.</p>
+            <span class="behavior-feature">Commerce/F&B 연계</span>
+          </div>
+
+          <div class="behavior-card">
+            <div class="behavior-icon">📝</div>
+            <h3>3. 여운의 연장 (리뷰 생성)</h3>
+            <p>촬영해둔 사진이 자동으로 해당 작품의 AI 큐레이션 내용과 결합되어 감상평으로 재탄생하고 리포트로 보존됩니다.</p>
+            <span class="behavior-feature">감상평/리포트 자동 생성</span>
+          </div>
+
+          <div class="behavior-card">
+            <div class="behavior-icon">🔍</div>
+            <h3>4. 자연어 감성 전시 탐색</h3>
+            <p>기존의 딱딱한 키워드 매칭이 아닌, 사용자의 감정에 맞춰 전시와 작품을 AI 큐레이터가 편지형식으로 제안합니다.</p>
+            <span class="behavior-feature">Perplexity형 검색</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE TAB CONTROLS -->
+      <div class="tab-switcher">
+        <button class="tab-btn active" id="btn-tab-1" onclick="switchTab('tab-1', this)">1안) AI 감성 검색형</button>
+        <button class="tab-btn" id="btn-tab-2" onclick="switchTab('tab-2', this)">2안) 감정 우주형</button>
+        <button class="tab-btn" id="btn-tab-3" onclick="switchTab('tab-3', this)">3안) 여정 타임라인형</button>
+      </div>
+
+      <!-- ── 1안 쇼케이스 ── -->
+      <div id="tab-1" class="showcase-wrapper active">
+        <!-- 모바일 목업 -->
+        <div class="mockup-outer">
+          <div class="mockup-container">
+            <div class="mockup-notch"></div>
+            <div class="mockup-screen">
+              <img src="file:///Users/jmk/.gemini/antigravity-ide/brain/6b982c0a-de8e-4130-8727-cabf9d16c0dd/proposal_layout_search_ui_1783736319519.png" alt="1안: AI 감성 검색형">
+            </div>
+          </div>
+        </div>
+        
+        <!-- 상세 텍스트 -->
+        <div class="details-container">
+          <div>
+            <span class="concept-title-tag">Option 01. Conversation &amp; Curation</span>
+            <h2>AI 감성 큐레이터 검색형</h2>
+          </div>
+          <p class="summary-text">
+            사용자의 마음에 인공지능이 작품과 코스로 답하는 대화 기반 미니멀 레이아웃입니다. 불필요한 홍보성 배너를 걷어내고 ChatGPT나 Perplexity와 유사하게 거대한 검색창을 최우선으로 제공합니다.
+          </p>
+
+          <div class="scenario-box">
+            <h4>💡 작동 시나리오</h4>
+            <ol>
+              <li>사용자가 중앙 검색창에 자연어로 감정이나 여운을 칩으로 고르거나 입력합니다. (예: <strong>"오늘 조용하게 쓸쓸하고 싶어"</strong>)</li>
+              <li>검색 버튼 클릭 시 AI 답변 패널이 부드럽게 확장되며 추천 작품, 추천 전시 구역, 어울리는 스핀오프 카페 차 코스까지 <strong>스토리텔링 마크다운 텍스트</strong>로 렌더링됩니다.</li>
+              <li>하단에 <strong>📸 카메라 FAB 버튼</strong>이 있어, 전시장 내에서 언제든지 즉각적인 여운 사진 촬영으로 진입할 수 있습니다.</li>
+            </ol>
+          </div>
+
+          <div class="pros-cons-grid">
+            <div class="box-pros">
+              <h4>PROS (장점)</h4>
+              <ul>
+                <li>자연어 대화를 통해 사용자의 감정 상태와 아주 정밀하게 호흡하는 기분이 듭니다.</li>
+                <li>타 전시앱들과 차별화되는 차세대 AI 큐레이팅 느낌을 줍니다.</li>
+              </ul>
+            </div>
+            <div class="box-cons">
+              <h4>CONS (단점)</h4>
+              <ul>
+                <li>첫 로드 시 텍스트 위주 인터페이스라 화려한 전시 그래픽 요소가 덜 보일 수 있습니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2안 쇼케이스 ── -->
+      <div id="tab-2" class="showcase-wrapper">
+        <!-- 모바일 목업 -->
+        <div class="mockup-outer">
+          <div class="mockup-container">
+            <div class="mockup-notch"></div>
+            <div class="mockup-screen">
+              <img src="file:///Users/jmk/.gemini/antigravity-ide/brain/6b982c0a-de8e-4130-8727-cabf9d16c0dd/proposal_layout_cosmic_ui_1783736331312.png" alt="2안: 감정 우주 아카이브형">
+            </div>
+          </div>
+        </div>
+        
+        <!-- 상세 텍스트 -->
+        <div class="details-container">
+          <div>
+            <span class="concept-title-tag">Option 02. Emotion Universe</span>
+            <h2>감정 우주 아카이브형</h2>
+          </div>
+          <p class="summary-text">
+            관람객들이 남기고 떠난 수많은 감정 조각들이 우주 공간에 둥둥 떠다니는 것과 같은 감성 인터랙티브 레이아웃입니다. 시각적으로 가장 고급스럽고 영롱하며, 미디어아트 전시 성격에 최적화되어 있습니다.
+          </p>
+
+          <div class="scenario-box">
+            <h4>💡 작동 시나리오</h4>
+            <ol>
+              <li>다크 캔버스 화면 중앙에 <strong>#고요함</strong>, <strong>#몽환적</strong>, <strong>#경외감</strong> 등의 감정 노드들이 서서히 플로팅되며 움직입니다.</li>
+              <li>특정 노드를 클릭하면해당 감정어를 모은 실제 관람객들의 스냅 사진과 한 줄 감상평이 다이얼로그나 팝업으로 펼쳐집니다.</li>
+              <li>우측 하단의 <strong>📸 카메라 FAB 버튼</strong>을 눌러 관람 중 사진을 촬영하면, 내 스냅도 우주의 한 조각(별)으로 등록됩니다.</li>
+            </ol>
+          </div>
+
+          <div class="pros-cons-grid">
+            <div class="box-pros">
+              <h4>PROS (장점)</h4>
+              <ul>
+                <li>시각적으로 첫눈에 감동을 주는 프리미엄 그래픽 갤러리 룩을 구현합니다.</li>
+                <li>타인의 여운을 훔쳐보는 즐거움과 나의 여운을 남기는 재미가 극대화됩니다.</li>
+              </ul>
+            </div>
+            <div class="box-cons">
+              <h4>CONS (단점)</h4>
+              <ul>
+                <li>티켓 등록이나 기본 정보 조회 같은 실용적인 기능(버튼)의 가독성이 떨어질 우려가 있습니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 3안 쇼케이스 ── -->
+      <div id="tab-3" class="showcase-wrapper">
+        <!-- 모바일 목업 -->
+        <div class="mockup-outer">
+          <div class="mockup-container">
+            <div class="mockup-notch"></div>
+            <div class="mockup-screen">
+              <img src="file:///Users/jmk/.gemini/antigravity-ide/brain/6b982c0a-de8e-4130-8727-cabf9d16c0dd/proposal_layout_journey_ui_1783736342515.png" alt="3안: 관람 여정 타임라인형">
+            </div>
+          </div>
+        </div>
+        
+        <!-- 상세 텍스트 -->
+        <div class="details-container">
+          <div>
+            <span class="concept-title-tag">Option 03. Journey Timeline</span>
+            <h2>관람 여정 타임라인형</h2>
+          </div>
+          <p class="summary-text">
+            관람객이 현재 어디에 서 있고, 다음 단계에서 무엇을 해야 하는지 지도 형태로 친절히 안내하는 수직형 타임라인 로드맵 구조입니다. 가상 가이드로서의 기능성에 초점을 맞춥니다.
+          </p>
+
+          <div class="scenario-box">
+            <h4>💡 작동 시나리오</h4>
+            <ol>
+              <li>첫 진입 시, 나의 관람 상태에 맞는 <strong>수직 타임라인 노드</strong>가 렌더링됩니다.</li>
+              <li>미구매/게스트 상태라면 <code>맛보기 청취 → 티켓 등록 및 입장</code> 단계가 강조되며 가이드라인을 제공합니다.</li>
+              <li>관람 중인 사용자라면 <code>감정 조각 수집 중(현재 4개)</code> 상태로 활성화되며, 관람을 마치면 자동으로 <code>여운 리포트 발행</code> 및 <code>스핀오프 커피 바 초대장</code>을 열어볼 수 있도록 단계별로 체크해줍니다.</li>
+            </ol>
+          </div>
+
+          <div class="pros-cons-grid">
+            <div class="box-pros">
+              <h4>PROS (장점)</h4>
+              <ul>
+                <li>유저가 이탈 없이 전시 관람에서 F&B 전환까지 매끄럽게 완주할 수 있게 돕는 UX 지도 역할을 수행합니다.</li>
+                <li>내가 취해야 할 행동과 혜택이 직관적입니다.</li>
+              </ul>
+            </div>
+            <div class="box-cons">
+              <h4>CONS (단점)</h4>
+              <ul>
+                <li>다소 선형적이고 딱딱한 로드맵 구조라 2안이나 1안에 비해 예술적 여운이나 자유로운 탐색감은 덜할 수 있습니다.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 💬 COMMENT SECTION ── -->
+      <section class="comment-section">
+        <div class="comment-list-title">
+          <span>💬 크루 피드백 전체 목록 (<span id="comment-count">0</span>건)</span>
+          <div>
+            <button class="export-json-btn" onclick="exportCommentsToJson()">JSON 데이터 내보내기</button>
+            <button onclick="clearAllComments()" style="background:none; border:none; color:var(--accent-light); font-size:0.8rem; cursor:pointer; font-weight:600; margin-left:15px;">[전체삭제]</button>
+          </div>
+        </div>
+        
+        <div class="comment-list" id="comment-list-container">
+          <!-- 동적으로 댓글 생성 -->
+          <div class="empty-comments" id="empty-comment-msg">아직 등록된 기획 피드백이 없습니다. '피드백 쓰기 모드'를 켜고 본문 아무 곳이나 클릭해 핀을 꽂아보세요!</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- INTERACTIVE JS TAB TOGGLE & COMMENT CONTROLS -->
+  <script>
+    let activeConceptName = "1안) AI 감성 검색형";
+    let activePagePath = "/docs/01_상위기획-및-방향성/20260711_home_layout_proposals.html";
+    
+    let isFeedbackMode = false; // 피드백 모드 상태
+    let activeWidePinPop = null; // 열려 있는 핀 팝업
+
+    // 탭 전환
+    function switchTab(tabId, btnElement) {
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => btn.classList.remove('active'));
+      
+      btnElement.classList.add('active');
+
+      const showcases = document.querySelectorAll('.showcase-wrapper');
+      showcases.forEach(sc => sc.classList.remove('active'));
+
+      const targetShowcase = document.getElementById(tabId);
+      targetShowcase.classList.add('active');
+
+      activeConceptName = btnElement.innerText;
+      
+      closeActiveWidePinPop();
+      renderWidePins();
+    }
+
+    // 💬 피드백 쓰기 모드 토글
+    function toggleFeedbackMode() {
+      isFeedbackMode = !isFeedbackMode;
+      const overlay = document.getElementById("feedback-write-overlay");
+      const fabBtn = document.getElementById("feedback-fab");
+
+      if (isFeedbackMode) {
+        overlay.style.display = "block";
+        fabBtn.classList.add("active");
+        fabBtn.innerHTML = "<span>❌ 피드백 작성 취소</span>";
+        closeActiveWidePinPop();
+      } else {
+        overlay.style.display = "none";
+        fabBtn.classList.remove("active");
+        fabBtn.innerHTML = "<span>💬 피드백 쓰기 모드</span>";
+        closeActiveWidePinPop();
+      }
+    }
+
+    // 📍 페이지 전체 오버레이 터치 핸들러
+    function handlePageOverlayClick(e) {
+      // 🌟 중요: 팝업 폼 내부 클릭이 전파되어 오버레이 클릭이 감지되는 것을 원천 차단
+      if (e.target !== e.currentTarget) {
+        return;
+      }
+
+      closeActiveWidePinPop();
+
+      const overlay = document.getElementById("feedback-write-overlay");
+      const container = document.getElementById("main-content-container");
+      const containerRect = container.getBoundingClientRect();
+
+      // 스크롤 포함한 중앙 컨테이너 대비 마우스 상대 좌표 계산 (중앙 정렬 정밀 매핑)
+      const clickX = e.clientX - containerRect.left;
+      const clickY = e.clientY - containerRect.top;
+
+      // 중앙 컨테이너 너비와 높이 대비 비율 계산
+      const xRatio = Math.round((clickX / containerRect.width) * 1000) / 10;
+      const yRatio = Math.round((clickY / containerRect.height) * 1000) / 10;
+
+      // 핀 입력용 미니 팝업 폼 생성 (이름 인풋 제거)
+      const pop = document.createElement("div");
+      pop.className = "wide-pin-popup-form";
+      pop.style.left = `${xRatio}%`;
+      pop.style.top = `${yRatio}%`;
+
+      const title = document.createElement("span");
+      title.style.fontSize = "9px";
+      title.style.color = "var(--gold)";
+      title.style.fontWeight = "bold";
+      title.innerText = `위치: Y ${yRatio}%`;
+
+      const textComment = document.createElement("textarea");
+      textComment.placeholder = "의견을 적어주세요. (이름은 적지 않아도 됩니다)";
+      textComment.id = "wide-pin-text";
+
+      const btnRow = document.createElement("div");
+      btnRow.style.display = "flex";
+      btnRow.style.gap = "5px";
+
+      const btnSubmit = document.createElement("button");
+      btnSubmit.style.flex = "1";
+      btnSubmit.innerText = "의견 등록";
+      btnSubmit.onclick = (event) => {
+        event.stopPropagation();
+        submitWidePinComment(xRatio, yRatio);
+      };
+
+      const btnCancel = document.createElement("button");
+      btnCancel.style.background = "#4A5568";
+      btnCancel.style.color = "#FFF";
+      btnCancel.innerText = "취소";
+      btnCancel.onclick = (event) => {
+        event.stopPropagation();
+        closeActiveWidePinPop();
+      };
+
+      btnRow.appendChild(btnSubmit);
+      btnRow.appendChild(btnCancel);
+
+      pop.appendChild(title);
+      pop.appendChild(textComment);
+      pop.appendChild(btnRow);
+
+      overlay.appendChild(pop);
+      activeWidePinPop = pop;
+      
+      // 포커스
+      setTimeout(() => textComment.focus(), 50);
+    }
+
+    function closeActiveWidePinPop() {
+      if (activeWidePinPop) {
+        activeWidePinPop.remove();
+        activeWidePinPop = null;
+      }
+    }
+
+    // 로컬 스토리지 키
+    function getCommentsKey() {
+      return "afterglow_page_feedbacks";
+    }
+
+    // 핀 및 피드백 내용 제출
+    async function submitWidePinComment(x, y) {
+      const commentInput = document.getElementById("wide-pin-text");
+      if (!commentInput) return;
+      const text = commentInput.value.trim();
+
+      if (!text) {
+        alert("의견 내용을 입력해주세요.");
+        return;
+      }
+
+      const today = new Date();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      const dateStr = `${mm}/${dd}`;
+
+      // 작성자 이름을 고정 텍스트 "크루"로 처리
+      const name = "크루";
+      const nextId = "CRW-" + Date.now(); // 임시 ID 고유 생성
+
+      const newPin = {
+        id: nextId,
+        nickname: name,
+        comment: text,
+        concept: activeConceptName, // 현재 활성화된 탭
+        xRatio: x,
+        yRatio: y,
+        date: dateStr,
+        replies: []
+      };
+
+      // 1. 로컬 스토리지 누적 저장
+      let feedbacks = [];
+      try {
+        const stored = localStorage.getItem(getCommentsKey());
+        if (stored) feedbacks = JSON.parse(stored);
+      } catch(e) {}
+
+      feedbacks.unshift(newPin);
+      localStorage.setItem(getCommentsKey(), JSON.stringify(feedbacks));
+
+      // 2. Next.js 로컬 서버의 자동 이슈트래커 등록 연동
+      try {
+        const apiPath = "http://localhost:5177/api/feedback";
+        const payload = {
+          comment: `[${activeConceptName} 기획서 피드백] ${text}`,
+          page: `${activePagePath}?concept=${encodeURIComponent(activeConceptName)}`,
+          xRatio: x,
+          yRatio: y,
+          nickname: name
+        };
+
+        const response = await fetch(apiPath, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        if (data.success && data.feedback) {
+          // 서버에서 발급한 정적 ID로 업데이트
+          newPin.id = data.feedback.id;
+          feedbacks[0].id = data.feedback.id;
+          localStorage.setItem(getCommentsKey(), JSON.stringify(feedbacks));
+          alert(`✏️ '유저테스트-수정사항-이슈트래커.md'에 자동 이슈 등록 성공! (이슈번호: ${data.feedback.id})`);
+        } else {
+          console.warn("API 연동 불가:", data.error || "");
+          alert(`✏️ 기획서 영역에 의견 핀이 정상 등록되었습니다.`);
+        }
+      } catch (err) {
+        console.log("로컬 서버 연동 건너뜀:", err);
+        alert(`✏️ 기획서 영역에 의견 핀이 정상 등록되었습니다.`);
+      }
+
+      // 모드 종료 및 핀 리프레시
+      toggleFeedbackMode();
+      renderWidePins();
+      loadCommentsList();
+    }
+
+    // 🌟 핀 완료(해결) 처리
+    async function resolveWidePin(id) {
+      try {
+        const apiPath = "http://localhost:5177/api/feedback";
+        const response = await fetch(apiPath, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id, action: "resolve" })
+        });
+        const data = await response.json();
+        if (data.success) {
+          alert(`✏️ 이슈 ${id}가 이슈 트래커 파일에서 '✅ 완료' 처리되었습니다!`);
+        } else {
+          console.warn("이슈 파일 상태 업데이트 실패:", data.error || "");
+        }
+      } catch (err) {
+        console.log("로컬 서버 연동 건너뜀 (로컬 스토리지 데이터만 해결 처리)");
+      }
+
+      // 로컬 스토리지에서 삭제
+      let feedbacks = [];
+      try {
+        const stored = localStorage.getItem(getCommentsKey());
+        if (stored) feedbacks = JSON.parse(stored);
+      } catch(e) {}
+
+      feedbacks = feedbacks.filter(f => f.id !== id);
+      localStorage.setItem(getCommentsKey(), JSON.stringify(feedbacks));
+
+      renderWidePins();
+      loadCommentsList();
+    }
+
+    // 🌟 대댓글 등록 및 연동 처리
+    async function submitWidePinReply(id, replyText) {
+      const today = new Date();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      const dateStr = `${mm}/${dd}`;
+      const name = "크루";
+
+      try {
+        const apiPath = "http://localhost:5177/api/feedback";
+        const response = await fetch(apiPath, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id,
+            action: "reply",
+            replyComment: replyText,
+            nickname: name
+          })
+        });
+        const data = await response.json();
+        if (!data.success) {
+          console.warn("대댓글 파일 기록 실패:", data.error || "");
+        }
+      } catch (err) {
+        console.log("로컬 서버 연동 실패 (오프라인), 로컬 화면 상에서만 대댓글을 갱신합니다.");
+      }
+
+      // 로컬 스토리지 데이터 갱신
+      let feedbacks = [];
+      try {
+        const stored = localStorage.getItem(getCommentsKey());
+        if (stored) feedbacks = JSON.parse(stored);
+      } catch(e) {}
+
+      feedbacks = feedbacks.map(pin => {
+        if (pin.id === id) {
+          const existingReplies = pin.replies || [];
+          return {
+            ...pin,
+            replies: [
+              ...existingReplies,
+              {
+                id: "rep_" + Date.now(),
+                nickname: name,
+                comment: replyText,
+                date: dateStr
+              }
+            ]
+          };
+        }
+        return pin;
+      });
+      localStorage.setItem(getCommentsKey(), JSON.stringify(feedbacks));
+
+      renderWidePins();
+      loadCommentsList();
+    }
+
+    // 핀 렌더링
+    function renderWidePins() {
+      // 기존 핀 제거
+      const pins = document.querySelectorAll(".wide-rendered-pin");
+      pins.forEach(p => p.remove());
+
+      let feedbacks = [];
+      try {
+        const stored = localStorage.getItem(getCommentsKey());
+        if (stored) feedbacks = JSON.parse(stored);
+      } catch(e) {}
+
+      // 현재 선택된 탭 컨셉에 맞는 핀만 렌더링
+      const currentFeedbacks = feedbacks.filter(f => f.concept === activeConceptName);
+      const container = document.getElementById("main-content-container"); // 정렬 밀림 방지를 위해 중앙 컨테이너에 직접 추가
+
+      if (!container) return;
+
+      currentFeedbacks.forEach(pin => {
+        const pinDiv = document.createElement("div");
+        pinDiv.className = "wide-rendered-pin";
+        pinDiv.style.left = `${pin.xRatio}%`;
+        pinDiv.style.top = `${pin.yRatio}%`;
+        pinDiv.innerText = "✦";
+
+        // 툴팁 말풍선
+        const tooltip = document.createElement("div");
+        tooltip.className = "wide-pin-tooltip";
+
+        const meta = document.createElement("div");
+        meta.className = "feedback-tooltip-meta";
+        meta.style.display = "flex";
+        meta.style.justifyContent = "space-between";
+        meta.style.fontSize = "9px";
+        meta.style.color = "var(--accent-light)";
+        meta.style.marginBottom = "4px";
+        
+        const author = document.createElement("span");
+        author.innerText = pin.id + " · " + pin.nickname;
+
+        const date = document.createElement("span");
+        date.innerText = pin.date;
+
+        meta.appendChild(author);
+        meta.appendChild(date);
+
+        const commentText = document.createElement("p");
+        commentText.style.margin = "0 0 6px 0";
+        commentText.innerText = pin.comment;
+
+        tooltip.appendChild(meta);
+        tooltip.appendChild(commentText);
+
+        // 🌟 대댓글 스레드 리스트 추가
+        if (pin.replies && pin.replies.length > 0) {
+          const replyBox = document.createElement("div");
+          replyBox.style.display = "flex";
+          replyBox.style.flexDirection = "column";
+          replyBox.style.gap = "5px";
+          replyBox.style.margin = "6px 0";
+          replyBox.style.padding = "4px 8px";
+          replyBox.style.background = "rgba(255,255,255,0.03)";
+          replyBox.style.borderLeft = "2px solid var(--accent)";
+          replyBox.style.borderRadius = "4px";
+          replyBox.style.fontSize = "9px";
+          replyBox.style.color = "rgba(255,255,255,0.85)";
+          replyBox.style.maxHeight = "70px";
+          replyBox.style.overflowY = "auto";
+
+          pin.replies.forEach(rep => {
+            const row = document.createElement("div");
+            row.innerHTML = `<strong style="color:var(--gold)">${rep.nickname}</strong>: ${rep.comment}`;
+            replyBox.appendChild(row);
+          });
+          tooltip.appendChild(replyBox);
+        }
+
+        // 🌟 대댓글 입력 폼 추가
+        const replyForm = document.createElement("div");
+        replyForm.style.display = "flex";
+        replyForm.style.gap = "4px";
+        replyForm.style.marginBottom = "6px";
+
+        const replyInput = document.createElement("input");
+        replyInput.type = "text";
+        replyInput.placeholder = "대댓글 입력...";
+        replyInput.style.flex = "1";
+        replyInput.style.background = "rgba(255,255,255,0.05)";
+        replyInput.style.border = "1px solid var(--card-border)";
+        replyInput.style.borderRadius = "4px";
+        replyInput.style.padding = "2px 6px";
+        replyInput.style.fontSize = "9px";
+        replyInput.style.color = "#FFFFFF";
+        replyInput.style.outline = "none";
+        replyInput.onkeydown = (event) => {
+          if (event.key === "Enter") {
+            const val = replyInput.value.trim();
+            if (val) {
+              submitWidePinReply(pin.id, val);
+              replyInput.value = "";
+            }
+          }
+        };
+
+        const replyBtn = document.createElement("button");
+        replyBtn.innerText = "등록";
+        replyBtn.style.background = "transparent";
+        replyBtn.style.border = "1px solid var(--card-border)";
+        replyBtn.style.color = "var(--accent-light)";
+        replyBtn.style.borderRadius = "4px";
+        replyBtn.style.padding = "2px 6px";
+        replyBtn.style.fontSize = "9px";
+        replyBtn.style.cursor = "pointer";
+        replyBtn.style.fontWeight = "bold";
+        replyBtn.onclick = (event) => {
+          event.stopPropagation();
+          const val = replyInput.value.trim();
+          if (val) {
+            submitWidePinReply(pin.id, val);
+            replyInput.value = "";
+          }
+        };
+
+        replyForm.appendChild(replyInput);
+        replyForm.appendChild(replyBtn);
+        tooltip.appendChild(replyForm);
+
+        // 해결(완료) 버튼 추가
+        const btnResolve = document.createElement("button");
+        btnResolve.innerText = "해결(완료)";
+        btnResolve.style.marginTop = "4px";
+        btnResolve.style.background = "var(--accent)";
+        btnResolve.style.color = "#FFFFFF";
+        btnResolve.style.border = "none";
+        btnResolve.style.borderRadius = "4px";
+        btnResolve.style.padding = "2px 8px";
+        btnResolve.style.fontSize = "10px";
+        btnResolve.style.fontWeight = "bold";
+        btnResolve.style.cursor = "pointer";
+        btnResolve.style.alignSelf = "flex-end";
+        btnResolve.onclick = (event) => {
+          event.stopPropagation();
+          resolveWidePin(pin.id);
+        };
+
+        tooltip.appendChild(btnResolve);
+        pinDiv.appendChild(tooltip);
+
+        // 오버레이 클릭 시 폼 제출 방지
+        pinDiv.onclick = (event) => {
+          event.stopPropagation();
+        };
+
+        container.appendChild(pinDiv);
+      });
+    }
+
+    // 댓글 리스트 렌더링
+    function loadCommentsList() {
+      const container = document.getElementById("comment-list-container");
+      const emptyMsg = document.getElementById("empty-comment-msg");
+      const countSpan = document.getElementById("comment-count");
+
+      if (!container) return;
+      container.innerHTML = "";
+
+      let feedbacks = [];
+      try {
+        const stored = localStorage.getItem(getCommentsKey());
+        if (stored) feedbacks = JSON.parse(stored);
+      } catch(e) {}
+
+      if (countSpan) countSpan.innerText = feedbacks.length;
+
+      if (feedbacks.length === 0) {
+        if (emptyMsg) {
+          container.appendChild(emptyMsg);
+          emptyMsg.style.display = "block";
+        }
+        return;
+      }
+
+      if (emptyMsg) emptyMsg.style.display = "none";
+
+      feedbacks.forEach(pin => {
+        const item = document.createElement("div");
+        item.className = "comment-item";
+
+        const meta = document.createElement("div");
+        meta.className = "comment-meta";
+
+        const author = document.createElement("span");
+        author.className = "comment-author";
+        author.innerText = pin.id + " · " + pin.nickname;
+
+        const date = document.createElement("span");
+        date.className = "comment-date";
+        date.innerText = pin.date;
+
+        meta.appendChild(author);
+        meta.appendChild(date);
+
+        const content = document.createElement("div");
+        content.className = "comment-content";
+
+        const tag = document.createElement("span");
+        tag.className = "comment-concept-tag";
+        tag.innerText = `${pin.concept} (위치: Y ${pin.yRatio}%)`;
+
+        const textSpan = document.createElement("span");
+        textSpan.innerText = pin.comment;
+
+        content.appendChild(tag);
+        content.appendChild(textSpan);
+
+        // 🌟 하단 의견 피드 리스트에도 대댓글이 있을 경우 꼬리 질문으로 렌더링
+        if (pin.replies && pin.replies.length > 0) {
+          pin.replies.forEach(rep => {
+            const replyLine = document.createElement("div");
+            replyLine.style.fontSize = "0.8rem";
+            replyLine.style.color = "var(--text-muted)";
+            replyLine.style.marginLeft = "16px";
+            replyLine.style.marginTop = "6px";
+            replyLine.innerHTML = `└ <strong>${rep.nickname} (${rep.date})</strong>: ${rep.comment}`;
+            content.appendChild(replyLine);
+          });
+        }
+
+        item.appendChild(meta);
+        item.appendChild(content);
+
+        container.appendChild(item);
+      });
+    }
+
+    // JSON 내보내기
+    function exportCommentsToJson() {
+      let feedbacks = [];
+      try {
+        const stored = localStorage.getItem(getCommentsKey());
+        if (stored) feedbacks = JSON.parse(stored);
+      } catch(e) {}
+
+      if (feedbacks.length === 0) {
+        alert("내보낼 피드백 의견이 없습니다.");
+        return;
+      }
+
+      const jsonStr = JSON.stringify(feedbacks, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `afterglow_crew_feedbacks_${new Date().toISOString().slice(0,10).replace(/-/g,"")}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function clearAllComments() {
+      if (confirm("정말 모든 피드백을 삭제하시겠습니까?")) {
+        localStorage.setItem(getCommentsKey(), JSON.stringify([]));
+        renderWidePins();
+        loadCommentsList();
+      }
+    }
+
+    // 초기화 로드
+    document.addEventListener("DOMContentLoaded", () => {
+      renderWidePins();
+      loadCommentsList();
+    });
+  </script>
+</body>
+</html>

@@ -1,14 +1,12 @@
 "use client";
 
 /**
- * app/(guide)/curator/page.tsx — S3 AI 큐레이터 채팅 정적 포팅 (Next.js TSX)
- * 내비게이션 셸 적용
+ * app/(main)/curator/page.tsx — 본전시 AI 큐레이터 대화방 페이지
  */
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Send, Sparkles } from "lucide-react";
-import EmotionChip from "../../../components/EmotionChip";
+import { Send, Sparkles, ChevronLeft, Image as ImageIcon } from "lucide-react";
 import BottomBar from "../../../components/BottomBar";
 import NavigationShell from "../../../components/NavigationShell";
 
@@ -79,6 +77,8 @@ function CuratorChatContent() {
   const [currentArtwork, setCurrentArtwork] = useState<Artwork>(ARTWORKS_LIST[0]);
   const [isTyping, setIsTyping] = useState(false);
   const [nickname, setNickname] = useState("관람객");
+  const [artworkSnaps, setArtworkSnaps] = useState<string[]>([]);
+  const [selectedChatEmotions, setSelectedChatEmotions] = useState<Record<string, boolean>>({});
 
   const chatEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -88,23 +88,44 @@ function CuratorChatContent() {
     "이 작품의 소리가 특별한 이유가 뭔지 알려주세요"
   ];
 
-  // 초기화 및 작품 파라미터 셋업
+  // 초기화 및 로드
   useEffect(() => {
     let activeNickname = "관람객";
     try {
-      const saved = localStorage.getItem("afterglow_session");
-      if (saved) {
-        const parsed = JSON.parse(saved);
+      const savedSession = localStorage.getItem("afterglow_session");
+      if (savedSession) {
+        const parsed = JSON.parse(savedSession);
         activeNickname = parsed.nickname || "관람객";
         setNickname(activeNickname);
+
+        // 이미 탭한 채팅 감정 칩 상태 로드
+        const chatEmos = parsed.chatEmotions || {};
+        const artworkId = searchParams.get("artwork") || "art_001";
+        const emosForArt = chatEmos[artworkId] || [];
+        const checkedMap: Record<string, boolean> = {};
+        emosForArt.forEach((emoObj: { emotion: string }) => {
+          checkedMap[emoObj.emotion] = true;
+        });
+        setSelectedChatEmotions(checkedMap);
       }
     } catch (e) {
-      //
+      console.error(e);
     }
 
     const artworkId = searchParams.get("artwork");
     const targetArtwork = ARTWORKS_LIST.find(a => a.id === artworkId) || ARTWORKS_LIST[0];
     setCurrentArtwork(targetArtwork);
+
+    // 해당 작품의 로컬 스냅 로드
+    try {
+      const savedSnaps = localStorage.getItem("afterglow_user_snaps");
+      if (savedSnaps) {
+        const snapsObj = JSON.parse(savedSnaps);
+        setArtworkSnaps(snapsObj[targetArtwork.id] || []);
+      }
+    } catch (e) {
+      console.error(e);
+    }
 
     const welcomeMsg: ChatMessage = {
       id: "welcome_" + Date.now(),
@@ -124,6 +145,18 @@ function CuratorChatContent() {
   // AI 모의 RAG 스트리밍 시뮬레이션
   function simulateAiResponse(userText: string) {
     setIsTyping(true);
+
+    // 대화 회수 카운트 누적 기록 (여운 리포트 집계용)
+    try {
+      const savedSession = localStorage.getItem("afterglow_session");
+      if (savedSession) {
+        const parsed = JSON.parse(savedSession);
+        parsed.chatCount = (parsed.chatCount || 0) + 1;
+        localStorage.setItem("afterglow_session", JSON.stringify(parsed));
+      }
+    } catch (e) {
+      //
+    }
 
     setTimeout(() => {
       setIsTyping(false);
@@ -180,9 +213,35 @@ function CuratorChatContent() {
     simulateAiResponse(text);
   }
 
+  // 대화 중 선택한 감정 칩을 로컬 스토리지 취향 정보에 저장
   function handleEmotionSelect(emotion: string, axis: string) {
-    console.log(`Emotion tagged via Chat: ${emotion} (${axis}) (Data layer bypassed)`);
-    alert(`'#${emotion}' 감정이 가상 기록되었습니다.`);
+    // 중복 추가 방지
+    if (selectedChatEmotions[emotion]) return;
+
+    setSelectedChatEmotions(prev => {
+      const nextMap = { ...prev, [emotion]: true };
+      
+      try {
+        const savedSession = localStorage.getItem("afterglow_session");
+        if (savedSession) {
+          const parsed = JSON.parse(savedSession);
+          const chatEmos = parsed.chatEmotions || {};
+          const list = chatEmos[currentArtwork.id] || [];
+          
+          if (!list.some((e: { emotion: string }) => e.emotion === emotion)) {
+            chatEmos[currentArtwork.id] = [...list, { emotion, axis }];
+            parsed.chatEmotions = chatEmos;
+            localStorage.setItem("afterglow_session", JSON.stringify(parsed));
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+
+      return nextMap;
+    });
+
+    alert(`'#${emotion}' 감정이 취향 분석 키워드에 기록되었습니다.`);
   }
 
   return (
@@ -191,7 +250,37 @@ function CuratorChatContent() {
       showBack={true}
       onBack={() => router.push(`/artwork?artwork=${currentArtwork.id}`)}
     >
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "calc(100vh - 60px)" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", height: "calc(100vh - 60px)", background: "var(--bg)" }}>
+        
+        {/* ── 상단 연결된 작품 사진 (내가 찍은 스냅샷) 배너 ── */}
+        {artworkSnaps.length > 0 && (
+          <div style={{
+            background: "var(--surface-2)",
+            borderBottom: "1px solid var(--border)",
+            padding: "8px 16px",
+            display: "flex",
+            alignItems: "center",
+            gap: 12
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <ImageIcon size={14} color="var(--accent)" />
+              <span style={{ fontSize: 11, color: "var(--accent)", fontWeight: 600 }}>내가 촬영한 스냅</span>
+            </div>
+            <div style={{ display: "flex", gap: 6, overflowX: "auto", flex: 1 }}>
+              {artworkSnaps.map((snap, idx) => (
+                <div 
+                  key={idx} 
+                  style={{
+                    width: 32, height: 32, borderRadius: 4,
+                    backgroundImage: `url(${snap})`, backgroundSize: "cover", backgroundPosition: "center",
+                    border: "1px solid var(--border)", flexShrink: 0
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* 대화 스크롤 영역 */}
         <div style={{
           flex: 1,
@@ -234,20 +323,32 @@ function CuratorChatContent() {
                   {m.text}
                 </div>
 
+                {/* AI 말풍선 밑에 감정 피드백 칩 노출 */}
                 {isAi && !m.isStreaming && m.emotionChips && m.emotionChips.length > 0 && (
                   <div className="anim-fade" style={{ marginTop: "var(--space-3)", width: "100%" }}>
                     <p className="t-micro" style={{ marginBottom: 6, fontSize: 10 }}>어떤 여운이 남으시나요?</p>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-                      {m.emotionChips.map((chip) => (
-                        <button
-                          key={chip.emotion}
-                          className="emotion-chip"
-                          onClick={() => handleEmotionSelect(chip.emotion, chip.axis)}
-                          style={{ padding: "6px 12px", fontSize: 12 }}
-                        >
-                          ✦ {chip.emotion}
-                        </button>
-                      ))}
+                      {m.emotionChips.map((chip) => {
+                        const isChecked = selectedChatEmotions[chip.emotion];
+                        return (
+                          <button
+                            key={chip.emotion}
+                            className={`emotion-chip ${isChecked ? "active" : ""}`}
+                            onClick={() => handleEmotionSelect(chip.emotion, chip.axis)}
+                            style={{ 
+                              padding: "6px 12px", 
+                              fontSize: 12,
+                              background: isChecked ? "var(--accent)" : "var(--surface)",
+                              color: isChecked ? "#FFFFFF" : "var(--ink)",
+                              border: "1px solid var(--border)",
+                              cursor: "pointer",
+                              borderRadius: 16
+                            }}
+                          >
+                            ✦ {chip.emotion}
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -276,6 +377,7 @@ function CuratorChatContent() {
           <div ref={chatEndRef} />
         </div>
 
+        {/* 퀵 리플라이 */}
         {!isTyping && (
           <div style={{
             padding: "0 var(--space-6)",
