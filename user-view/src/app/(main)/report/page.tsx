@@ -597,7 +597,7 @@ function ReportContent() {
           <button
             id="btn-go-spinoff"
             className="btn btn-primary btn-full btn-lg"
-            onClick={() => router.push("/spinoff/landing")}
+            onClick={() => router.push("/spinoff/abyss-wave")}
             style={{ gap: 6 }}
           >
             초대장 열어보기

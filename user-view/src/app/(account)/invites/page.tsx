@@ -85,7 +85,7 @@ export default function InvitesPage() {
                     <div
                       key={invite.invite_id}
                       className="card anim-fade"
-                      onClick={() => router.push("/spinoff/landing")}
+                      onClick={() => router.push("/spinoff/abyss-wave")}
                       style={{
                         padding: "var(--space-5)",
                         border: "1.5px solid var(--accent)",
@@ -126,7 +126,7 @@ export default function InvitesPage() {
                     <div
                       key={invite.invite_id}
                       className="card anim-fade"
-                      onClick={() => router.push("/spinoff/landing")}
+                      onClick={() => router.push("/spinoff/abyss-wave")}
                       style={{
                         padding: "var(--space-5)",
                         border: "1px solid var(--border-strong)",

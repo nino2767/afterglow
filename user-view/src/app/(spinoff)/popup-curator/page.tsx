@@ -57,9 +57,12 @@ export default function PopupCuratorPage() {
       const saved = localStorage.getItem("afterglow_session");
       if (saved) {
         const parsed = JSON.parse(saved);
-        setNickname(parsed.nickname || "관람객");
+        const name = parsed.nickname || "관람객";
+        setTimeout(() => {
+          setNickname(name);
+        }, 0);
       }
-    } catch (e) {
+    } catch {
       //
     }
   }, []);
@@ -105,7 +108,7 @@ export default function PopupCuratorPage() {
           parsed.marketing_consent = true;
           localStorage.setItem("afterglow_account", JSON.stringify(parsed));
         }
-      } catch (e) {
+      } catch {
         //
       }
     }

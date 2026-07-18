@@ -92,7 +92,7 @@ function LoginContent() {
       if (trigger === "report") {
         router.push("/report");
       } else if (trigger === "spinoff_locked") {
-        router.push("/spinoff/landing");
+        router.push("/spinoff/abyss-wave");
       } else {
         router.push("/home");
       }

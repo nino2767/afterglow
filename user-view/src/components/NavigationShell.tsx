@@ -5,7 +5,7 @@
  */
 
 import React, { useState, useEffect, useRef } from "react";
-import { ArrowLeft, User, MessageSquare, X, Send, Sparkles, Menu, Home, Ticket, FolderHeart, LogOut, LogIn } from "lucide-react";
+import { ArrowLeft, User, MessageSquare, X, Send, Sparkles, Compass, Menu, Home, Ticket, FolderHeart, LogOut, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 interface NavigationShellProps {
@@ -405,6 +405,20 @@ export default function NavigationShell({
                 >
                   <FolderHeart size={18} color="var(--gold)" />
                   여운 보관함
+                </button>
+
+                <button 
+                  onClick={() => { window.location.href = "/spinoff/home"; }}
+                  style={{
+                    background: "transparent", border: "none", color: "#FFF", fontSize: 15, fontWeight: 500,
+                    display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", cursor: "pointer",
+                    padding: "8px 10px", borderRadius: 8, transition: "background 0.2s"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                  onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                >
+                  <Compass size={18} color="var(--gold)" />
+                  스핀오프 전시관
                 </button>
 
                 <button 

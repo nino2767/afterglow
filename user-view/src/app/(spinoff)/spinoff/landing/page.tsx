@@ -38,15 +38,18 @@ export default function SpinoffLandingPage() {
   useEffect(() => {
     try {
       const saved = localStorage.getItem("afterglow_session");
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        setNickname(parsed.nickname || "관람객");
-      }
       const account = localStorage.getItem("afterglow_account");
-      if (account) {
-        setIsLogged(true);
-      }
-    } catch (e) {
+      
+      setTimeout(() => {
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          setNickname(parsed.nickname || "관람객");
+        }
+        if (account) {
+          setIsLogged(true);
+        }
+      }, 0);
+    } catch {
       //
     }
   }, []);

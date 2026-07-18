@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFTERGLOW 방향성 재정의 &amp; 상세기획 (v4.0 draft)</title>
+<style>
+  :root{
+    --ink:#222; --sub:#7a8794; --accent:#1f3a5f; --accent-d:#16293f; --accent2:#eef2f7;
+    --line:#e4e8ed; --line2:#f0f2f5;
+    --warnbg:#fbf6e3; --warnline:#d9c25a; --warnink:#5f5010;
+    --sidebar:264px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#eef1f5;
+    font-size:15.5px; letter-spacing:-.003em;
+  }
+
+  /* ===== Layout ===== */
+  .layout{display:flex; min-height:100vh; max-width:1200px; margin:0 auto; background:#fff;}
+  @media (min-width:1240px){ .layout{margin:32px auto; border-radius:12px; overflow:hidden; box-shadow:0 2px 20px rgba(31,58,95,.10);} }
+
+  /* ===== Sidebar ===== */
+  .sidebar{
+    width:var(--sidebar); flex:0 0 var(--sidebar);
+    background:var(--accent); color:#fff;
+    position:sticky; top:0; align-self:flex-start; height:100vh;
+    display:flex; flex-direction:column; padding:30px 0;
+  }
+  .brand{padding:0 26px 22px; border-bottom:1px solid rgba(255,255,255,.14); margin-bottom:16px;}
+  .brand .logo{font-size:18px; font-weight:700; letter-spacing:.02em;}
+  .brand .subtitle{font-size:12.5px; opacity:.78; margin-top:6px; line-height:1.5;}
+  .side-nav{overflow-y:auto; flex:1;}
+  .side-nav a{
+    display:flex; gap:10px; align-items:baseline;
+    padding:10px 26px; color:rgba(255,255,255,.82); text-decoration:none;
+    font-size:14px; border-left:3px solid transparent; transition:.15s;
+  }
+  .side-nav a .num{color:rgba(255,255,255,.5); font-size:12px; font-variant-numeric:tabular-nums; min-width:14px;}
+  .side-nav a:hover{background:rgba(255,255,255,.07); color:#fff;}
+  .side-nav a.active{background:var(--accent-d); color:#fff; border-left-color:#8fb4e0;}
+  .side-foot{padding:16px 26px 0; font-size:11px; color:rgba(255,255,255,.5); border-top:1px solid rgba(255,255,255,.14); margin-top:12px; line-height:1.6;}
+
+  /* ===== Content ===== */
+  .content{flex:1; min-width:0; padding:44px 48px 80px;}
+  .doc-title{display:none;}
+  h2{
+    font-size:19px; font-weight:600; color:var(--accent); margin:38px 0 14px;
+    border-left:4px solid var(--accent); padding-left:12px; scroll-margin-top:24px;
+  }
+  h2:first-of-type{margin-top:6px;}
+  h3{font-size:15.5px; font-weight:600; color:#2c3e55; margin:26px 0 10px;}
+  p{margin:10px 0;}
+  strong{font-weight:600;}
+  .label{font-weight:600; display:block; margin:18px 0 4px; color:#2c3e55;}
+  blockquote{background:var(--accent2); border-radius:6px; padding:14px 18px; margin:12px 0; color:#33465c; border:0;}
+  blockquote.def{font-size:16px;}
+  .note{background:var(--warnbg); border-radius:6px; padding:12px 16px; margin:14px 0; color:var(--warnink); font-size:14px; border-left:3px solid var(--warnline);}
+  ul,ol{margin:10px 0; padding-left:20px;}
+  li{margin:6px 0;}
+  table{width:100%; border-collapse:collapse; font-size:14px; margin:14px 0; overflow:hidden; border-radius:6px;}
+  th{text-align:left; font-weight:500; color:#fff; background:var(--accent); padding:10px; vertical-align:top;}
+  td{padding:9px 10px; border-bottom:1px solid var(--line2); vertical-align:top;}
+  tbody tr:nth-child(odd){background:#f7f9fb;}
+  .tag{white-space:nowrap;}
+  pre{background:#f7f9fb; border:1px solid var(--line); border-radius:8px; padding:16px 18px; overflow:auto; font-size:13px; line-height:1.55; font-family:"SF Mono",Menlo,Consolas,monospace; color:#2c3e55;}
+  hr{border:0; border-top:1px solid var(--line); margin:38px 0;}
+  footer{margin-top:44px; padding-top:18px; border-top:1px solid var(--line); font-size:12px; color:var(--sub);}
+
+  /* ===== Responsive ===== */
+  @media (max-width:820px){
+    .layout{flex-direction:column;}
+    .sidebar{width:100%; flex:none; position:static; height:auto; padding:22px 0 12px;}
+    .side-nav{display:flex; flex-wrap:wrap; padding:6px 16px;}
+    .side-nav a{border-left:0; border-radius:20px; padding:6px 12px; margin:3px;}
+    .side-nav a.active{border-left:0;}
+    .side-foot{display:none;}
+    .content{padding:28px 22px 64px;}
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">AFTERGLOW</div>
+      <div class="subtitle">방향성 재정의 &amp; 상세기획 메모<br>v4.0 draft · 트랙 A</div>
+    </div>
+    <nav class="side-nav">
+      <a href="#s1"><span class="num">1</span><span>재정의된 본질</span></a>
+      <a href="#s2"><span class="num">2</span><span>v3.0 유지/수정/폐기 판정</span></a>
+      <a href="#s3"><span class="num">3</span><span>MVP 가설</span></a>
+      <a href="#s4"><span class="num">4</span><span>비즈니스 모델</span></a>
+      <a href="#s5"><span class="num">5</span><span>치명적 리스크</span></a>
+      <a href="#s6"><span class="num">6</span><span>파일럿 타임라인</span></a>
+      <a href="#s7"><span class="num">7</span><span>구현 우선순위 &amp; 모듈 구조</span></a>
+    </nav>
+    <div class="side-foot">작성일 2026.07.11<br>기반: v3.0 문서 재검토</div>
+  </aside>
+
+  <main class="content">
+
+  <h2 id="s1">1. 재정의된 본질 (상위기획 결과)</h2>
+
+  <span class="label">한 줄 정의</span>
+  <blockquote class="def">AFTERGLOW는 전시 IP의 세계관을 확장해 '두 번째 작품(스핀오프)'으로 만들어내는 서비스다. 본전시를 봤든 안 봤든 그 자체로 성립하는 독립된 세계관 경험이며, 관람의 여운과 개인 데이터는 이 경험을 더 깊게 만드는 레이어다.</blockquote>
+
+  <p><strong>핵심 전환</strong>: "본전시의 연장 장치" → <strong>"세계관을 공유하는 독립된 두 번째 작품"</strong></p>
+
+  <p><strong>핵심가치 키워드</strong>: 본전시 세계관의 확장(독립된 두 번째 작품) · 정보가 아닌 경험 · 여운·개인화는 정체성이 아닌 '강화 레이어'</p>
+
+  <div class="note">⚠️ <strong>우선순위 명확화 (2026.07.16)</strong>: 1순위 정체성 = 본전시의 새로운 세계관(독립 작품). 여운·개인화는 이를 대체하지 않는 강화 레이어다. 7장(Phase 1 스핀오프는 본전시 데이터 없이 성립, 개인화는 Phase 3 프리미엄)과 언어를 일치시킴. 경쟁력의 무게가 개인화 대신 '새 세계관을 빠르고 일관되게 찍어내는 AI 엔진'으로 이동함에 유의.</div>
+
+  <span class="label">원점 (동기)</span>
+  <ul>
+    <li>영화/예능의 '스핀오프' 개념을 전시로 — 본편이 끝나도 세계관이 이어진다</li>
+    <li>개인 경험: 전시 후 작가·작품을 검색해도 정보 파편만 있고 허전했음 (이해+감동+연결 모두 미해소)</li>
+    <li>시장 공백(⚠️ 재검증 필요): "전시/미술은 IT 낙후"라는 초기 인상은 수정 필요. 관람 중 가이드 영역은 이미 경쟁 존재 — 오프라인 도슨트 보편화, 국립중앙박물관은 IoT 비콘 기반 위치 자동안내(5개 언어)에 이어 2025.9 AI 검색·지능형 큐레이션 플랫폼 공개, 네이버는 바이브(VIBE) 오디오 탭에서 전시 도슨트 콘텐츠 운영(NCT 127 도슨트, 마티스전 등 — 전시 종료 후에도 콘텐츠 제공), 오디오클립은 2025.12 서비스 종료 확정. 다만 이들은 모두 <strong>관람 중</strong> 서비스이며, <strong>관람 후 세계관 연장(스핀오프)</strong> 영역은 여전히 공백 → AFTERGLOW의 공백 정의를 '전시 IT 전반'이 아니라 '관람 후 구간'으로 좁혀야 함. 상세는 별도 문서 <strong>AFTERGLOW_시장조사리포트_v1.0.md</strong> 참조</li>
+  </ul>
+
+  <p><strong>핵심 동작</strong>: 전시 IP(작품, 작가 세계관)를 재료로, AI가 새로운 세계관 경험 — 이어지는 대화, 미니 스핀오프 전시, 커스텀 굿즈 — 을 독립된 '두 번째 작품'으로 만들어낸다. 본전시를 보지 않아도 성립하며(Phase 1), 관람객의 사진·대화 데이터가 붙으면 그 경험이 개인화되어 더 깊어진다(Phase 3 프리미엄).</p>
+
+  <p><strong>B2B의 위상</strong>: 본질이 아니라 전달 경로. 세계관의 주인이 기획사이므로 그들을 통해 관람객에게 닿는다.</p>
+
+  <h2 id="s2">2. v3.0 유지/수정/폐기 판정</h2>
+  <table>
+    <thead><tr><th style="width:22%">v3.0 요소</th><th style="width:14%">판정</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>AI 큐레이터</td><td class="tag">🔧 수정</td><td>'팝업 전환용 데이터 수집 장치' → <strong>세계관 안내자</strong>. 핵심 가치는 관람 후에도 대화가 이어진다는 것. 검색-허전함을 직접 대체</td></tr>
+      <tr><td>스핀오프 팝업</td><td class="tag">🔧 수정(강등)</td><td>서비스 본체 → 스핀오프의 <strong>형식 중 하나</strong>. MVP에서는 미니 스핀오프 전시로 축소 검증 — 굿즈숍이 아니라 '또 하나의 작은 전시'</td></tr>
+      <tr><td>사진→리뷰/아카이브화</td><td class="tag">✅ 신규 IN</td><td>관람 중 사진이 자동으로 개인 아카이브·리뷰가 됨. 스핀오프 입장권 역할</td></tr>
+      <tr><td>AI 기획 모듈 4종</td><td class="tag">🔧 수정(이원화)</td><td><strong>B2B에겐 셀링포인트 유지</strong> — "다양한 컨셉의 스핀오프 전시를 모듈화로 빠르게 뽑아낸다"가 수동 기획 대행(프로젝트렌트 등)과의 결정적 차별점. <strong>B2C에겐 비가시 엔진</strong> — 관람객에게 스핀오프는 '작품'으로 보여야 하며 AI 제작 과정은 노출하지 않음. MVP에선 스핀오프 콘텐츠 생성에 필요한 만큼만 구현</td></tr>
+      <tr><td>B2B RS 수익모델</td><td class="tag">✅ 유지(후순위)</td><td>전달 경로로 유효. MVP는 파트너 1곳 무료 파일럿</td></tr>
+      <tr><td>지표 "팝업 전환율 20%"</td><td class="tag">❌ 폐기</td><td>'연장 장치' 관점 지표 → <strong>잔존(머무름) 지표</strong>로 교체</td></tr>
+      <tr><td>전시 검색 기능</td><td class="tag">❌ OUT</td><td>MVP 불필요, 차기 버전 검토</td></tr>
+      <tr><td>타깃 파트너 (피플리, 세라핌컴퍼니)</td><td class="tag">✅ 유지</td><td>세계관 주인 확보는 전제조건. 접근 전략(중소→대형) 유지</td></tr>
+    </tbody>
+  </table>
+
+  <h2 id="s3">3. MVP 가설</h2>
+  <blockquote>"전시가 끝난 후에도 관람객은 그 세계관에 머물고 싶어하며, 스핀오프 경험(이어지는 대화 + 개인 아카이브 + 미니 오프라인 체험)이 '검색하고 허전한' 경험을 대체할 수 있다."</blockquote>
+
+  <h3>검증 플로우</h3>
+  <ol>
+    <li><strong>관람 중</strong>: <strong>작품 사진 촬영이 기본 진입점</strong> — 작품을 찍으면 AI가 사진을 인식해 설명 제공 + AI 큐레이터 대화 시작 (사진·감정 키워드가 개인 데이터로 축적). QR은 보조 진입 수단(선택) — QR이 없는 전시장도 많음. 촬영 불가 전시는 작품 리스트에서 직접 선택하는 폴백 구조</li>
+    <li><strong>퇴장 시점</strong>: 사진+대화가 자동으로 <strong>나만의 아카이브(리뷰 초안)</strong>로 생성 → <strong>두 경로를 독립적으로 초대</strong> (① 온라인 스핀오프 ② 미니 스핀오프 전시) — 각각 분리 측정</li>
+    <li><strong>[오프라인 경로] 미니 스핀오프 전시 (전시장 내/인근 1개 공간)</strong>: 굿즈숍이 아니라 <strong>'또 하나의 작은 전시'를 보는 경험</strong> — 본전시 세계관을 가져와 다른 이야기·연출로 구성한 새 장면을 관람. 예능 스핀오프 문법을 따름 (아는형님→방과후교실, 나혼자산다→여은파: 원작의 세계관·인물로 <strong>다른 판</strong>을 벌이는 독립 콘텐츠). 내 관람 데이터는 연출에 반영 (예: 내 감정 키워드가 공간의 빛·사운드·장면으로). <strong>굿즈는 관람 동선 출구의 기념품 — 본체가 아님</strong></li>
+    <li><strong>[온라인 경로] 관람 후 (D+1~7)</strong>: 웹앱 재접속 → 세계관 대화 계속, 아카이브 확인·공유</li>
+  </ol>
+
+  <p><strong>온라인/오프라인 분리 검증 설계</strong>: 두 경로는 서로 독립 — 부스를 안 가도 온라인 스핀오프는 온전히 즐길 수 있고, 그 역도 성립. 결과 조합별 판정:</p>
+  <table>
+    <thead><tr><th>온라인 재접속</th><th>부스 방문</th><th>해석 → 다음 방향</th></tr></thead>
+    <tbody>
+      <tr><td>↑</td><td>↑</td><td>풀 스핀오프 검증 → 정식 팝업 확장 + 디지털 병행</td></tr>
+      <tr><td>↑</td><td>↓</td><td>머무름 욕구는 디지털로 충족 → 디지털 스핀오프 중심, 팝업은 선택 상품</td></tr>
+      <tr><td>↓</td><td>↑</td><td>오프라인 체험이 본체 → 팝업 중심(v3.0 원형에 근접), 웹은 브릿지로 축소</td></tr>
+      <tr><td>↓</td><td>↓</td><td>본질 가설 재검토 (상위기획 복귀)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>성공 기준 (숫자)</h3>
+  <table>
+    <thead><tr><th style="width:36%">지표</th><th style="width:26%">기준</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td><strong>[핵심] 관람 후 48시간 내 재접속률</strong></td><td><strong>30% 이상</strong> (파일럿 30명 중 9명)</td><td>세계관에 머물고 싶은가</td></tr>
+      <tr><td>재접속 시 대화 지속</td><td>재접속자의 50% 이상이 3턴 이상 대화</td><td>형식적 방문이 아닌 실질 머무름</td></tr>
+      <tr><td>미니 스핀오프 전시 방문율</td><td>AI 큐레이터 사용자 중 20% 이상</td><td>오프라인 스핀오프로의 확장 의지</td></tr>
+      <tr><td>아카이브 공유(SNS 등)</td><td>10% 이상</td><td>리뷰화 가설 검증</td></tr>
+    </tbody>
+  </table>
+
+  <h3>기능 범위 IN / OUT</h3>
+  <span class="label">IN</span>
+  <ul>
+    <li>웹앱형 AI 큐레이터 (핵심 작품 3~5개 대화 해설) — v3.0 유지, 단 진입은 <strong>사진 인식 기반</strong>(QR은 보조, 촬영 불가 시 작품 선택 폴백)</li>
+    <li>사진 촬영 → 자동 아카이브/리뷰 초안 생성 — 신규</li>
+    <li><strong>관람 후에도 이어지는 세계관 대화</strong> (작가·작품 심층 대화) — 신규, 본질 직결</li>
+    <li>미니 스핀오프 전시 1개 공간 (세계관 기반 새 장면 관람 + 출구 굿즈 1~2종)</li>
+    <li>상설 데모 전시 1개 (v3.0 '심해의 환상' 시뮬레이션의 실구현) — 홈 라인업 채움 + 고객사 세일즈 데모 + 장면 제작 파이프라인 테스트베드</li>
+    <li>내부용 AI 기획 어시스턴트 (부스 컨셉·굿즈 생성용, 노출 안 함)</li>
+  </ul>
+  <span class="label">OUT</span>
+  <ul>
+    <li>정식 팝업 공간 운영 대행 (21일 연장 운영 등) → 검증 후</li>
+    <li>네이티브 앱, 자체 결제, 실시간 도면 생성, 다국어 — v3.0 OUT 유지</li>
+    <li>전시 검색 기능</li>
+    <li>기획사용 대시보드 (파일럿에선 수동 리포트로 대체)</li>
+  </ul>
+
+  <h2 id="s4">4. 비즈니스 모델 (가볍게)</h2>
+  <ul>
+    <li>MVP: 파트너 기획사 1곳 <strong>무료 파일럿</strong> (IP 제공 ↔ 데이터 리포트 무상 제공)</li>
+    <li>검증 후: v3.0의 RS 모델 재검토 — 단, 수익원 우선순위가 바뀔 수 있음 (팝업 매출 중심 → 관람객 구독/굿즈 + 기획사 리포트 구독 가능성). 재접속 데이터를 보고 결정</li>
+    <li>부스 굿즈는 현장 결제/외부 링크 (v3.0 OUT 기준 유지)</li>
+  </ul>
+
+  <h2 id="s5">5. 치명적 리스크 (트랙 A — 이것만)</h2>
+  <ol>
+    <li><strong>IP 2차 활용 라이선스</strong>: 작품 이미지·세계관을 AI가 재가공·개인화하는 것에 대한 기획사/작가의 명시적 동의 필수. 파일럿 협약서에 재가공 범위 명시</li>
+    <li><strong>개인정보 (사진·감정 데이터)</strong>: 온보딩 시 수집·활용 동의 플로우 필수. 관람객 사진에 타인이 찍히는 경우의 처리 기준 필요</li>
+  </ol>
+
+  <h2 id="s6">6. 파일럿 타임라인 (7주, v3.0 골격 유지)</h2>
+  <ul>
+    <li>1~2주: 파트너 1곳 확정, IP 자산 확보, 라이선스 협약</li>
+    <li>3~4주: AI 큐레이터 + 아카이브 웹앱 구축, 미니 스핀오프 전시 기획 (내부 AI 어시스턴트 활용)</li>
+    <li>5~6주: 현장 운영 (QR 배치, 부스 오픈), 데이터 수집</li>
+    <li>7주: 지표 분석 → 성공 기준 대비 판정 → 다음 단계 결정</li>
+  </ul>
+  <h3>판정 후 분기</h3>
+  <ul>
+    <li><strong>재접속률 ≥ 30%</strong>: 본질 검증 성공 → 오프라인 스핀오프 확장(정식 팝업) + B2B 모델 구체화</li>
+    <li><strong>10~30%</strong>: 상세기획 내 조정 (아카이브 UX, 대화 품질, 리마인드 방식 개선 후 재시도)</li>
+    <li><strong>&lt; 10%</strong>: 상위기획으로 복귀 — "관람 후에도 머물고 싶다"는 전제 자체 재검토</li>
+  </ul>
+
+  <h2 id="s7">7. 구현 우선순위 &amp; 시스템 모듈 구조 <span style="font-size:13px;font-weight:400;color:var(--sub)">(2026.07.11 추가)</span></h2>
+
+  <h3>구현 순서</h3>
+  <table>
+    <thead><tr><th style="width:10%">순위</th><th style="width:26%">대상</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1</strong></td><td>스핀오프 전시 유저뷰</td><td>AFTERGLOW의 메인 서비스. IP 세계관만으로 성립하는 독립 경험</td></tr>
+      <tr><td><strong>2</strong></td><td>스핀오프 운영 어드민</td><td>고객사가 본전시 IP 자산을 업로드 → AI가 스핀오프 콘텐츠 생성·운영 (기획 모듈 엔진 편입)</td></tr>
+      <tr><td><strong>3</strong></td><td>본전시 유저뷰</td><td>AI 큐레이터, 사진→아카이브. 어드민은 공통 코어라 약간의 고도화로 충분</td></tr>
+    </tbody>
+  </table>
+
+  <h3>핵심 설계 원칙: Phase 1 스핀오프는 본전시 데이터 없이 성립해야 한다</h3>
+  <ul>
+    <li>1순위 시점에는 관람객의 본전시 데이터(사진·대화)가 존재하지 않음</li>
+    <li>따라서 Phase 1 스핀오프 = <strong>본전시를 안 본 사람도 즐길 수 있는 IP 세계관 경험</strong> (진짜 스핀오프의 정의와 일치)</li>
+    <li>개인화(관람 데이터 연동)는 Phase 3에서 본전시 모듈이 붙을 때 켜지는 <strong>프리미엄 기능</strong></li>
+    <li>지표 조정: Phase 1은 "관람 후 재접속률" 대신 <strong>스핀오프 자체의 체류·재방문·공유</strong>로 측정. "관람 후 48시간 재접속 30%"는 Phase 3(A+B 결합) 시점의 지표</li>
+  </ul>
+
+  <h3>시스템 모듈 구조</h3>
+  <pre>[공통 코어]
+  IP 세계관 엔진: 자산 업로드 → 세계관 DB → AI 대화/콘텐츠 생성
+  관람객 프로필·아카이브
+  고객사·전시 관리 어드민
+        │
+   ┌────┴─────────────────┐
+[모듈 A] 본전시            [모듈 B] 스핀오프 (메인)
+  AI 큐레이터 유저뷰         세계관 경험 유저뷰
+  사진→아카이브              이어지는 대화, 미니 스핀오프 전시, 출구 굿즈
+  (Phase 3)                 (Phase 1~2)</pre>
+
+  <h3>판매 조합 (B2B 상품 구조)</h3>
+  <table>
+    <thead><tr><th style="width:18%">조합</th><th style="width:38%">제공 가치</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>A만 (본전시)</td><td>AI 큐레이터 가이드 고도화</td><td>기존 오디오가이드 대체 시장</td></tr>
+      <tr><td><strong>B만 (스핀오프)</strong></td><td>전시 IP의 두 번째 작품화</td><td><strong>메인 상품</strong> — 종료된 전시 IP에도 판매 가능</td></tr>
+      <tr><td>A+B</td><td>데이터 루프 완성 — 관람 데이터 기반 초개인화 스핀오프</td><td>최상위 상품. v3.0의 개인화 시나리오가 여기서 부활</td></tr>
+    </tbody>
+  </table>
+
+  <footer>AFTERGLOW · 방향성 재정의 &amp; 상세기획 메모 v4.0 draft · 트랙 A (퀵 실험형)</footer>
+  </main>
+</div>
+
+<script>
+  // 스크롤에 따라 사이드바 활성 항목 하이라이트
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.side-nav a'));
+    var sections = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+    function onScroll(){
+      var pos = window.scrollY + 120, idx = 0;
+      for (var i=0; i<sections.length; i++){
+        if (sections[i] && sections[i].offsetTop <= pos) idx = i;
+      }
+      links.forEach(function(l,i){ l.classList.toggle('active', i===idx); });
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+</script>
+</body>
+</html>

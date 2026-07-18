@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFTERGLOW 방향성 재정의 &amp; 상세기획 v4.0</title>
+<meta name="description" content="전시 IP의 세계관을 확장해 '두 번째 작품(스핀오프)'으로 만들어내는 서비스 — 방향성 재정의 및 상세기획 메모">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root {
+    --primary: #1F3A5F;
+    --primary-dark: #16293F;
+    --primary-soft: #EDF1F7;
+    --primary-soft-2: #E2EAF3;
+    --border-gray: #E4E7EB;
+    --bg-soft-gray: #F7F9FB;
+    --bg-soft-gray-2: #F1F4F8;
+    --default-dark: #1A2230;
+    --text-muted: #5F6B7C;
+    --white: #FFFFFF;
+    --blue: #1D4ED8;
+    --blue-bg: #EFF6FF;
+    --success: #0D9488;
+    --success-bg: #E6F4EA;
+    --warning: #B45309;
+    --warning-bg: #FFFBEB;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(0,0,0,.05);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+    background: var(--white); color: var(--default-dark);
+    line-height: 1.75; letter-spacing: 0; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--primary); }
+  .skip-link {
+    position: fixed; left: 16px; top: -60px; z-index: 100;
+    background: var(--default-dark); color: var(--white); padding: 10px 14px;
+    border-radius: 6px; text-decoration: none; font-size: 13px;
+  }
+  .skip-link:focus { top: 16px; }
+
+  /* ===== Layout: full width, fixed sidebar ===== */
+  .page-layout { display: flex; margin: 0; }
+  .container { flex: 1; max-width: 1080px; min-width: 0; margin: 0 auto; padding: 48px 56px 100px; }
+  .sidebar-nav {
+    width: 248px; flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+    overflow-y: auto; border-right: 1px solid var(--border-gray);
+    background: var(--bg-soft-gray); padding: 26px 16px 40px;
+  }
+  .sidebar-brand { font-family:'Outfit',sans-serif; font-size:17px; font-weight:800; letter-spacing:.02em; color:var(--primary); }
+  .sidebar-sub { font-size:11px; color:var(--text-muted); margin:4px 0 18px; line-height:1.5; }
+  .sidebar-title {
+    font-family: 'Outfit', sans-serif; font-size: 10.5px; font-weight: 700;
+    color: var(--primary); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 12px; padding-bottom: 9px; border-bottom: 2px solid var(--primary);
+  }
+  .sidebar-nav a {
+    display: block; color: var(--text-muted); text-decoration: none;
+    padding: 7px 10px; border-left: 2px solid transparent; border-radius: 0 4px 4px 0;
+    font-size: 12.5px; line-height: 1.45; font-weight: 600; transition: all 0.15s;
+  }
+  .sidebar-nav a:hover, .sidebar-nav a:focus-visible,
+  .sidebar-nav a.active {
+    color: var(--primary); background: rgba(31,58,95,.07);
+    border-left-color: var(--primary); outline: none;
+  }
+  .sidebar-nav a .n { color: var(--text-muted); font-variant-numeric: tabular-nums; margin-right: 6px; }
+
+  /* ===== Hero ===== */
+  header.hero { margin-bottom: 30px; border-bottom: 1px solid var(--border-gray); padding-bottom: 28px; }
+  .status-badge {
+    display: inline-block; background: var(--primary-soft); color: var(--primary);
+    border: 1px solid rgba(31,58,95,.2); border-radius: 4px; padding: 4px 12px;
+    font-family: 'Outfit', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; margin-bottom: 12px; text-transform: uppercase;
+  }
+  h1 { font-size: clamp(25px, 3.4vw, 33px); font-weight: 800; line-height: 1.28; letter-spacing: -0.02em; margin-bottom: 12px; }
+  h1 .accent { color: var(--primary); }
+  h1 .version { font-size: 0.5em; color: var(--text-muted); font-weight: 700; white-space: nowrap; }
+  .lede { max-width: 860px; color: var(--text-muted); font-size: 14px; line-height: 1.72; word-break: keep-all; }
+  .meta-grid {
+    display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 1px;
+    margin-top: 22px; border: 1px solid var(--border-gray); border-radius: 8px;
+    overflow: hidden; background: var(--border-gray);
+  }
+  .meta-item { background: var(--white); padding: 11px 15px; }
+  .meta-label { display: block; color: var(--text-muted); font-size: 10.5px; font-weight: 700; margin-bottom: 2px; }
+  .meta-value { color: var(--default-dark); font-size: 12.5px; font-weight: 650; }
+
+  /* ===== Part / Section ===== */
+  .part-title {
+    display: flex; align-items: center; gap: 12px; margin: 60px 0 28px;
+    padding-bottom: 15px; border-bottom: 3px solid var(--primary);
+    color: var(--primary); font-family: 'Outfit', 'Pretendard', sans-serif;
+    font-size: clamp(21px, 2.8vw, 28px); font-weight: 800; letter-spacing: -0.02em;
+    scroll-margin-top: 20px;
+  }
+  .part-title:first-of-type { margin-top: 0; }
+  .part-num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 999px;
+    background: var(--primary); color: var(--white); font-size: 14px; flex-shrink: 0;
+  }
+  section { margin-top: 40px; scroll-margin-top: 20px; }
+  .sec-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .sec-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; flex-shrink: 0; background: var(--primary-soft-2);
+    border-radius: 8px; font-size: 15px;
+  }
+  h2 { font-size: 19px; font-weight: 800; letter-spacing: -0.01em; }
+  h3 { margin: 26px 0 10px; font-size: 15px; font-weight: 750; color: var(--default-dark); }
+  p { margin-bottom: 13px; color: #3F4A5A; font-size: 13.5px; line-height: 1.72; word-break: keep-all; }
+  ul, ol { margin: 0 0 14px; padding-left: 21px; }
+  li { margin-bottom: 6px; color: #3F4A5A; font-size: 13.5px; line-height: 1.68; }
+  strong { color: var(--default-dark); font-weight: 750; }
+  code {
+    padding: 2px 6px; border-radius: 4px; background: var(--primary-soft);
+    color: var(--primary); font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.9em;
+  }
+  .label { display:block; font-weight:750; color:var(--default-dark); margin:16px 0 6px; font-size:13px; }
+
+  /* ===== Callouts / Quote ===== */
+  .callout {
+    margin: 15px 0; padding: 15px 18px; border: 1px solid var(--border-gray);
+    border-radius: 7px; background: var(--white); color: #334155; font-size: 13px; line-height: 1.68;
+  }
+  .callout b { display: block; margin-bottom: 5px; font-size: 11.5px; letter-spacing: 0.03em; color: var(--text-muted); }
+  .callout.premise { background: var(--primary-soft); border-color: rgba(31,58,95,.2); }
+  .callout.premise b { color: var(--primary); }
+  .callout.propose { background: var(--blue-bg); border-color: rgba(59,130,246,.3); }
+  .callout.propose b { color: var(--blue); }
+  .callout.discuss { background: var(--warning-bg); border-color: rgba(245,158,11,.35); }
+  .callout.discuss b { color: var(--warning); }
+  .quote-hero {
+    margin: 20px 0; padding: 22px 26px; border-left: 4px solid var(--primary);
+    border-radius: 0 10px 10px 0; background: var(--primary-soft);
+    color: #22344D; font-size: clamp(15px, 1.9vw, 18px); font-weight: 800; line-height: 1.6; word-break: keep-all;
+  }
+
+  /* ===== Table ===== */
+  .table-wrapper { overflow-x: auto; margin: 15px 0; border: 1px solid var(--border-gray); border-radius: 8px; background: var(--white); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 10px 14px; border-bottom: 1px solid var(--border-gray); text-align: left; vertical-align: top; line-height: 1.62; }
+  th { background: var(--bg-soft-gray-2); color: var(--default-dark); font-size: 12px; font-weight: 750; }
+  td { color: #3F4A5A; }
+  tr:last-child td { border-bottom: 0; }
+
+  /* ===== Flow ===== */
+  .flow { display: grid; gap: 8px; align-items: stretch; margin: 18px 0; }
+  .flow-step {
+    position: relative; display: flex; flex-direction: column; justify-content: center;
+    min-height: 74px; padding: 12px 12px; border: 1px solid #DCE3EC;
+    border-radius: 12px; background: #FAFCFF; text-align: center;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '→'; position: absolute; right: -11px; top: 50%; z-index: 2;
+    transform: translateY(-50%); color: var(--primary); font-weight: 800;
+  }
+  .flow-step b { color: var(--primary); font-size: 12.5px; }
+  .flow-step span { margin-top: 3px; color: var(--text-muted); font-size: 11px; line-height: 1.4; }
+
+  /* ===== Cards / Decision ===== */
+  .cards-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; margin: 16px 0; }
+  .mini-card { padding: 16px 18px; border: 1px solid var(--border-gray); border-radius: 10px; background: var(--white); box-shadow: var(--shadow); }
+  .mini-card .eyebrow { color: var(--primary); font-size: 10.5px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+  .mini-card h3 { margin: 5px 0 8px; }
+  .mini-card ul { margin: 0; }
+  .mini-card li { font-size: 12.5px; }
+  .decision-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; margin: 16px 0; }
+  .decision-card { padding: 16px; border: 1px solid var(--border-gray); border-radius: 10px; background: var(--white); }
+  .decision-card.recommended { border: 2px solid var(--primary); background: var(--primary-soft); }
+  .decision-card h3 { margin: 8px 0 7px; }
+  .decision-card p { margin: 0; font-size: 12.5px; }
+  .badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 750; white-space: nowrap; }
+  .badge.primary { background: var(--primary-soft); color: var(--primary); }
+  .badge.success { background: var(--success-bg); color: var(--success); }
+  .badge.warn { background: var(--warning-bg); color: var(--warning); }
+
+  pre {
+    background: var(--bg-soft-gray); border: 1px solid var(--border-gray); border-radius: 8px;
+    padding: 16px 18px; overflow: auto; font-size: 12.5px; line-height: 1.55;
+    font-family: 'SFMono-Regular', Consolas, monospace; color: #2C3E55; margin: 14px 0;
+  }
+  footer { margin-top: 68px; padding-top: 22px; border-top: 1px solid var(--border-gray); color: var(--text-muted); text-align: center; font-size: 11.5px; }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 1000px) { .flow { grid-template-columns: repeat(4, minmax(0,1fr)); } .flow-step:not(:last-child)::after { display: none; } }
+  @media (max-width: 900px) { .sidebar-nav { display: none; } .container { padding: 32px 20px 80px; } .meta-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+  @media (max-width: 680px) { .flow, .cards-2, .decision-grid { grid-template-columns: 1fr; } .meta-grid { grid-template-columns: 1fr; } .flow-step { min-height: auto; text-align: left; } h1 .version { display: block; margin-top: 6px; } }
+  @page { size: A4; margin: 14mm; }
+  @media print {
+    .page-layout { display: block; }
+    .sidebar-nav, .skip-link { display: none !important; }
+    .container { width: 100%; max-width: none; padding: 0; }
+    header.hero, section, .part-title, .callout, .table-wrapper, .mini-card, .decision-card { break-inside: avoid; page-break-inside: avoid; }
+    h1, h2, h3, .part-title, .sec-head { break-after: avoid; page-break-after: avoid; }
+    thead { display: table-header-group; }
+    tr { break-inside: avoid; page-break-inside: avoid; }
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">본문으로 바로가기</a>
+
+<div class="page-layout">
+  <nav class="sidebar-nav" aria-label="문서 목차">
+    <div class="sidebar-brand">AFTERGLOW</div>
+    <div class="sidebar-sub">방향성 재정의 &amp; 상세기획 · v4.0 draft</div>
+    <div class="sidebar-title">Contents</div>
+    <a href="#part-1"><span class="n">1</span>재정의된 본질</a>
+    <a href="#part-2"><span class="n">2</span>v3.0 유지/수정/폐기 판정</a>
+    <a href="#part-3"><span class="n">3</span>MVP 가설</a>
+    <a href="#part-4"><span class="n">4</span>비즈니스 모델</a>
+    <a href="#part-5"><span class="n">5</span>치명적 리스크</a>
+    <a href="#part-6"><span class="n">6</span>파일럿 타임라인</a>
+    <a href="#part-7"><span class="n">7</span>구현 우선순위 &amp; 모듈 구조</a>
+  </nav>
+
+  <main class="container" id="main">
+    <header class="hero">
+      <div class="status-badge">Internal · 상위기획</div>
+      <h1>AFTERGLOW <span class="accent">방향성 재정의</span> &amp; 상세기획 메모 <span class="version">v4.0 draft</span></h1>
+      <p class="lede">전시 IP의 세계관을 확장해 '두 번째 작품(스핀오프)'으로 만들어내는 서비스. 본전시를 봤든 안 봤든 그 자체로 성립하는 독립된 세계관 경험을 만드는 것이 1순위이며, 여운과 개인화는 이를 더 깊게 만드는 강화 레이어입니다.</p>
+      <div class="meta-grid" aria-label="문서 정보">
+        <div class="meta-item"><span class="meta-label">작성일</span><span class="meta-value">2026.07.11</span></div>
+        <div class="meta-item"><span class="meta-label">트랙</span><span class="meta-value">A (퀵 실험형)</span></div>
+        <div class="meta-item"><span class="meta-label">문서 상태</span><span class="meta-value">draft</span></div>
+        <div class="meta-item"><span class="meta-label">기준 문서</span><span class="meta-value">v3.0 문서 재검토</span></div>
+      </div>
+    </header>
+
+    <div class="part-title" id="part-1"><span class="part-num">1</span> 재정의된 본질</div>
+    <section aria-labelledby="s1-title">
+      <div class="sec-head"><span class="sec-icon">🎯</span><h2 id="s1-title">상위기획 결과</h2></div>
+
+      <span class="label">한 줄 정의</span>
+      <div class="quote-hero">AFTERGLOW는 전시 IP의 세계관을 확장해 '두 번째 작품(스핀오프)'으로 만들어내는 서비스다. 본전시를 봤든 안 봤든 그 자체로 성립하는 독립된 세계관 경험이며, 관람의 여운과 개인 데이터는 이 경험을 더 깊게 만드는 레이어다.</div>
+
+      <p><strong>핵심 전환</strong>: "본전시의 연장 장치" → <strong>"세계관을 공유하는 독립된 두 번째 작품"</strong></p>
+
+      <div class="callout premise">
+        <b>핵심가치 키워드</b>
+        본전시 세계관의 확장(독립된 두 번째 작품) · 정보가 아닌 경험 · 여운·개인화는 정체성이 아닌 '강화 레이어'
+      </div>
+
+      <div class="callout discuss">
+        <b>우선순위 명확화 · 2026.07.16</b>
+        1순위 정체성 = 본전시의 새로운 세계관(독립 작품). 여운·개인화는 이를 대체하지 않는 강화 레이어다. 7장(Phase 1 스핀오프는 본전시 데이터 없이 성립, 개인화는 Phase 3 프리미엄)과 언어를 일치시킴. 경쟁력의 무게가 개인화 대신 '새 세계관을 빠르고 일관되게 찍어내는 AI 엔진'으로 이동함에 유의.
+      </div>
+
+      <h3>원점 (동기)</h3>
+      <ul>
+        <li>영화/예능의 '스핀오프' 개념을 전시로 — 본편이 끝나도 세계관이 이어진다</li>
+        <li>개인 경험: 전시 후 작가·작품을 검색해도 정보 파편만 있고 허전했음 (이해+감동+연결 모두 미해소)</li>
+        <li>시장 공백(⚠️ 재검증 필요): "전시/미술은 IT 낙후"라는 초기 인상은 수정 필요. 관람 중 가이드 영역은 이미 경쟁 존재 — 오프라인 도슨트 보편화, 국립중앙박물관은 IoT 비콘 기반 위치 자동안내(5개 언어)에 이어 2025.9 AI 검색·지능형 큐레이션 플랫폼 공개, 네이버는 바이브(VIBE) 오디오 탭에서 전시 도슨트 콘텐츠 운영(NCT 127 도슨트, 마티스전 등 — 전시 종료 후에도 콘텐츠 제공), 오디오클립은 2025.12 서비스 종료 확정. 다만 이들은 모두 <strong>관람 중</strong> 서비스이며, <strong>관람 후 세계관 연장(스핀오프)</strong> 영역은 여전히 공백 → AFTERGLOW의 공백 정의를 '전시 IT 전반'이 아니라 '관람 후 구간'으로 좁혀야 함. 상세는 별도 문서 <code>AFTERGLOW_시장조사리포트_v1.0.md</code> 참조</li>
+      </ul>
+
+      <h3>핵심 동작</h3>
+      <p>전시 IP(작품, 작가 세계관)를 재료로, AI가 새로운 세계관 경험 — 이어지는 대화, 미니 스핀오프 전시, 커스텀 굿즈 — 을 독립된 '두 번째 작품'으로 만들어낸다. 본전시를 보지 않아도 성립하며(Phase 1), 관람객의 사진·대화 데이터가 붙으면 그 경험이 개인화되어 더 깊어진다(Phase 3 프리미엄).</p>
+
+      <div class="callout propose">
+        <b>B2B의 위상</b>
+        본질이 아니라 전달 경로. 세계관의 주인이 기획사이므로 그들을 통해 관람객에게 닿는다.
+      </div>
+    </section>
+
+    <div class="part-title" id="part-2"><span class="part-num">2</span> v3.0 유지/수정/폐기 판정</div>
+    <section aria-labelledby="s2-title">
+      <div class="sec-head"><span class="sec-icon">🗂️</span><h2 id="s2-title">v3.0 요소별 판정</h2></div>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th style="width:20%">v3.0 요소</th><th style="width:14%">판정</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td><strong>AI 큐레이터</strong></td><td>🔧 수정</td><td>'팝업 전환용 데이터 수집 장치' → <strong>세계관 안내자</strong>. 핵심 가치는 관람 후에도 대화가 이어진다는 것. 검색-허전함을 직접 대체</td></tr>
+            <tr><td><strong>스핀오프 팝업</strong></td><td>🔧 수정(강등)</td><td>서비스 본체 → 스핀오프의 <strong>형식 중 하나</strong>. MVP에서는 미니 스핀오프 전시로 축소 검증 — 굿즈숍이 아니라 '또 하나의 작은 전시'</td></tr>
+            <tr><td><strong>사진→리뷰/아카이브화</strong></td><td>✅ 신규 IN</td><td>관람 중 사진이 자동으로 개인 아카이브·리뷰가 됨. 스핀오프 입장권 역할</td></tr>
+            <tr><td><strong>AI 기획 모듈 4종</strong></td><td>🔧 수정(이원화)</td><td><strong>B2B에겐 셀링포인트 유지</strong> — "다양한 컨셉의 스핀오프 전시를 모듈화로 빠르게 뽑아낸다"가 수동 기획 대행(프로젝트렌트 등)과의 결정적 차별점. <strong>B2C에겐 비가시 엔진</strong> — 관람객에게 스핀오프는 '작품'으로 보여야 하며 AI 제작 과정은 노출하지 않음. MVP에선 스핀오프 콘텐츠 생성에 필요한 만큼만 구현</td></tr>
+            <tr><td><strong>B2B RS 수익모델</strong></td><td>✅ 유지(후순위)</td><td>전달 경로로 유효. MVP는 파트너 1곳 무료 파일럿</td></tr>
+            <tr><td><strong>지표 "팝업 전환율 20%"</strong></td><td>❌ 폐기</td><td>'연장 장치' 관점 지표 → <strong>잔존(머무름) 지표</strong>로 교체</td></tr>
+            <tr><td><strong>전시 검색 기능</strong></td><td>❌ OUT</td><td>MVP 불필요, 차기 버전 검토</td></tr>
+            <tr><td><strong>타깃 파트너 (피플리, 세라핌컴퍼니)</strong></td><td>✅ 유지</td><td>세계관 주인 확보는 전제조건. 접근 전략(중소→대형) 유지</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="part-title" id="part-3"><span class="part-num">3</span> MVP 가설</div>
+    <section aria-labelledby="s3-title">
+      <div class="sec-head"><span class="sec-icon">🧪</span><h2 id="s3-title">무엇을 검증하는가</h2></div>
+      <div class="quote-hero">"전시가 끝난 후에도 관람객은 그 세계관에 머물고 싶어하며, 스핀오프 경험(이어지는 대화 + 개인 아카이브 + 미니 오프라인 체험)이 '검색하고 허전한' 경험을 대체할 수 있다."</div>
+
+      <h3>검증 플로우</h3>
+      <div class="flow" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+        <div class="flow-step"><b>관람 중</b><span>사진 촬영 → AI 해설·대화</span></div>
+        <div class="flow-step"><b>퇴장 시점</b><span>자동 아카이브 → 2경로 초대</span></div>
+        <div class="flow-step"><b>온라인 경로</b><span>재접속·세계관 대화·공유</span></div>
+        <div class="flow-step"><b>오프라인 경로</b><span>미니 스핀오프 전시</span></div>
+      </div>
+      <ol>
+        <li><strong>관람 중</strong>: <strong>작품 사진 촬영이 기본 진입점</strong> — 작품을 찍으면 AI가 사진을 인식해 설명 제공 + AI 큐레이터 대화 시작 (사진·감정 키워드가 개인 데이터로 축적). QR은 보조 진입 수단(선택) — QR이 없는 전시장도 많음. 촬영 불가 전시는 작품 리스트에서 직접 선택하는 폴백 구조</li>
+        <li><strong>퇴장 시점</strong>: 사진+대화가 자동으로 <strong>나만의 아카이브(리뷰 초안)</strong>로 생성 → <strong>두 경로를 독립적으로 초대</strong> (① 온라인 스핀오프 ② 미니 스핀오프 전시) — 각각 분리 측정</li>
+        <li><strong>[오프라인 경로] 미니 스핀오프 전시 (전시장 내/인근 1개 공간)</strong>: 굿즈숍이 아니라 <strong>'또 하나의 작은 전시'를 보는 경험</strong> — 본전시 세계관을 가져와 다른 이야기·연출로 구성한 새 장면을 관람. 예능 스핀오프 문법을 따름 (아는형님→방과후교실, 나혼자산다→여은파: 원작의 세계관·인물로 <strong>다른 판</strong>을 벌이는 독립 콘텐츠). 내 관람 데이터는 연출에 반영 (예: 내 감정 키워드가 공간의 빛·사운드·장면으로). <strong>굿즈는 관람 동선 출구의 기념품 — 본체가 아님</strong></li>
+        <li><strong>[온라인 경로] 관람 후 (D+1~7)</strong>: 웹앱 재접속 → 세계관 대화 계속, 아카이브 확인·공유</li>
+      </ol>
+
+      <h3>온라인/오프라인 분리 검증 설계</h3>
+      <p>두 경로는 서로 독립 — 부스를 안 가도 온라인 스핀오프는 온전히 즐길 수 있고, 그 역도 성립. 결과 조합별 판정:</p>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th style="width:16%">온라인 재접속</th><th style="width:14%">부스 방문</th><th>해석 → 다음 방향</th></tr></thead>
+          <tbody>
+            <tr><td>↑</td><td>↑</td><td>풀 스핀오프 검증 → 정식 팝업 확장 + 디지털 병행</td></tr>
+            <tr><td>↑</td><td>↓</td><td>머무름 욕구는 디지털로 충족 → 디지털 스핀오프 중심, 팝업은 선택 상품</td></tr>
+            <tr><td>↓</td><td>↑</td><td>오프라인 체험이 본체 → 팝업 중심(v3.0 원형에 근접), 웹은 브릿지로 축소</td></tr>
+            <tr><td>↓</td><td>↓</td><td>본질 가설 재검토 (상위기획 복귀)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>성공 기준 (숫자)</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th style="width:34%">지표</th><th style="width:28%">기준</th><th>의미</th></tr></thead>
+          <tbody>
+            <tr><td><strong>[핵심] 관람 후 48시간 내 재접속률</strong></td><td><strong>30% 이상</strong> (파일럿 30명 중 9명)</td><td>세계관에 머물고 싶은가</td></tr>
+            <tr><td>재접속 시 대화 지속</td><td>재접속자의 50% 이상이 3턴 이상 대화</td><td>형식적 방문이 아닌 실질 머무름</td></tr>
+            <tr><td>미니 스핀오프 전시 방문율</td><td>AI 큐레이터 사용자 중 20% 이상</td><td>오프라인 스핀오프로의 확장 의지</td></tr>
+            <tr><td>아카이브 공유(SNS 등)</td><td>10% 이상</td><td>리뷰화 가설 검증</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>기능 범위 IN / OUT</h3>
+      <div class="cards-2">
+        <article class="mini-card">
+          <span class="eyebrow">In Scope</span>
+          <h3>MVP에 포함</h3>
+          <ul>
+            <li>웹앱형 AI 큐레이터 (핵심 작품 3~5개 대화 해설) — 진입은 <strong>사진 인식 기반</strong>(QR 보조, 촬영 불가 시 작품 선택 폴백)</li>
+            <li>사진 촬영 → 자동 아카이브/리뷰 초안 생성 (신규)</li>
+            <li><strong>관람 후에도 이어지는 세계관 대화</strong> (작가·작품 심층 대화) — 본질 직결</li>
+            <li>미니 스핀오프 전시 1개 공간 (세계관 기반 새 장면 + 출구 굿즈 1~2종)</li>
+            <li>상설 데모 전시 1개 (v3.0 '심해의 환상' 실구현) — 라인업·세일즈 데모·파이프라인 테스트베드</li>
+            <li>내부용 AI 기획 어시스턴트 (부스 컨셉·굿즈 생성용, 비노출)</li>
+          </ul>
+        </article>
+        <article class="mini-card">
+          <span class="eyebrow">Out of Scope</span>
+          <h3>MVP에서 제외</h3>
+          <ul>
+            <li>정식 팝업 공간 운영 대행 (21일 연장 운영 등) → 검증 후</li>
+            <li>네이티브 앱, 자체 결제, 실시간 도면 생성, 다국어 (v3.0 OUT 유지)</li>
+            <li>전시 검색 기능</li>
+            <li>기획사용 대시보드 (파일럿에선 수동 리포트로 대체)</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <div class="part-title" id="part-4"><span class="part-num">4</span> 비즈니스 모델</div>
+    <section aria-labelledby="s4-title">
+      <div class="sec-head"><span class="sec-icon">💰</span><h2 id="s4-title">가볍게</h2></div>
+      <ul>
+        <li>MVP: 파트너 기획사 1곳 <strong>무료 파일럿</strong> (IP 제공 ↔ 데이터 리포트 무상 제공)</li>
+        <li>검증 후: v3.0의 RS 모델 재검토 — 단, 수익원 우선순위가 바뀔 수 있음 (팝업 매출 중심 → 관람객 구독/굿즈 + 기획사 리포트 구독 가능성). 재접속 데이터를 보고 결정</li>
+        <li>부스 굿즈는 현장 결제/외부 링크 (v3.0 OUT 기준 유지)</li>
+      </ul>
+    </section>
+
+    <div class="part-title" id="part-5"><span class="part-num">5</span> 치명적 리스크</div>
+    <section aria-labelledby="s5-title">
+      <div class="sec-head"><span class="sec-icon">⚠️</span><h2 id="s5-title">트랙 A — 이것만</h2></div>
+      <div class="callout discuss">
+        <b>리스크 1 · IP 2차 활용 라이선스</b>
+        작품 이미지·세계관을 AI가 재가공·개인화하는 것에 대한 기획사/작가의 명시적 동의 필수. 파일럿 협약서에 재가공 범위 명시.
+      </div>
+      <div class="callout discuss">
+        <b>리스크 2 · 개인정보 (사진·감정 데이터)</b>
+        온보딩 시 수집·활용 동의 플로우 필수. 관람객 사진에 타인이 찍히는 경우의 처리 기준 필요.
+      </div>
+    </section>
+
+    <div class="part-title" id="part-6"><span class="part-num">6</span> 파일럿 타임라인</div>
+    <section aria-labelledby="s6-title">
+      <div class="sec-head"><span class="sec-icon">📅</span><h2 id="s6-title">7주 (v3.0 골격 유지)</h2></div>
+      <div class="flow" style="grid-template-columns:repeat(4,minmax(0,1fr));">
+        <div class="flow-step"><b>1~2주</b><span>파트너 확정·IP 확보·라이선스 협약</span></div>
+        <div class="flow-step"><b>3~4주</b><span>AI 큐레이터·아카이브 웹앱 구축, 미니 전시 기획</span></div>
+        <div class="flow-step"><b>5~6주</b><span>현장 운영·데이터 수집</span></div>
+        <div class="flow-step"><b>7주</b><span>지표 분석·판정·다음 단계 결정</span></div>
+      </div>
+
+      <h3>판정 후 분기</h3>
+      <div class="decision-grid">
+        <article class="decision-card recommended">
+          <span class="badge success">성공</span>
+          <h3>재접속률 ≥ 30%</h3>
+          <p>본질 검증 성공 → 오프라인 스핀오프 확장(정식 팝업) + B2B 모델 구체화</p>
+        </article>
+        <article class="decision-card">
+          <span class="badge primary">조정</span>
+          <h3>10~30%</h3>
+          <p>상세기획 내 조정 (아카이브 UX·대화 품질·리마인드 방식 개선 후 재시도)</p>
+        </article>
+        <article class="decision-card">
+          <span class="badge warn">복귀</span>
+          <h3>&lt; 10%</h3>
+          <p>상위기획으로 복귀 — "관람 후에도 머물고 싶다"는 전제 자체 재검토</p>
+        </article>
+      </div>
+    </section>
+
+    <div class="part-title" id="part-7"><span class="part-num">7</span> 구현 우선순위 &amp; 시스템 모듈 구조</div>
+    <section aria-labelledby="s7-title">
+      <div class="sec-head"><span class="sec-icon">🏗️</span><h2 id="s7-title">구현 순서 (2026.07.11 추가)</h2></div>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th style="width:64px">순위</th><th style="width:26%">대상</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1</strong></td><td><strong>스핀오프 전시 유저뷰</strong></td><td>AFTERGLOW의 메인 서비스. IP 세계관만으로 성립하는 독립 경험</td></tr>
+            <tr><td><strong>2</strong></td><td>스핀오프 운영 어드민</td><td>고객사가 본전시 IP 자산을 업로드 → AI가 스핀오프 콘텐츠 생성·운영 (기획 모듈 엔진 편입)</td></tr>
+            <tr><td><strong>3</strong></td><td>본전시 유저뷰</td><td>AI 큐레이터, 사진→아카이브. 어드민은 공통 코어라 약간의 고도화로 충분</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout premise">
+        <b>핵심 설계 원칙 · Phase 1 스핀오프는 본전시 데이터 없이 성립해야 한다</b>
+        1순위 시점에는 관람객의 본전시 데이터(사진·대화)가 존재하지 않는다. 따라서 Phase 1 스핀오프 = <strong>본전시를 안 본 사람도 즐길 수 있는 IP 세계관 경험</strong>(진짜 스핀오프의 정의와 일치). 개인화(관람 데이터 연동)는 Phase 3에서 본전시 모듈이 붙을 때 켜지는 프리미엄 기능. 지표도 Phase 1은 "관람 후 재접속률" 대신 <strong>스핀오프 자체의 체류·재방문·공유</strong>로 측정 — "관람 후 48시간 재접속 30%"는 Phase 3(A+B 결합) 시점의 지표.
+      </div>
+
+      <h3>시스템 모듈 구조</h3>
+      <pre>[공통 코어]
+  IP 세계관 엔진: 자산 업로드 → 세계관 DB → AI 대화/콘텐츠 생성
+  관람객 프로필·아카이브
+  고객사·전시 관리 어드민
+        │
+   ┌────┴─────────────────┐
+[모듈 A] 본전시            [모듈 B] 스핀오프 (메인)
+  AI 큐레이터 유저뷰         세계관 경험 유저뷰
+  사진→아카이브              이어지는 대화, 미니 스핀오프 전시, 출구 굿즈
+  (Phase 3)                 (Phase 1~2)</pre>
+
+      <h3>판매 조합 (B2B 상품 구조)</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead><tr><th style="width:16%">조합</th><th style="width:36%">제공 가치</th><th>비고</th></tr></thead>
+          <tbody>
+            <tr><td>A만 (본전시)</td><td>AI 큐레이터 가이드 고도화</td><td>기존 오디오가이드 대체 시장</td></tr>
+            <tr><td><strong>B만 (스핀오프)</strong></td><td>전시 IP의 두 번째 작품화</td><td><strong>메인 상품</strong> — 종료된 전시 IP에도 판매 가능</td></tr>
+            <tr><td>A+B</td><td>데이터 루프 완성 — 관람 데이터 기반 초개인화 스핀오프</td><td>최상위 상품. v3.0의 개인화 시나리오가 여기서 부활</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>AFTERGLOW · 방향성 재정의 &amp; 상세기획 메모 v4.0 draft · 트랙 A (퀵 실험형) · 2026.07.11</footer>
+  </main>
+</div>
+
+<script>
+  (function(){
+    var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar-nav a'));
+    var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+    function onScroll(){
+      var pos = window.scrollY + 100, idx = 0;
+      for (var i=0;i<targets.length;i++){ if (targets[i] && targets[i].offsetTop <= pos) idx = i; }
+      links.forEach(function(l,i){ l.classList.toggle('active', i===idx); });
+    }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+</script>
+</body>
+</html>

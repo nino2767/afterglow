@@ -646,7 +646,7 @@ export default function AccountHomePage() {
             <p className="t-micro" style={{ marginBottom: "var(--space-3)" }}>지금 확인할 것</p>
             <div
               className="card"
-              onClick={() => router.push("/spinoff/landing")}
+              onClick={() => router.push("/spinoff/abyss-wave")}
               style={{
                 padding: "var(--space-5)",
                 border: "1px solid var(--accent)",

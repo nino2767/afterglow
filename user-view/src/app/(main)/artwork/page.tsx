@@ -13,6 +13,8 @@ import {
 import EmotionChip from "../../../components/EmotionChip";
 import BottomBar from "../../../components/BottomBar";
 import NavigationShell from "../../../components/NavigationShell";
+import ModularArtworkList from "../../../components/modular/ModularArtworkList";
+import ModularDocentPanel from "../../../components/modular/ModularDocentPanel";
 
 const EXHIBITION = {
   name: "빛의 심연",
@@ -531,7 +533,7 @@ function ArtworkCardContent() {
         
         {/* ── 상단 가상 푸시 알림 배너 ── */}
         {showTimePush && (
-          <div className="push-banner anim-down" onClick={() => router.push("/report")}>
+          <div className="push-banner anim-down" onClick={() => router.push("/exhibition/abyss/completed")}>
             <div className="push-icon">✦</div>
             <div style={{ flex: 1 }}>
               <p className="push-title">AFTERGLOW 관람 완료 안내</p>
@@ -544,7 +546,7 @@ function ArtworkCardContent() {
         )}
 
         {showLocationPush && (
-          <div className="push-banner anim-down location-push" onClick={() => router.push("/report")}>
+          <div className="push-banner anim-down location-push" onClick={() => router.push("/exhibition/abyss/completed")}>
             <div className="push-icon text-accent">💌</div>
             <div style={{ flex: 1 }}>
               <p className="push-title">나만의 여운 리포트 도착</p>
@@ -727,51 +729,12 @@ function ArtworkCardContent() {
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-3)" }}>
-                  {ARTWORKS_LIST.map(artwork => {
-                    const snapCount = userSnaps[artwork.id]?.length || 0;
-                    return (
-                      <button
-                        key={artwork.id}
-                        className="card"
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "var(--space-4)",
-                          padding: "var(--space-4)",
-                          width: "100%",
-                          textAlign: "left",
-                          background: "var(--surface)",
-                          border: "1px solid var(--border)",
-                          cursor: "pointer",
-                          position: "relative"
-                        }}
-                        onClick={() => openCard(artwork)}
-                      >
-                        <div style={{
-                          width: 56, height: 56, borderRadius: "var(--radius-sm)",
-                          background: "linear-gradient(135deg, #1E1520, #0D0D0F)",
-                          flexShrink: 0,
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                          color: "#C9A84C",
-                          fontSize: 20,
-                        }}>
-                          ✦
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                            <p className="t-title" style={{ marginBottom: 2, fontSize: 15 }}>{artwork.title}</p>
-                            {snapCount > 0 && (
-                              <span style={{ fontSize: 10, background: "rgba(201,168,76,0.15)", color: "var(--accent)", border: "1px solid rgba(201,168,76,0.3)", padding: "1px 6px", borderRadius: 8, fontWeight: 600 }}>
-                                📷 {snapCount}
-                              </span>
-                            )}
-                          </div>
-                          <p className="t-caption">{artwork.artist} · {artwork.section}</p>
-                        </div>
-                        <ChevronRight size={16} color="var(--ink-muted)" />
-                      </button>
-                    );
-                  })}
+                  <ModularArtworkList
+                    items={ARTWORKS_LIST as any}
+                    onItemClick={(item) => openCard(item as Artwork)}
+                    userSnaps={userSnaps}
+                    theme="main"
+                  />
                 </div>
               </div>
 
@@ -828,133 +791,23 @@ function ArtworkCardContent() {
 
           {/* 정보 카드 상태 */}
           {selectedArtwork && (
-            <div className="anim-fade">
-              <div>
-                <div style={{
-                  width: "100%", height: 240,
-                  background: "linear-gradient(135deg, #0D0D0F 0%, #1E1520 100%)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 64, color: "rgba(201,168,76,0.3)",
-                  position: "relative",
-                }}>
-                  ✦
-                  
-                  {/* 오디오 가이드 재생 파동 UI */}
-                  {audioWaveAnim && (
-                    <div className="wave-container">
-                      <div className="wave-bar" style={{ animationDelay: "0.1s" }} />
-                      <div className="wave-bar" style={{ animationDelay: "0.3s" }} />
-                      <div className="wave-bar" style={{ animationDelay: "0.5s" }} />
-                      <div className="wave-bar" style={{ animationDelay: "0.2s" }} />
-                      <div className="wave-bar" style={{ animationDelay: "0.4s" }} />
-                    </div>
-                  )}
-
-                  <div style={{
-                    position: "absolute", bottom: 0, left: 0, right: 0, height: 60,
-                    background: "linear-gradient(to top, var(--bg), transparent)",
-                  }} />
-                </div>
-
-                <div style={{ padding: "var(--space-5)" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "var(--space-2)" }}>
-                    <p className="t-micro" style={{ margin: 0 }}>{selectedArtwork.section}</p>
-                    
-                    {/* TTS 재생 버튼 */}
-                    <button
-                      className={`btn btn-sm ${audioPlaying ? "btn-primary" : "btn-outline"}`}
-                      onClick={() => playDocentTts(selectedArtwork.docent_script)}
-                      style={{ borderRadius: "var(--radius-full)", padding: "4px 12px", display: "inline-flex", alignItems: "center", gap: 6, fontSize: 11 }}
-                    >
-                      {audioPlaying ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                      {audioPlaying ? "설명 일시정지" : "음성 도슨트 듣기"}
-                    </button>
-                  </div>
-
-                  <h2 className="t-heading" style={{ marginBottom: 4 }}>{selectedArtwork.title}</h2>
-                  <p className="t-caption" style={{ marginBottom: "var(--space-5)" }}>
-                    {selectedArtwork.artist} · {selectedArtwork.year}
-                  </p>
-
-                  <div className="divider" />
-
-                  <p className="t-body" style={{ marginBottom: "var(--space-6)", lineHeight: 1.75 }}>
-                    {selectedArtwork.docent_script}
-                  </p>
-
-                  {/* 내가 기록한 스냅 사진 섹션 */}
-                  <div style={{ marginBottom: "var(--space-6)" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-3)" }}>
-                      <p className="t-micro" style={{ margin: 0 }}>내가 기록한 스냅 사진</p>
-                      <label style={{ fontSize: 11, color: "var(--accent)", cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}>
-                        <Camera size={12} />
-                        스냅 추가
-                        <input
-                          type="file"
-                          accept="image/*"
-                          onChange={handleSinglePhotoUpload}
-                          style={{ display: "none" }}
-                        />
-                      </label>
-                    </div>
-
-                    {userSnaps[selectedArtwork.id]?.length > 0 ? (
-                      <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 6 }}>
-                        {userSnaps[selectedArtwork.id].map((snap, idx) => (
-                          <div 
-                            key={idx} 
-                            style={{ 
-                              width: 80, height: 80, borderRadius: "var(--radius-sm)", 
-                              backgroundImage: `url(${snap})`, backgroundSize: "cover", backgroundPosition: "center",
-                              border: "1px solid var(--border)", flexShrink: 0
-                            }} 
-                          />
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="t-caption" style={{ padding: "var(--space-4)", background: "var(--surface-2)", borderRadius: "var(--radius-sm)", border: "1px dashed var(--border)", textAlign: "center", fontSize: 12, color: "var(--ink-muted)" }}>
-                        기록한 사진이 없습니다. [스냅 추가]를 눌러 스틸컷을 남겨두세요.
-                      </div>
-                    )}
-                  </div>
-
-                  <div style={{ marginBottom: "var(--space-6)" }}>
-                    <p className="t-micro" style={{ marginBottom: "var(--space-3)" }}>
-                      지금 어떤 느낌이세요?
-                    </p>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "var(--space-2)" }}>
-                      {selectedArtwork.default_emotion_chips.map(item => (
-                        <EmotionChip
-                          key={item.emotion}
-                          item={item}
-                          active={(selectedEmotions[selectedArtwork.id] || []).some(e => e.emotion === item.emotion)}
-                          onToggle={handleEmotionToggle}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    id={`btn-open-chat-${selectedArtwork.id}`}
-                    className="btn btn-primary btn-full"
-                    style={{ gap: "var(--space-3)" }}
-                    onClick={() => router.push(`/curator?artwork=${selectedArtwork.id}`)}
-                  >
-                    <MessageCircle size={18} />
-                    AI 큐레이터와 대화하기
-                  </button>
-
-                  <p className="t-caption" style={{
-                    textAlign: "center",
-                    marginTop: "var(--space-3)",
-                    color: "var(--ink-muted)",
-                    fontSize: 12,
-                  }}>
-                    더 깊은 이야기를 나눠보세요
-                  </p>
-                </div>
-              </div>
-            </div>
+            <ModularDocentPanel
+              item={selectedArtwork as any}
+              onClose={closeCard}
+              theme="main"
+              userSnaps={userSnaps[selectedArtwork.id] || []}
+              onPhotoUpload={(base64) => {
+                const currentSnaps = { ...userSnaps };
+                const list = currentSnaps[selectedArtwork.id] || [];
+                currentSnaps[selectedArtwork.id] = [...list, base64];
+                setUserSnaps(currentSnaps);
+                localStorage.setItem("afterglow_user_snaps", JSON.stringify(currentSnaps));
+                alert("스냅 사진이 작품에 등록되었습니다.");
+              }}
+              selectedEmotions={selectedEmotions[selectedArtwork.id] || []}
+              onEmotionToggle={handleEmotionToggle}
+              onCuratorChatClick={() => router.push(`/curator?artwork=${selectedArtwork.id}`)}
+            />
           )}
         </div>
 
@@ -962,7 +815,7 @@ function ArtworkCardContent() {
         <BottomBar>
           <button
             className="btn btn-outline btn-full btn-lg"
-            onClick={() => router.push("/report")}
+            onClick={() => router.push("/exhibition/abyss/completed")}
           >
             오늘의 관람 완료
           </button>
