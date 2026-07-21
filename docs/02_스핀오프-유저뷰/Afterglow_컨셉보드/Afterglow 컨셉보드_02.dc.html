@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Space+Grotesk:wght@400;500;600&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,400&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#08090c;font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:#4FD8EB}a:hover{color:#8fe9f4}
+  .dv-turn{padding:52px 56px 44px;scroll-margin-top:16px}
+  .dv-thd{display:flex;align-items:baseline;gap:12px;margin:0 0 8px}
+  .dv-tid{font:700 11px 'Space Grotesk',monospace;padding:4px 9px;background:#4FD8EB;color:#062028;border-radius:5px;text-decoration:none}
+  .dv-tname{font:600 15px 'Pretendard',sans-serif;color:#EAF4F8}
+  .dv-tsub{font:400 13px/1.5 'Pretendard',sans-serif;color:#7d8794;max-width:640px;margin:0 0 30px}
+  .dv-opts{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
+  .dv-opt{flex:none;display:flex;flex-direction:column;gap:14px;scroll-margin-top:16px}
+  .dv-oid{font:700 11px 'Space Grotesk',monospace;padding:4px 9px;background:rgba(255,255,255,.08);color:#EAF4F8;border-radius:6px;text-decoration:none}
+  .dv-opt:target .dv-oid{background:#4FD8EB;color:#062028}
+  .dv-olabel{display:flex;align-items:center;gap:10px}
+  .dv-oname{font:700 16px 'Pretendard',sans-serif;color:#EAF4F8}
+  .dv-odesc{font:400 12.5px/1.6 'Pretendard',sans-serif;color:#8791a0;max-width:588px;margin:-2px 0 6px}
+  .dv-next{margin:36px 0 0;font:13px/1.7 'Pretendard',sans-serif;color:#7d8794;max-width:760px}
+  .ph-row{display:flex;gap:20px}
+  @keyframes agpulse{0%,100%{opacity:.55}50%{opacity:1}}
+  @keyframes agfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+</style>
+</helmet>
+
+<!-- ===================== FOUNDATION HEADER ===================== -->
+<header style="padding:60px 56px 20px;max-width:1200px">
+  <div style="font:600 12px 'Space Grotesk',monospace;letter-spacing:.32em;color:#4FD8EB;text-transform:uppercase">Design Concept · AFTERGLOW Spin-off User View</div>
+  <h1 style="font:300 54px/1.05 'Outfit',sans-serif;color:#EAF4F8;margin:16px 0 0;letter-spacing:-.02em">전시가 끝난 곳에서,<br><span style="font-weight:600">이야기는 다시 켜진다</span></h1>
+  <p style="font:400 16px/1.65 'Pretendard',sans-serif;color:#9DB4C4;max-width:620px;margin:20px 0 0">어두운 전시장의 공간감(Off-Black) 위에 세계관의 생동을 빛으로 표현하는 <b style="color:#EAF4F8;font-weight:600">앰비언트 테크</b> 컨셉. 아래 방향들은 같은 화면 구조·컴포넌트 체계를 공유하되, <b style="color:#EAF4F8;font-weight:600">감성의 온도와 빛의 색</b>이 다릅니다.</p>
+
+  <!-- token + component strip -->
+  <div style="display:flex;flex-wrap:wrap;gap:40px;margin:44px 0 8px;padding:26px 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08)">
+    <div>
+      <div style="font:600 11px 'Space Grotesk',monospace;letter-spacing:.14em;color:#5F7A8C;text-transform:uppercase;margin-bottom:14px">Type system</div>
+      <div style="font:600 30px 'Outfit',sans-serif;color:#EAF4F8;line-height:1">AFTERGLOW</div>
+      <div style="font:400 12px 'Space Grotesk',monospace;color:#5F7A8C;margin:4px 0 12px">Outfit · Space Grotesk — display / label</div>
+      <div style="font:600 16px 'Pretendard',sans-serif;color:#EAF4F8;line-height:1.4">심해의 안내자와 나누는 대화</div>
+      <div style="font:400 12px 'Space Grotesk',monospace;color:#5F7A8C;margin-top:4px">Pretendard — 본문 / UI</div>
+    </div>
+    <div>
+      <div style="font:600 11px 'Space Grotesk',monospace;letter-spacing:.14em;color:#5F7A8C;text-transform:uppercase;margin-bottom:14px">Core palette</div>
+      <div style="display:flex;gap:10px">
+        <div style="text-align:center"><div style="width:44px;height:44px;border-radius:10px;background:#070C14;border:1px solid rgba(255,255,255,.12)"></div><div style="font:500 9px 'Space Grotesk',monospace;color:#5F7A8C;margin-top:6px">bg</div></div>
+        <div style="text-align:center"><div style="width:44px;height:44px;border-radius:10px;background:#122642"></div><div style="font:500 9px 'Space Grotesk',monospace;color:#5F7A8C;margin-top:6px">surface</div></div>
+        <div style="text-align:center"><div style="width:44px;height:44px;border-radius:10px;background:#4FD8EB;box-shadow:0 0 20px rgba(79,216,235,.5)"></div><div style="font:500 9px 'Space Grotesk',monospace;color:#5F7A8C;margin-top:6px">glow</div></div>
+        <div style="text-align:center"><div style="width:44px;height:44px;border-radius:10px;background:#C79BF0"></div><div style="font:500 9px 'Space Grotesk',monospace;color:#5F7A8C;margin-top:6px">emotion</div></div>
+        <div style="text-align:center"><div style="width:44px;height:44px;border-radius:10px;background:#E8837A"></div><div style="font:500 9px 'Space Grotesk',monospace;color:#5F7A8C;margin-top:6px">본전시</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="font:600 11px 'Space Grotesk',monospace;letter-spacing:.14em;color:#5F7A8C;text-transform:uppercase;margin-bottom:14px">Components</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <span style="background:#4FD8EB;color:#062028;font:800 12px 'Pretendard';padding:9px 18px;border-radius:22px;box-shadow:0 0 22px rgba(79,216,235,.45)">입장하기</span>
+        <span style="border:1.5px solid #2a7f96;color:#4FD8EB;font:700 12px 'Pretendard';padding:8px 16px;border-radius:22px">공유</span>
+        <span style="border:1px solid #4FD8EB;background:rgba(79,216,235,.14);color:#4FD8EB;font:700 11px 'Pretendard';padding:5px 12px;border-radius:14px">고요함</span>
+        <span style="border:1px solid #2c4258;color:#9DB4C4;font:400 11px 'Pretendard';padding:5px 12px;border-radius:14px">몽환</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+
+<section class="dv-turn" id="t10" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t10">10</a><span class="dv-tname">타이포 컬러 대비 · 화이트 공유, 블랙 ↔ 블루</span></div>
+  <p class="dv-tsub">첨부 레퍼런스 결. 두 전시 모두 <b style="color:#EAF4F8">흰 배경 · 같은 그로테스크 · 같은 레이아웃</b> — 오직 <b style="color:#EAF4F8">글자 색</b>으로만 구분합니다. 본전시=블랙(원작), 스핀오프=<b style="color:#3B4CF0">일렉트릭 블루</b>(확장). 손그림 스크리블·화살표를 악센트로 얹어 '한 스튜디오의 두 프로젝트'처럼 이어지되 색으로 독립.</p>
+
+  <div class="dv-opts">
+
+    <!-- ============ 10a Type color ============ -->
+    <div class="dv-opt" id="10a">
+      <div class="dv-olabel"><a class="dv-oid" href="#10a">10a</a><span class="dv-oname">타입 컬러 · Black / Blue</span></div>
+      <p class="dv-odesc">대형 소문자 그로테스크 + 밑줄 스크리블 + 모노 러닝헤드. 이미지는 흑백으로 통일하고, 텍스트만 블랙/블루로 갈라 원작과 확장을 구분.</p>
+      <div class="ph-row">
+
+        <!-- 본전시 black type -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · BLACK</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e6e5e1;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fbfbf9;box-shadow:0 22px 55px rgba(0,0,0,.28);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#111;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px;box-sizing:border-box;color:#111;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#111"><span>AFTERGLOW / 본전시</span><span>ORIGINAL · 2026</span></div>
+              <div style="margin-top:22px;position:relative;display:inline-block">
+                <h2 style="font:700 33px/.92 'Helvetica Neue',Arial;letter-spacing:-.03em;text-transform:lowercase">빛의 심연</h2>
+                <svg viewBox="0 0 180 20" style="position:absolute;left:-4px;bottom:-9px;width:150px;height:16px" fill="none"><path d="M4 12 C50 4 120 4 176 10" stroke="#111" stroke-width="2.4" stroke-linecap="round"/></svg>
+              </div>
+              <div style="font:600 8.5px 'Space Grotesk',monospace;color:#111;margin-top:18px;letter-spacing:.04em">Abyss of Light — Media Art</div>
+              <div style="height:150px;margin-top:16px;background:linear-gradient(160deg,#8d9196,#2a2d30);filter:grayscale(1)"></div>
+              <p style="font:400 9.5px/1.7 'Pretendard';color:#333;margin-top:14px">인간의 고독과 안식을 일렁이는 미디어아트로 그린 몰입형 본전시. 8작품 3구역.</p>
+              <div style="margin-top:auto;border:1.5px solid #111;text-align:center;font:700 10px 'Pretendard';padding:9px;color:#111">본전시 예매</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 스핀오프 blue type -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · BLUE</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e6e5e1;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fbfbf9;box-shadow:0 22px 55px rgba(0,0,0,.28);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#111;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px;box-sizing:border-box;color:#111;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#111"><span>AFTERGLOW / 스핀오프</span><span>SPIN-OFF · Nº02</span></div>
+              <div style="margin-top:22px;position:relative;display:inline-block">
+                <h2 style="font:700 31px/.92 'Helvetica Neue',Arial;letter-spacing:-.03em;text-transform:lowercase;color:#3B4CF0">심해의 환상</h2>
+                <svg viewBox="0 0 180 26" style="position:absolute;left:-6px;bottom:-11px;width:160px;height:20px" fill="none"><path d="M6 16 C46 6 96 6 150 12 C120 15 150 20 172 14" stroke="#3B4CF0" stroke-width="2.4" stroke-linecap="round"/></svg>
+              </div>
+              <div style="font:600 8.5px 'Space Grotesk',monospace;color:#111;margin-top:18px;letter-spacing:.04em">The Second Wave — 4 Scenes</div>
+              <div style="height:150px;margin-top:16px;background:linear-gradient(160deg,#8d9196,#2a2d30);filter:grayscale(1)"></div>
+              <p style="font:400 9.5px/1.7 'Pretendard';color:#333;margin-top:14px">전시가 끝난 곳에서 이어지는 두 번째 작품. 본전시를 보지 않아도 그 자체로 완결됩니다.</p>
+              <div style="margin-top:auto;background:#3B4CF0;color:#fff;text-align:center;font:700 10px 'Pretendard';padding:10px">입장하기</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 10b Type color — big number/arrow ============ -->
+    <div class="dv-opt" id="10b">
+      <div class="dv-olabel"><a class="dv-oid" href="#10b">10b</a><span class="dv-oname">타입 컬러 · Arrow &amp; Index</span></div>
+      <p class="dv-odesc">같은 시스템의 정보 화면 변주 — 세로 대문자 인덱스, 화살표 스크리블, 넘버링. 본전시 블랙 / 스핀오프 블루. 씬·작품 정보처럼 텍스트 밀도가 있는 화면에서도 색만으로 구분.</p>
+      <div class="ph-row">
+
+        <!-- 본전시 -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · BLACK</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e6e5e1;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fbfbf9;box-shadow:0 22px 55px rgba(0,0,0,.28);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#111;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px;box-sizing:border-box;color:#111;display:flex;flex-direction:column;position:relative">
+              <div style="position:absolute;top:40px;right:12px;writing-mode:vertical-rl;font:700 10px 'Space Grotesk',monospace;letter-spacing:.16em;color:#111">ORIGINAL</div>
+              <div style="font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#111">AFTERGLOW · Nº01</div>
+              <h2 style="font:700 24px/.95 'Helvetica Neue',Arial;letter-spacing:-.02em;text-transform:lowercase;margin-top:16px">빛의 심연<br>작품 안내</h2>
+              <svg viewBox="0 0 120 30" style="width:96px;height:22px;margin-top:8px" fill="none"><path d="M4 22 C30 8 70 8 108 14" stroke="#111" stroke-width="2.2" stroke-linecap="round"/><path d="M96 8 L110 14 L98 20" stroke="#111" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+                <div><div style="font:700 7px 'Space Grotesk',monospace;letter-spacing:.08em;color:#111;margin-bottom:4px">작품</div><p style="font:400 9px/1.6 'Pretendard';color:#333;margin:0">윤슬 — 4,000개 유리 조각으로 수면의 빛을 재현.</p></div>
+                <div><div style="font:700 7px 'Space Grotesk',monospace;letter-spacing:.08em;color:#111;margin-bottom:4px">Note</div><p style="font:400 9px/1.6 'Pretendard';color:#333;margin:0">Light on water, recomposed by 4,000 shards.</p></div>
+              </div>
+              <div style="height:120px;margin-top:14px;background:linear-gradient(160deg,#8d9196,#2a2d30);filter:grayscale(1)"></div>
+              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 10px 'Pretendard';color:#111;border-top:1.5px solid #111;padding-top:10px">도슨트 듣기<span>→</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 스핀오프 -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · BLUE</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e6e5e1;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#fbfbf9;box-shadow:0 22px 55px rgba(0,0,0,.28);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#111;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px;box-sizing:border-box;color:#111;display:flex;flex-direction:column;position:relative">
+              <div style="position:absolute;top:40px;right:12px;writing-mode:vertical-rl;font:700 10px 'Space Grotesk',monospace;letter-spacing:.16em;color:#3B4CF0">SPIN-OFF</div>
+              <div style="font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#111">AFTERGLOW · Nº02</div>
+              <h2 style="font:700 24px/.95 'Helvetica Neue',Arial;letter-spacing:-.02em;text-transform:lowercase;margin-top:16px;color:#3B4CF0">심해의 환상<br>scene 01</h2>
+              <svg viewBox="0 0 120 30" style="width:96px;height:22px;margin-top:8px" fill="none"><path d="M4 22 C30 8 70 8 108 14" stroke="#3B4CF0" stroke-width="2.2" stroke-linecap="round"/><path d="M96 8 L110 14 L98 20" stroke="#3B4CF0" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+                <div><div style="font:700 7px 'Space Grotesk',monospace;letter-spacing:.08em;color:#111;margin-bottom:4px">장면</div><p style="font:400 9px/1.6 'Pretendard';color:#333;margin:0">'고요함'을 골랐기에, 이 정원은 더 느리게 숨 쉽니다.</p></div>
+                <div><div style="font:700 7px 'Space Grotesk',monospace;letter-spacing:.08em;color:#111;margin-bottom:4px">Scene</div><p style="font:400 9px/1.6 'Pretendard';color:#333;margin:0">You chose stillness, so this garden breathes slower.</p></div>
+              </div>
+              <div style="height:120px;margin-top:14px;background:linear-gradient(160deg,#8d9196,#2a2d30);filter:grayscale(1)"></div>
+              <div style="margin-top:auto;background:#3B4CF0;color:#fff;text-align:center;font:700 10px 'Pretendard';padding:10px">안내자에게 질문하기</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#10a">10a</a>로 5개 화면 전체 여정" · "블루를 조금 더 진하게/밝게" · "<a class="dv-oid" href="#10a">10a</a>에 실제 작품 사진 드롭 자리 넣어줘" · "<a class="dv-oid" href="#10a">10a</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+<section class="dv-turn" id="t9" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t9">9</a><span class="dv-tname">LUMI 럭셔리 미니멀 · 화이트 ↔ 화이트+레드 분할</span></div>
+  <p class="dv-tsub">첨부 LUMI 결. 본전시=풀 화이트 지면 + 블랙 그로테스크 타이포(고요한 원작). 스핀오프=작품(이미지)을 기점으로 화이트와 <b style="color:#B5322E">딥 레드</b>가 반반 분할되는 지면 + 블랙 타이포. 두 전시 모두 블랙 타이포·같은 서체로 '한 스튜디오의 두 작업'처럼 이어지되, 레드 블록으로 스핀오프의 독립을 표시.</p>
+
+  <div class="dv-opts">
+
+    <!-- ============ 9a LUMI split ============ -->
+    <div class="dv-opt" id="9a">
+      <div class="dv-olabel"><a class="dv-oid" href="#9a">9a</a><span class="dv-oname">LUMI · White / Split Red</span></div>
+      <p class="dv-odesc">대형 그로테스크 헤드라인 + 얇은 러닝헤드/사이드 캡션. 본전시는 순수 화이트, 스핀오프는 작품 이미지를 경계로 상단 화이트·하단 딥레드로 분할. 타이포는 둘 다 블랙 유지.</p>
+      <div class="ph-row">
+
+        <!-- 본전시 white -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · WHITE</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e4e2db;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f4f3ef;box-shadow:0 22px 55px rgba(0,0,0,.3);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#141310;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px 18px 18px;box-sizing:border-box;color:#141310;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#8a8478"><span>AFTERGLOW 본전시</span><span>ORIGINAL · 2026</span></div>
+              <h2 style="font:700 40px/.9 'Helvetica Neue',Arial;letter-spacing:-.035em;margin-top:24px">빛의<br>심연</h2>
+              <div style="display:flex;gap:16px;margin-top:14px;font:600 8.5px 'Space Grotesk',monospace;letter-spacing:.04em;color:#3f3a32"><span>Seoul — B1</span><span>Media Art</span></div>
+              <div style="height:150px;margin-top:20px;background:linear-gradient(160deg,#5c605c,#1c1f1d)"></div>
+              <p style="font:400 9.5px/1.7 'Pretendard';color:#3f3a32;margin-top:16px">인간의 고독과 안식을 일렁이는 미디어아트로 그린 몰입형 본전시. 관람자의 움직임에 반응하는 8개의 작품.</p>
+              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center"><span style="font:400 8px 'Space Grotesk',monospace;color:#8a8478">고요한 원작</span><span style="border:1px solid #141310;font:700 10px 'Pretendard';padding:8px 16px">본전시 예매</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 스핀오프 white/red split -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · SPLIT RED</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e4e2db;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f4f3ef;box-shadow:0 22px 55px rgba(0,0,0,.3);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#141310;flex-shrink:0;position:relative;z-index:3"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <!-- lower red block -->
+            <div style="position:absolute;left:0;right:0;bottom:0;height:44%;background:#B5322E"></div>
+            <div style="position:relative;z-index:2;flex:1;padding:18px 18px 18px;box-sizing:border-box;display:flex;flex-direction:column;color:#141310">
+              <div style="display:flex;justify-content:space-between;font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#8a8478"><span>AFTERGLOW 스핀오프</span><span>SPIN-OFF · Nº02</span></div>
+              <h2 style="font:700 38px/.9 'Helvetica Neue',Arial;letter-spacing:-.035em;margin-top:22px">심해의<br>환상</h2>
+              <div style="display:flex;gap:16px;margin-top:12px;font:600 8.5px 'Space Grotesk',monospace;letter-spacing:.04em;color:#3f3a32"><span>Online</span><span>4 Scenes</span></div>
+              <!-- artwork straddling the seam -->
+              <div style="height:132px;margin-top:16px;background:radial-gradient(ellipse 75% 60% at 55% 40%,rgba(120,150,170,.5),transparent 64%),linear-gradient(160deg,#28323a,#0e1216);box-shadow:0 12px 30px rgba(0,0,0,.3)"></div>
+              <p style="font:400 9.5px/1.7 'Pretendard';color:#f4e4e2;margin-top:16px">전시가 끝난 곳에서 이어지는 두 번째 작품. 본전시를 보지 않아도 그 자체로 완결되는 네 개의 장면.</p>
+              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center"><span style="font:400 8px 'Space Grotesk',monospace;color:#f0cfcc">독립된 여운</span><span style="background:#141310;color:#f4f3ef;font:700 10px 'Pretendard';padding:8px 16px">입장하기</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 9b LUMI side split ============ -->
+    <div class="dv-opt" id="9b">
+      <div class="dv-olabel"><a class="dv-oid" href="#9b">9b</a><span class="dv-oname">LUMI · Vertical Split</span></div>
+      <p class="dv-odesc">분할 방향 변주 — 스핀오프를 좌우로 나눠 우측을 딥레드 컬럼으로. 이미지가 두 면에 걸쳐 배치돼 '경계에서 태어난 여운'을 표현. 본전시는 동일한 풀 화이트.</p>
+      <div class="ph-row">
+
+        <!-- 본전시 white (variant) -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · WHITE</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e4e2db;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f4f3ef;box-shadow:0 22px 55px rgba(0,0,0,.3);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#141310;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px;box-sizing:border-box;color:#141310;display:flex;flex-direction:column">
+              <div style="font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#8a8478">AFTERGLOW 본전시 · Nº01</div>
+              <div style="height:170px;margin-top:14px;background:linear-gradient(160deg,#5c605c,#1c1f1d)"></div>
+              <h2 style="font:700 34px/.9 'Helvetica Neue',Arial;letter-spacing:-.03em;margin-top:18px">빛의 심연</h2>
+              <p style="font:400 9.5px/1.7 'Pretendard';color:#3f3a32;margin-top:12px">몰입형 미디어아트 본전시. 고독과 안식을 일렁이는 빛으로.</p>
+              <div style="margin-top:auto;border:1px solid #141310;text-align:center;font:700 10px 'Pretendard';padding:9px">본전시 예매</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 스핀오프 vertical red column -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · RED COLUMN</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e4e2db;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f4f3ef;box-shadow:0 22px 55px rgba(0,0,0,.3);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="position:absolute;top:0;bottom:0;right:0;width:34%;background:#B5322E"></div>
+            <div style="position:absolute;top:0;bottom:0;right:34%;width:22px;display:flex;align-items:center;justify-content:center;z-index:3"><div style="writing-mode:vertical-rl;font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.16em;color:#8a8478;white-space:nowrap">THE SECOND WAVE · SPIN-OFF</div></div>
+            <div style="position:relative;z-index:2;height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#141310"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="position:relative;z-index:2;flex:1;padding:18px 18px 18px;box-sizing:border-box;display:flex;flex-direction:column;color:#141310">
+              <div style="font:600 7.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#8a8478">AFTERGLOW 스핀오프 · Nº02</div>
+              <h2 style="font:700 34px/.9 'Helvetica Neue',Arial;letter-spacing:-.03em;margin-top:16px">심해의<br>환상</h2>
+              <!-- artwork straddling seam -->
+              <div style="height:150px;margin-top:16px;margin-right:-30px;background:radial-gradient(ellipse 70% 60% at 45% 40%,rgba(120,150,170,.5),transparent 62%),linear-gradient(160deg,#28323a,#0e1216);box-shadow:0 12px 30px rgba(0,0,0,.28)"></div>
+              <p style="font:400 9.5px/1.7 'Pretendard';color:#3f3a32;margin-top:16px;max-width:150px">본전시를 보지 않아도 성립하는 독립된 두 번째 작품.</p>
+              <div style="margin-top:auto;background:#141310;color:#f4f3ef;font:700 10px 'Pretendard';padding:9px 16px;align-self:flex-start">입장하기</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#9a">9a</a>로 5개 화면 전체 여정" · "레드를 조금 더 어둡게/밝게" · "<a class="dv-oid" href="#9a">9a</a>에 실제 작품 사진 드롭 자리 넣어줘" · "<a class="dv-oid" href="#9a">9a</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+<section class="dv-turn" id="t8" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t8">8</a><span class="dv-tname">에디토리얼 모노 · 흑백 포트폴리오 결</span></div>
+  <p class="dv-tsub">첨부하신 포트폴리오 레퍼런스 톤 — 하이컨트라스트 그레이스케일, 볼드 그로테스크 헤드라인, 대형 넘버링(0.1 / 0.2), 작은 모노스페이스 라벨, 지면 명암 교차. 본전시=라이트 그레이 지면, 스핀오프=차콜 그레이 지면(순블랙 아님)으로 '한 권의 아카이브 두 챕터'를 표현. 정보 영역은 라벨+2단 그리드로 가독성 확보.</p>
+
+  <div class="dv-opts">
+
+    <!-- ============ 8a Editorial Mono ============ -->
+    <div class="dv-opt" id="8a">
+      <div class="dv-olabel"><a class="dv-oid" href="#8a">8a</a><span class="dv-oname">에디토리얼 모노 · Mono Archive</span></div>
+      <p class="dv-odesc">그레이스케일 + 그로테스크(Helvetica). 대형 넘버링과 러닝헤드, 얇은 룰선. 스핀오프는 순블랙 대신 차콜 그레이 지면. 컬러는 오직 스핀오프의 시안 한 줄만 악센트로 남겨 '확장'을 표시.</p>
+      <div class="ph-row">
+
+        <!-- 본전시 light gray -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · 0.1 LIGHT</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e7e5dd;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f8f7f3;box-shadow:0 22px 55px rgba(0,0,0,.3);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#211f18;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:16px 18px 18px;box-sizing:border-box;color:#211f18;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;font:600 7px 'Space Grotesk',monospace;letter-spacing:.14em;color:#847d6b;border-bottom:1px solid #211f18;padding-bottom:7px"><span>AFTERGLOW EXHIBITION</span><span>ORIGINAL · SEOUL 2026</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:16px">
+                <h2 style="font:700 26px/.98 'Helvetica Neue',Arial;letter-spacing:-.02em">HELLO AND<br>WELCOME</h2>
+                <span style="font:700 30px 'Helvetica Neue',Arial;letter-spacing:-.02em">0.1</span>
+              </div>
+              <div style="display:grid;grid-template-columns:86px 1fr;gap:12px;margin-top:16px">
+                <div style="height:148px;background:linear-gradient(160deg,#60635f,#1f2220);align-self:start"></div>
+                <div>
+                  <div style="font:700 7px 'Space Grotesk',monospace;letter-spacing:.1em;color:#807a6d;margin-bottom:5px">INFO</div>
+                  <p style="font:400 9px/1.7 'Pretendard';color:#4a4437;margin:0">빛의 심연 — 인간의 고독과 안식을 일렁이는 미디어아트로 그린 몰입형 본전시. 관람자의 움직임에 반응하는 8개의 작품이 세 구역에 걸쳐 펼쳐집니다.</p>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;margin-top:auto;border-top:1px solid #211f18;padding-top:10px;font:700 7px 'Space Grotesk',monospace;letter-spacing:.1em;color:#847d6b"><span>WHAT YOU'LL FIND</span><span>MEDIA · EDITORIAL</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 스핀오프 charcoal gray -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · 0.2 CHARCOAL</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #86847b;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#9b998f;box-shadow:0 22px 55px rgba(0,0,0,.5);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#211f18;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:16px 18px 18px;box-sizing:border-box;color:#211f18;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;font:600 7px 'Space Grotesk',monospace;letter-spacing:.14em;color:#54524a;border-bottom:1px solid #4a4840;padding-bottom:7px"><span>AFTERGLOW EXHIBITION</span><span>SPIN-OFF · 두 번째 작품</span></div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:16px">
+                <h2 style="font:700 26px/.98 'Helvetica Neue',Arial;letter-spacing:-.02em">심해의<br>환상</h2>
+                <span style="font:700 30px 'Helvetica Neue',Arial;letter-spacing:-.02em;color:#4FD8EB">0.2</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 86px;gap:12px;margin-top:16px">
+                <div>
+                  <div style="font:700 7px 'Space Grotesk',monospace;letter-spacing:.1em;color:#a6a297;margin-bottom:5px">INFO</div>
+                  <p style="font:400 9px/1.7 'Pretendard';color:#33312a;margin:0">The Second Wave — 전시가 끝난 곳에서 이어지는 스핀오프. AI가 원작의 세계관을 변주한 네 개의 장면. 본전시를 보지 않아도 그 자체로 완결됩니다.</p>
+                  <div style="width:26px;height:2px;background:#4FD8EB;margin-top:12px"></div>
+                </div>
+                <div style="height:148px;background:radial-gradient(ellipse 80% 60% at 55% 34%,rgba(79,216,235,.3),transparent 62%),linear-gradient(160deg,#232a30,#0f1216);align-self:start"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:auto;border-top:1px solid #4a4840;padding-top:11px">
+                <span style="font:700 7px 'Space Grotesk',monospace;letter-spacing:.1em;color:#54524a">ONLINE · 4 SCENES</span>
+                <span style="background:#4FD8EB;color:#062028;font:800 10px 'Pretendard';padding:7px 14px;border-radius:20px">입장하기</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 8b Editorial Mono + big image ============ -->
+    <div class="dv-opt" id="8b">
+      <div class="dv-olabel"><a class="dv-oid" href="#8b">8b</a><span class="dv-oname">에디토리얼 모노 · Cover</span></div>
+      <p class="dv-odesc">같은 모노 시스템의 표지 버전. 대형 그로테스크 타이틀이 지면을 가로지르고, 좌우 배치·연도·러닝헤드로 매거진 커버처럼. 본전시 라이트 / 스핀오프 차콜.</p>
+      <div class="ph-row">
+
+        <!-- 본전시 cover light -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · COVER</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e7e5dd;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f8f7f3;box-shadow:0 22px 55px rgba(0,0,0,.3);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#211f18;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:16px 18px 18px;box-sizing:border-box;color:#211f18;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;font:600 7px 'Space Grotesk',monospace;letter-spacing:.14em;color:#847d6b"><span>AFTERGLOW / 본전시</span><span>Nº 01</span></div>
+              <div style="height:200px;margin-top:12px;background:linear-gradient(160deg,#5c605c,#1c1f1d)"></div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:16px">
+                <div style="font:700 30px/.9 'Helvetica Neue',Arial;letter-spacing:-.03em">빛의<br>심연</div>
+                <div style="font:600 9px 'Space Grotesk',monospace;color:#807a6d;text-align:right">2026<br>SEOUL</div>
+              </div>
+              <div style="border-top:1px solid #211f18;margin-top:14px;padding-top:10px;font:400 9px/1.6 'Pretendard';color:#4a4437">몰입형 미디어아트 본전시 · 8작품 3구역</div>
+              <div style="margin-top:auto;border:1px solid #211f18;text-align:center;font:700 10px 'Pretendard';padding:9px">본전시 예매</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 스핀오프 cover charcoal -->
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · COVER</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #86847b;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#9b998f;box-shadow:0 22px 55px rgba(0,0,0,.5);flex:none;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#211f18;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:16px 18px 18px;box-sizing:border-box;color:#211f18;display:flex;flex-direction:column">
+              <div style="display:flex;justify-content:space-between;font:600 7px 'Space Grotesk',monospace;letter-spacing:.14em;color:#54524a"><span>AFTERGLOW / 스핀오프</span><span>Nº 02</span></div>
+              <div style="height:200px;margin-top:12px;background:radial-gradient(ellipse 75% 55% at 58% 32%,rgba(79,216,235,.32),transparent 60%),linear-gradient(160deg,#20272d,#0d1015)"></div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-top:16px">
+                <div style="font:700 29px/.9 'Helvetica Neue',Arial;letter-spacing:-.03em">심해의<br>환상</div>
+                <div style="font:600 9px 'Space Grotesk',monospace;color:#a6a297;text-align:right">2026<br>ONLINE</div>
+              </div>
+              <div style="border-top:1px solid #4a4840;margin-top:14px;padding-top:10px;font:400 9px/1.6 'Pretendard';color:#33312a">본전시를 안 봐도 성립하는 두 번째 작품 · 4 scenes</div>
+              <div style="margin-top:auto;background:#4FD8EB;color:#062028;text-align:center;font:800 10px 'Pretendard';padding:10px">입장하기</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#8a">8a</a>로 5개 화면 전체 여정" · "그레이를 조금 더 밝게/어둡게" · "<a class="dv-oid" href="#8a">8a</a>에 실제 사진 드롭 자리 넣어줘" · "<a class="dv-oid" href="#8a">8a</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+<section class="dv-turn" id="t6" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t6">6</a><span class="dv-tname">본전시 ↔ 스핀오프 쌍 · 완전 반전 &amp; 추가 방향</span></div>
+  <p class="dv-tsub">각 방향을 <b style="color:#EAF4F8">본전시(화이트)</b> + <b style="color:#EAF4F8">스핀오프(블랙)</b> 쌍으로 보여줍니다. 새 레퍼런스에서 뽑은 세 갈래 — 완전 반전(6a) · 럭셔리 그로테스크+레드(6b) · 패션 세리프(6c). 같은 시스템의 명암을 뒤집어 '이어지되 독립'을 표현.</p>
+
+  <div class="dv-opts">
+
+    <!-- ============ 6a Invert ============ -->
+    <div class="dv-opt" id="6a">
+      <div class="dv-olabel"><a class="dv-oid" href="#6a">6a</a><span class="dv-oname">완전 반전 · Invert</span></div>
+      <p class="dv-odesc">본전시=화이트(해가 떠 있는 원작), 스핀오프=블랙(해가 진 뒤의 여운). 동일 레이아웃·타이포를 명암만 반전. 미니멀 그로테스크, 큰 타이포.</p>
+      <div class="ph-row">
+
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · ORIGINAL</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e2ded4;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f6f5f1;box-shadow:0 22px 55px rgba(0,0,0,.32);flex:none">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#16150f;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:20px;display:flex;flex-direction:column;color:#16150f;font-family:'Helvetica Neue',Arial,sans-serif">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #16150f;padding-bottom:8px"><span style="font:700 13px 'Helvetica Neue',Arial;letter-spacing:.02em">AFTERGLOW</span><span style="font:400 9px 'Space Grotesk',monospace;color:#7a746a">본전시 · No.01</span></div>
+              <div style="font:700 34px/1.02 'Helvetica Neue',Arial;letter-spacing:-.02em;margin-top:18px">빛의<br>심연</div>
+              <div style="font:400 11px 'Space Grotesk',monospace;color:#7a746a;margin-top:6px">ABYSS OF LIGHT</div>
+              <div style="height:110px;margin-top:16px;background:linear-gradient(180deg,#c9ccce,#eceae4)"></div>
+              <p style="font:400 10.5px/1.7 'Pretendard';color:#4a463d;margin-top:14px">인간의 고독과 안식을 일렁이는 미디어아트로 표현한 몰입형 전시.</p>
+              <div style="margin-top:auto;background:#16150f;color:#f6f5f1;text-align:center;font:700 12px 'Pretendard';padding:11px">본전시 예매하기</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · SPIN-OFF</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #141414;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#0a0a0a;box-shadow:0 22px 55px rgba(0,0,0,.55);flex:none">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#e6e6e2;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:20px;display:flex;flex-direction:column;color:#f2f0ea;font-family:'Helvetica Neue',Arial,sans-serif">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #f2f0ea;padding-bottom:8px"><span style="font:700 13px 'Helvetica Neue',Arial;letter-spacing:.02em">AFTER<span style="color:#4FD8EB">GLOW</span></span><span style="font:400 9px 'Space Grotesk',monospace;color:#7f8a92">스핀오프 · No.02</span></div>
+              <div style="font:700 34px/1.02 'Helvetica Neue',Arial;letter-spacing:-.02em;margin-top:18px">심해의<br>환상</div>
+              <div style="font:400 11px 'Space Grotesk',monospace;color:#7f8a92;margin-top:6px">THE SECOND WAVE</div>
+              <div style="height:110px;margin-top:16px;background:radial-gradient(ellipse 80% 60% at 60% 30%,rgba(79,216,235,.34),transparent 62%),linear-gradient(180deg,#0f1c26,#0a0a0a)"></div>
+              <p style="font:400 10.5px/1.7 'Pretendard';color:#aab7bf;margin-top:14px">전시가 끝난 곳에서 이어지는, 본전시를 안 봐도 성립하는 두 번째 작품.</p>
+              <div style="margin-top:auto;background:#4FD8EB;color:#062028;text-align:center;font:800 12px 'Pretendard';padding:11px">입장하기</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 6b Luxury Grotesque ============ -->
+    <div class="dv-opt" id="6b">
+      <div class="dv-olabel"><a class="dv-oid" href="#6b">6b</a><span class="dv-oname">럭셔리 그로테스크 · LUMI Red</span></div>
+      <p class="dv-odesc">LUMI 피치덱 결. 볼드 그로테스크 대형 헤드라인 + 우측 레드 악센트 스트라이프 + 세로 사이드 레터. 본전시 화이트 / 스핀오프 블랙, 레드로 연결.</p>
+      <div class="ph-row">
+
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · ORIGINAL</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e2ded4;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f4f1ea;box-shadow:0 22px 55px rgba(0,0,0,.32);flex:none">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#1a1713;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;position:relative;overflow:hidden;font-family:'Helvetica Neue',Arial,sans-serif;color:#1a1713">
+              <div style="position:absolute;top:0;bottom:0;right:0;width:12px;background:#b5322e"></div>
+              <div style="position:absolute;top:0;bottom:0;right:12px;width:20px;display:flex;align-items:center;justify-content:center"><div style="writing-mode:vertical-rl;font:600 8px 'Space Grotesk',monospace;letter-spacing:.16em;color:#8a8478;white-space:nowrap">ORIGINAL EXHIBITION · 2026</div></div>
+              <div style="position:absolute;inset:0;right:32px;padding:18px 18px;display:flex;flex-direction:column">
+                <div style="display:flex;justify-content:space-between;font:600 9px 'Space Grotesk',monospace;color:#8a8478;letter-spacing:.06em"><span>AFTERGLOW</span><span>본전시</span></div>
+                <div style="font:700 40px/.92 'Helvetica Neue',Arial;letter-spacing:-.02em;margin-top:20px">빛의<br>심연</div>
+                <div style="width:28px;height:3px;background:#b5322e;margin:14px 0"></div>
+                <p style="font:400 10.5px/1.7 'Pretendard';color:#5a544a">인간의 고독과 안식을 일렁이는 미디어아트로 표현한 몰입형 전시입니다.</p>
+                <div style="margin-top:auto;display:flex;gap:8px;align-items:center"><span style="flex:1;background:#1a1713;color:#f4f1ea;text-align:center;font:700 11px 'Pretendard';padding:10px">예매하기</span><span style="font:400 9px 'Space Grotesk',monospace;color:#8a8478">01</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · SPIN-OFF</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #141414;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#111;box-shadow:0 22px 55px rgba(0,0,0,.55);flex:none">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#ece8de;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;position:relative;overflow:hidden;font-family:'Helvetica Neue',Arial,sans-serif;color:#ece8de">
+              <div style="position:absolute;top:0;bottom:0;right:0;width:12px;background:#d9483f"></div>
+              <div style="position:absolute;top:0;bottom:0;right:12px;width:20px;display:flex;align-items:center;justify-content:center"><div style="writing-mode:vertical-rl;font:600 8px 'Space Grotesk',monospace;letter-spacing:.16em;color:#8f8a80;white-space:nowrap">SPIN-OFF · 두 번째 작품</div></div>
+              <div style="position:absolute;inset:0;right:32px;padding:18px 18px;display:flex;flex-direction:column">
+                <div style="display:flex;justify-content:space-between;font:600 9px 'Space Grotesk',monospace;color:#8f8a80;letter-spacing:.06em"><span>AFTERGLOW</span><span>스핀오프</span></div>
+                <div style="font:700 38px/.92 'Helvetica Neue',Arial;letter-spacing:-.02em;margin-top:20px">심해의<br>환상</div>
+                <div style="width:28px;height:3px;background:#d9483f;margin:14px 0"></div>
+                <p style="font:400 10.5px/1.7 'Pretendard';color:#aca69a">본전시를 보지 않아도 성립하는 두 번째 작품. 네 개의 장면이 당신을 기다립니다.</p>
+                <div style="margin-top:auto;display:flex;gap:8px;align-items:center"><span style="flex:1;background:#ece8de;color:#111;text-align:center;font:700 11px 'Pretendard';padding:10px">입장하기</span><span style="font:400 9px 'Space Grotesk',monospace;color:#8f8a80">02</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 6c Fashion Serif ============ -->
+    <div class="dv-opt" id="6c">
+      <div class="dv-olabel"><a class="dv-oid" href="#6c">6c</a><span class="dv-oname">패션 세리프 · Archive</span></div>
+      <p class="dv-odesc">'Archive / Timeless No 22' 결. 대형 하이컨트라스트 세리프(Bodoni)와 작은 이미지 타일, 넘버링. 본전시 화이트 / 스핀오프 차콜, 우아하고 아카이브적인 톤.</p>
+      <div class="ph-row">
+
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#9DB4C4">본전시 · ORIGINAL</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #e2ded4;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f5f3ee;box-shadow:0 22px 55px rgba(0,0,0,.32);flex:none">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#1a1814;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px 20px;display:flex;flex-direction:column;color:#1a1814">
+              <div style="display:flex;justify-content:space-between;font:400 8.5px 'Space Grotesk',monospace;color:#9a9284;letter-spacing:.12em"><span>ORIGINAL</span><span>No 01</span></div>
+              <div style="display:flex;gap:6px;margin-top:12px"><div style="flex:1;height:64px;background:linear-gradient(160deg,#3a4652,#12161b)"></div><div style="flex:1;height:64px;background:linear-gradient(160deg,#4a5560,#1a1f26)"></div></div>
+              <div style="font:400 46px/.9 'Bodoni Moda',serif;letter-spacing:-.01em;margin-top:16px">Abyss</div>
+              <div style="font:italic 400 15px 'Newsreader',serif;color:#7a7264;margin-top:4px">빛의 심연</div>
+              <p style="font:400 10.5px/1.7 'Pretendard';color:#5a5346;margin-top:14px">고독과 안식을 일렁이는 미디어아트로 표현한 몰입형 본전시.</p>
+              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #ddd8cc;padding-top:12px;font:italic 400 12px 'Newsreader',serif">본전시 예매<span style="color:#9a9284">→</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.14em;color:#4FD8EB">스핀오프 · SPIN-OFF</div>
+          <div style="width:272px;height:582px;border-radius:34px;border:8px solid #141414;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#17171a;box-shadow:0 22px 55px rgba(0,0,0,.55);flex:none">
+            <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit';color:#ece7dd;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;position:relative;display:inline-block"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;display:block"></i></span></div>
+            <div style="flex:1;padding:18px 20px;display:flex;flex-direction:column;color:#ece7dd">
+              <div style="display:flex;justify-content:space-between;font:400 8.5px 'Space Grotesk',monospace;color:#8a8478;letter-spacing:.12em"><span>SPIN-OFF</span><span>No 02</span></div>
+              <div style="display:flex;gap:6px;margin-top:12px"><div style="flex:1;height:64px;background:radial-gradient(ellipse at 60% 30%,rgba(79,216,235,.3),transparent 60%),linear-gradient(160deg,#12303f,#0c0c0f)"></div><div style="flex:1;height:64px;background:radial-gradient(ellipse at 40% 40%,rgba(199,155,240,.28),transparent 60%),linear-gradient(160deg,#221a33,#0c0c0f)"></div></div>
+              <div style="font:400 42px/.9 'Bodoni Moda',serif;letter-spacing:-.01em;margin-top:16px;color:#f4efe8">Fantasia</div>
+              <div style="font:italic 400 15px 'Newsreader',serif;color:#b7b0a4;margin-top:4px">심해의 환상</div>
+              <p style="font:400 10.5px/1.7 'Pretendard';color:#a49d92;margin-top:14px">본전시를 보지 않아도 성립하는 독립된 두 번째 작품.</p>
+              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #33312c;padding-top:12px;font:italic 400 12px 'Newsreader',serif;color:#ece7dd">입장하기<span style="color:#8a8478">→</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#6a">6a</a>로 5개 화면 전체 여정" · "<a class="dv-oid" href="#2a">2a</a>·<a class="dv-oid" href="#3a">3a</a>도 본전시/스핀오프 쌍으로" · "<a class="dv-oid" href="#6b">6b</a> 레드를 다른 악센트로" · "<a class="dv-oid" href="#6a">6a</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+<section class="dv-turn" id="t5" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t5">5</a><span class="dv-tname">에디토리얼 아카이브 · 본전시 ↔ 스핀오프 '이어지되 독립'</span></div>
+  <p class="dv-tsub">새 레퍼런스(넘버링 섹션 0.1/0.2 · 엘레강트 세리프 · 럭셔리 미니멀 + 레드 악센트) 기반. 하나의 시스템 안에서 <b style="color:#EAF4F8">본전시</b>와 <b style="color:#EAF4F8">스핀오프</b>가 한 권의 도록처럼 이어지되, 악센트(해→여운)로 독립을 드러냅니다. 정보형 전시설명은 어떤 전시가 들어와도 읽히도록 2단 그리드로 설계.</p>
+
+  <!-- concept callout -->
+  <div style="max-width:760px;border:1px solid rgba(181,98,58,.4);border-left:3px solid #b5623a;border-radius:4px;padding:18px 22px;margin:0 0 30px;background:rgba(181,98,58,.06)">
+    <div style="font:600 10px 'Space Grotesk',monospace;letter-spacing:.2em;color:#c8794f;text-transform:uppercase;margin-bottom:8px">The Afterglow · 본질</div>
+    <p style="font:400 14.5px/1.7 'Pretendard';color:#d8d2c6;margin:0">황혼(Afterglow)은 태양이 진 뒤에 찾아오지만, 그 자체로 하늘을 가장 아름답게 물들이는 <b style="color:#f0e6dc">독립된 또 하나의 풍경</b>입니다. 본전시가 '해'라면 스핀오프는 그 여운이 만드는 <b style="color:#f0e6dc">두 번째 작품</b> — 본전시를 보지 않아도 그 자체로 성립합니다.</p>
+  </div>
+
+  <div class="dv-opts">
+    <div class="dv-opt" id="5a">
+      <div class="dv-olabel"><a class="dv-oid" href="#5a">5a</a><span class="dv-oname">에디토리얼 아카이브 · Original ↔ Spin-off</span></div>
+      <p class="dv-odesc">오프화이트 도록 시스템 · 넘버링(0.1/0.2)과 엘레강트 세리프. 본전시는 차분한 그래파이트(진 해), 스핀오프는 따뜻한 여운(Afterglow) 악센트. 정보 화면은 국·영 2단으로 가독성 확보.</p>
+      <div class="ph-row">
+
+        <!-- P1 : 본전시 표지 -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #ddd8cc;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f4f2ec;box-shadow:0 22px 55px rgba(0,0,0,.32);flex:none">
+          <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#6b6459;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></div>
+          <div style="flex:1;padding:20px 20px 18px;display:flex;flex-direction:column;color:#26221c">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #34302a;padding-bottom:8px">
+              <span style="font:500 14px 'Newsreader',serif;letter-spacing:.05em">AFTERGLOW</span>
+              <span style="text-align:right;font:400 9px/1.4 'Space Grotesk',monospace;color:#8a8274;letter-spacing:.08em">ORIGINAL<br>No.01</span>
+            </div>
+            <div style="font:400 9.5px 'Space Grotesk',monospace;letter-spacing:.16em;color:#34302a;margin-top:16px">0.1 · 본전시</div>
+            <h2 style="font:400 30px/1.12 'Newsreader',serif;margin:6px 0 3px">빛의 심연</h2>
+            <div style="font:italic 400 13px 'Newsreader',serif;color:#8a8274">Abyss of Light</div>
+            <div style="margin-top:16px;border:1px solid #34302a;padding:5px">
+              <div style="height:172px;background:radial-gradient(ellipse 70% 55% at 50% 40%,#3a4652 0%,transparent 62%),linear-gradient(180deg,#20262e,#0f1216)"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:5px;margin-top:14px;font:400 10px/1.4 'Pretendard';color:#6b6459">
+              <div><b style="color:#34302a">기간</b>&nbsp; 2026.05 – 07</div>
+              <div><b style="color:#34302a">장소</b>&nbsp; 아트홀 서울 B1</div>
+            </div>
+            <div style="margin-top:auto;border-top:1px solid #d8d2c4;padding-top:11px;font:400 10.5px 'Pretendard';color:#8a8274">관람 후, 이야기는 스핀오프로 이어집니다 ↓</div>
+          </div>
+        </div>
+
+        <!-- P2 : 본전시 작품 정보 (readable) -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #ddd8cc;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f4f2ec;box-shadow:0 22px 55px rgba(0,0,0,.32);flex:none">
+          <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#6b6459;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></div>
+          <div style="flex:1;padding:18px 20px 16px;display:flex;flex-direction:column;color:#26221c">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font:400 9.5px 'Space Grotesk',monospace;color:#8a8274;letter-spacing:.1em;border-bottom:1px solid #d8d2c4;padding-bottom:7px"><span>0.1 · ARTWORK</span><span>01 / 08</span></div>
+            <div style="margin-top:14px;background:radial-gradient(ellipse 60% 50% at 55% 40%,#46525e 0%,transparent 62%),linear-gradient(180deg,#20262e,#12161b);height:132px"></div>
+            <h3 style="font:400 22px/1.15 'Newsreader',serif;margin:14px 0 2px">윤슬</h3>
+            <div style="font:400 10px 'Space Grotesk',monospace;color:#9c3b2e;letter-spacing:.04em">김하늘 · 1구역 잔물결의 언어</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px">
+              <div><div style="font:700 9px 'Space Grotesk',monospace;color:#34302a;letter-spacing:.06em;margin-bottom:5px">작품 노트</div><p style="font:400 10.5px/1.72 'Pretendard';color:#5f584c;margin:0">수면 위로 부서지는 빛을 4,000개의 유리 조각으로 재현했다. 관람자의 움직임에 따라 빛의 결이 달라진다.</p></div>
+              <div><div style="font:700 9px 'Space Grotesk',monospace;color:#34302a;letter-spacing:.06em;margin-bottom:5px">Note</div><p style="font:400 10.5px/1.72 'Pretendard';color:#5f584c;margin:0">4,000 glass shards recompose light on water. The grain of light shifts with the viewer's motion.</p></div>
+            </div>
+            <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d8d2c4;padding-top:11px;font:italic 400 11.5px 'Newsreader',serif;color:#34302a">도슨트 듣기<span style="color:#9c3b2e">→</span></div>
+          </div>
+        </div>
+
+        <!-- connector -->
+        <div style="width:104px;flex:none;align-self:center;display:flex;flex-direction:column;align-items:center;gap:12px;color:#c8794f;text-align:center">
+          <div style="width:1px;height:56px;background:linear-gradient(#3a352c,#b5623a)"></div>
+          <div style="font:600 9.5px 'Space Grotesk',monospace;letter-spacing:.14em;color:#c8794f">해 → 여운</div>
+          <div style="font:400 11px/1.5 'Pretendard';color:#8791a0">본전시의 세계관이<br>독립된 두 번째<br>작품으로 이어짐</div>
+          <div style="font:400 18px 'Newsreader',serif;color:#b5623a">↝</div>
+        </div>
+
+        <!-- P3 : 스핀오프 표지 (Afterglow) -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #ddd8cc;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f6f0e9;box-shadow:0 22px 55px rgba(0,0,0,.32);flex:none">
+          <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#8a6f5c;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></div>
+          <div style="flex:1;padding:20px 20px 18px;display:flex;flex-direction:column;color:#2a221c">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #b5623a;padding-bottom:8px">
+              <span style="font:500 14px 'Newsreader',serif;letter-spacing:.05em;color:#8a3d24">AFTERGLOW</span>
+              <span style="text-align:right;font:400 9px/1.4 'Space Grotesk',monospace;color:#b5623a;letter-spacing:.08em">SPIN-OFF<br>두 번째 작품</span>
+            </div>
+            <div style="font:400 9.5px 'Space Grotesk',monospace;letter-spacing:.16em;color:#b5623a;margin-top:16px">0.2 · 스핀오프 전시</div>
+            <h2 style="font:400 29px/1.12 'Newsreader',serif;margin:6px 0 3px">심해의 환상</h2>
+            <div style="font:italic 400 15px 'Newsreader',serif;color:#b5623a">두 번째 물결</div>
+            <div style="margin-top:16px;border:1px solid #d8b79c;padding:5px">
+              <div style="height:168px;background:radial-gradient(ellipse 65% 55% at 55% 34%,rgba(232,178,120,.7) 0%,transparent 60%),radial-gradient(circle at 20% 90%,rgba(181,98,58,.4),transparent 55%),linear-gradient(180deg,#e9d8c4,#caa583)"></div>
+            </div>
+            <p style="font:400 11px/1.65 'Pretendard';color:#7a6a5c;margin:14px 0 0">전시가 끝난 곳에서, 이야기는 이어집니다. <b style="color:#2a221c">본전시를 보지 않아도 성립하는</b> 네 개의 장면.</p>
+            <div style="margin-top:auto;background:#8a3d24;color:#f6ede2;text-align:center;font:700 13px 'Pretendard';padding:12px;border-radius:2px">입장하기</div>
+          </div>
+        </div>
+
+        <!-- P4 : 스핀오프 씬/정보 -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #ddd8cc;box-sizing:border-box;overflow:hidden;position:relative;display:flex;flex-direction:column;background:#f6f0e9;box-shadow:0 22px 55px rgba(0,0,0,.32);flex:none">
+          <div style="height:30px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#8a6f5c;flex-shrink:0"><span>9:41</span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></div>
+          <div style="flex:1;padding:18px 20px 16px;display:flex;flex-direction:column;color:#2a221c">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font:400 9.5px 'Space Grotesk',monospace;color:#b5623a;letter-spacing:.1em;border-bottom:1px solid #e0cbb6;padding-bottom:7px"><span>0.2 · SCENE 01</span><span>01 / 04</span></div>
+            <div style="margin-top:14px;height:150px;background:radial-gradient(ellipse 60% 55% at 52% 36%,rgba(240,200,150,.75) 0%,transparent 60%),linear-gradient(180deg,#ecdcc7,#c9a483)"></div>
+            <div style="font:400 9.5px 'Space Grotesk',monospace;letter-spacing:.1em;color:#b5623a;margin-top:13px">고요함 · 평온</div>
+            <h3 style="font:400 21px/1.2 'Newsreader',serif;margin:5px 0 2px">빛이 닿지 않는 정원</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+              <div><div style="font:700 9px 'Space Grotesk',monospace;color:#8a3d24;letter-spacing:.06em;margin-bottom:5px">장면</div><p style="font:400 10.5px/1.7 'Pretendard';color:#6e5f52;margin:0">'고요함'을 골랐기에, 이 정원은 조금 더 느리게 숨 쉽니다.</p></div>
+              <div><div style="font:700 9px 'Space Grotesk',monospace;color:#8a3d24;letter-spacing:.06em;margin-bottom:5px">Scene</div><p style="font:400 10.5px/1.7 'Pretendard';color:#6e5f52;margin:0">You chose 'stillness', so this garden breathes a little slower.</p></div>
+            </div>
+            <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #e0cbb6;padding-top:11px;font:italic 400 11.5px 'Newsreader',serif;color:#8a3d24">안내자에게 질문하기<span style="color:#b5623a">→</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#5a">5a</a>로 5개 화면 전체 여정(온보딩·씬·AI챗·공유·커머스)" · "본전시/스핀오프 악센트 대비 더 강하게" · "<a class="dv-oid" href="#5a">5a</a> 정보 레이아웃을 <a class="dv-oid" href="#4b">4b</a> 스위스 그리드로" · "<a class="dv-oid" href="#5a">5a</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+<section class="dv-turn" id="t4" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">라이트 · 에디토리얼 전시 계열 (레퍼런스 반영) · 홈 + 씬</span></div>
+  <p class="dv-tsub">첨부하신 핀터레스트 무드보드 4갈래를 그대로 방향화했습니다 — 스위스 타이포(B&amp;W 라인)와 코발트 키네틱(블랙·화이트·블루). 어둠 대신 여백과 타이포가 주인공인 갤러리 감각.</p>
+
+  <div class="dv-opts">
+
+    <!-- ============ 4b Swiss Editorial ============ -->
+    <div class="dv-opt" id="4b">
+      <div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a><span class="dv-oname">스위스 · Editorial B&amp;W</span></div>
+      <p class="dv-odesc">블랙앤화이트 라인·타이포. 순백 위 대형 그로테스크(Helvetica) 타이포, 얇은 괘선과 화살표·No. 인덱스. 전시 포스터를 그대로 앱으로 옮긴 스위스 에디토리얼.</p>
+      <div class="ph-row">
+
+        <!-- 4b home/poster -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #111;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.4);flex:none;background:#fff">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#111;flex-shrink:0"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;padding:20px 20px 18px;display:flex;flex-direction:column;color:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1.5px solid #0a0a0a;padding-bottom:8px">
+              <span style="width:22px;height:22px;border:1.5px solid #0a0a0a;display:flex;align-items:center;justify-content:center;font:700 11px 'Helvetica Neue',Arial">A</span>
+              <span style="text-align:right;font:700 10px/1.3 'Helvetica Neue',Arial;letter-spacing:.02em">No.01<br><span style="font-weight:400">ONLINE '26</span></span>
+            </div>
+            <div style="position:relative;margin-top:18px">
+              <div style="font:700 40px/.94 'Helvetica Neue',Arial;letter-spacing:-.02em">THE<br>ABYSS</div>
+              <div style="position:absolute;top:6px;right:0;width:0;height:0;border-top:26px solid transparent;border-bottom:26px solid transparent;border-left:34px solid #0a0a0a"></div>
+            </div>
+            <div style="border-top:1.5px solid #0a0a0a;margin-top:14px;padding-top:6px;font:700 12px 'Helvetica Neue',Arial">심해의 환상 : 두 번째 물결</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px">
+              <div><div style="font:700 9px 'Helvetica Neue',Arial;margin-bottom:4px">전시</div><div style="font:400 8.5px/1.5 'Pretendard';color:#333">전시가 끝난 곳에서 이야기는 이어집니다. 본전시를 안 봤어도 입장할 수 있는 독립된 4개의 장면.</div></div>
+              <div><div style="font:700 9px 'Helvetica Neue',Arial;margin-bottom:4px">Exhibition</div><div style="font:400 8.5px/1.5 'Pretendard';color:#333">Four independent scenes, born from the world of the original show. No ticket required.</div></div>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;gap:10px;border-top:1.5px solid #0a0a0a;padding-top:12px">
+              <span style="flex:1;background:#0a0a0a;color:#fff;text-align:center;font:700 12px 'Pretendard';padding:11px">입장 →</span>
+              <span style="font:400 9px 'Helvetica Neue',Arial;color:#888">2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4b scene -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #111;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.4);flex:none;background:#fff">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#111;flex-shrink:0"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;display:flex;flex-direction:column;color:#0a0a0a;font-family:'Helvetica Neue',Arial,sans-serif">
+            <div style="background:#0a0a0a;color:#fff;display:flex;justify-content:space-between;padding:8px 20px;font:700 10px 'Helvetica Neue',Arial;letter-spacing:.04em"><span>SCENE 01 / 04</span><span>고요함</span></div>
+            <div style="height:172px;background:linear-gradient(115deg,#e6e6e6 0%,#c9c9c9 100%);position:relative;overflow:hidden">
+              <div style="position:absolute;inset:0;display:flex;justify-content:center;gap:16px"><i style="width:20px;background:#fff;display:block"></i><i style="width:20px;background:#fff;display:block"></i><i style="width:20px;background:#fff;display:block"></i><i style="width:20px;background:#fff;display:block"></i></div>
+            </div>
+            <div style="padding:16px 20px;display:flex;flex-direction:column;flex:1">
+              <div style="font:700 30px/.96 'Helvetica Neue',Arial;letter-spacing:-.01em">THE UNLIT<br>GARDEN</div>
+              <div style="border-top:1.5px solid #0a0a0a;margin-top:12px;padding-top:8px;font:400 10.5px/1.6 'Pretendard';color:#333">이 정원의 빛은 본전시 마지막 방에서 흘러나온 것들이에요.</div>
+              <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;font:700 11px 'Helvetica Neue',Arial">ASK THE GUIDE<span>→</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 4c Cobalt Kinetic ============ -->
+    <div class="dv-opt" id="4c">
+      <div class="dv-olabel"><a class="dv-oid" href="#4c">4c</a><span class="dv-oname">코발트 · Kinetic Blue</span></div>
+      <p class="dv-odesc">블랙·화이트·블루. 코발트 블루와 화이트의 강한 대비, 반복·회전하는 키네틱 타이포, 볼드한 그로테스크. 젊고 에너제틱한 SNS 친화 방향.</p>
+      <div class="ph-row">
+
+        <!-- 4c home -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #0a0a0a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.4);flex:none;background:#fff">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#0a0a0a;flex-shrink:0;position:relative;z-index:3"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;position:relative;overflow:hidden;font-family:'Helvetica Neue',Arial,sans-serif">
+            <!-- kinetic repeating side type -->
+            <div style="position:absolute;top:0;bottom:0;right:-2px;width:52px;background:#1b31d6;overflow:hidden;display:flex;align-items:center;justify-content:center">
+              <div style="writing-mode:vertical-rl;font:700 20px 'Helvetica Neue',Arial;color:#fff;letter-spacing:.05em;white-space:nowrap;opacity:.95">SPIN-OFF · SPIN-OFF · SPIN-OFF</div>
+            </div>
+            <div style="position:absolute;inset:0;right:52px;padding:22px 18px;display:flex;flex-direction:column;color:#0a0a0a">
+              <div style="font:700 10px 'Helvetica Neue',Arial;letter-spacing:.14em;color:#1b31d6">AFTERGLOW ORIGINAL</div>
+              <div style="margin-top:auto">
+                <div style="font:700 46px/.9 'Helvetica Neue',Arial;letter-spacing:-.03em;color:#0a0a0a">심해의</div>
+                <div style="font:700 46px/.9 'Helvetica Neue',Arial;letter-spacing:-.03em;color:#1b31d6">환상</div>
+                <div style="background:#1b31d6;color:#fff;display:inline-block;font:700 11px 'Pretendard';padding:4px 10px;margin-top:12px">두 번째 물결</div>
+                <p style="font:400 10.5px/1.6 'Pretendard';color:#333;margin-top:14px">전시가 끝난 곳에서, 이야기는 이어집니다.</p>
+                <div style="margin-top:16px;background:#0a0a0a;color:#fff;text-align:center;font:700 13px 'Pretendard';padding:12px">▶ 입장하기</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4c scene -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #0a0a0a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.4);flex:none;background:#1b31d6">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#fff;flex-shrink:0;position:relative;z-index:3"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;position:relative;overflow:hidden;font-family:'Helvetica Neue',Arial,sans-serif;color:#fff;display:flex;flex-direction:column">
+            <div style="height:150px;margin:14px;background:linear-gradient(135deg,#dfe4ff 0%,#9fb0ff 100%);position:relative;overflow:hidden">
+              <div style="position:absolute;bottom:8px;left:10px;font:700 9px 'Helvetica Neue',Arial;color:#1b31d6;letter-spacing:.1em">SCENE 01 / 04</div>
+            </div>
+            <div style="padding:2px 20px 20px;display:flex;flex-direction:column;flex:1;min-height:0">
+              <div style="font:700 34px/.94 'Helvetica Neue',Arial;letter-spacing:-.02em;text-transform:uppercase">Unlit<br>Garden</div>
+              <p style="font:400 11px/1.6 'Pretendard';color:rgba(255,255,255,.9);margin-top:12px;border-top:1px solid rgba(255,255,255,.3);padding-top:10px">이 정원의 빛은 본전시 마지막 방에서 흘러나온 것들이에요.</p>
+              <div style="margin-top:auto;background:#fff;color:#1b31d6;text-align:center;font:700 12px 'Pretendard';padding:11px">안내자에게 묻기 →</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+      </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#4b">4b</a>로 본전시+스핀오프 전체 여정" · "<a class="dv-oid" href="#4b">4b</a>에 실제 전시 사진 자리 넣어줘" · "<a class="dv-oid" href="#4c">4c</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+<section class="dv-turn" id="t3" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">시네마틱 에디토리얼 · 필름 타이틀 카드</span></div>
+  <p class="dv-tsub">첨부하신 레퍼런스(넷플릭스 타이틀 시퀀스) 무드. 필름 그레인·그레이딩 위로 대형 하이컨트라스트 타이포, 영문 타이틀 + 한글 서브 조합의 '외국 스트리밍 앱' 감각. 씬 하나하나가 한 편의 작품 타이틀처럼 읽힙니다.</p>
+
+  <div class="dv-opts">
+
+    <!-- ============ 3a Film Title (Didone) ============ -->
+    <div class="dv-opt" id="3a">
+      <div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a><span class="dv-oname">필름 타이틀 · Didone Cinematic</span></div>
+      <p class="dv-odesc">〈NORMAL〉형. 웜 필름 그레이딩 위에 대형 디도네 세리프(Bodoni)가 화면을 가로지르고, 둥근 레터박스 프레임·그레인·비네트로 극장 타이틀 카드처럼. 영문 타이틀 + 한글 서브.</p>
+      <div class="ph-row">
+
+        <!-- 3a title/home -->
+        <div style="width:272px;height:616px;border-radius:34px;border:8px solid #050505;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.6);flex:none;background:#0b0b0d">
+          <div style="flex:1;border-radius:16px;overflow:hidden;position:relative;background:radial-gradient(ellipse 85% 55% at 50% 26%,rgba(224,184,138,.6),transparent 60%),radial-gradient(circle at 82% 82%,rgba(46,110,120,.4),transparent 52%),linear-gradient(180deg,#2c2016 0%,#100a07 100%)">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 52%,rgba(0,0,0,.6))"></div>
+            <div style="position:absolute;inset:0;background:url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22140%22%20height=%22140%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23n)%22/%3E%3C/svg%3E');background-size:140px;opacity:.14;mix-blend-mode:overlay;pointer-events:none"></div>
+            <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:14px 18px;box-sizing:border-box;color:#f4efe6">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font:600 8px 'Space Grotesk',monospace;letter-spacing:.34em;color:rgba(244,239,230,.8)">AFTERGLOW ORIGINAL</span>
+                <span style="width:20px;height:20px;border:1px solid rgba(244,239,230,.5);border-radius:4px;display:flex;align-items:center;justify-content:center;font:600 10px 'Bodoni Moda',serif">A</span>
+              </div>
+              <div style="text-align:center;margin-bottom:6px">
+                <div style="font:400 44px/.86 'Bodoni Moda',serif;letter-spacing:.01em;color:#f7f2ea;text-shadow:0 2px 30px rgba(0,0,0,.4)">ABYSS</div>
+                <div style="font:400 11px 'Pretendard';letter-spacing:.16em;color:rgba(244,239,230,.85);margin-top:8px">심해의 환상 · 두 번째 물결</div>
+                <div style="display:flex;gap:8px;justify-content:center;margin-top:10px">
+                  <span style="background:#f4efe6;color:#161210;font:800 12px 'Pretendard';padding:7px 20px;border-radius:4px">▶ 재생</span>
+                  <span style="border:1px solid rgba(244,239,230,.5);color:#f4efe6;font:600 12px 'Pretendard';padding:7px 16px;border-radius:4px">＋ 목록</span>
+                </div>
+                <div style="font:400 8px 'Space Grotesk',monospace;letter-spacing:.22em;color:rgba(244,239,230,.6);margin-top:8px">4 SCENES · ONLINE · 2026</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3a scene -->
+        <div style="width:272px;height:616px;border-radius:34px;border:8px solid #050505;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.6);flex:none;background:#0b0b0d">
+          <div style="flex:1;border-radius:16px;overflow:hidden;position:relative;background:radial-gradient(ellipse 75% 55% at 55% 38%,rgba(120,204,214,.42),transparent 60%),radial-gradient(circle at 20% 88%,rgba(60,90,120,.35),transparent 50%),linear-gradient(180deg,#0d1c26 0%,#05090c 100%)">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,.62))"></div>
+            <div style="position:absolute;inset:0;background:url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22140%22%20height=%22140%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23n)%22/%3E%3C/svg%3E');background-size:140px;opacity:.14;mix-blend-mode:overlay;pointer-events:none"></div>
+            <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:14px 18px;box-sizing:border-box;color:#eef4f6">
+              <div style="display:flex;justify-content:space-between;align-items:center;font:400 8.5px 'Space Grotesk',monospace;letter-spacing:.2em;color:rgba(238,244,246,.8)"><span>SCENE 01 / 04</span><span>04:30</span></div>
+              <div style="text-align:center">
+                <div style="font:400 30px/.92 'Bodoni Moda',serif;color:#f4fbfc;text-shadow:0 2px 30px rgba(0,0,0,.45)">THE UNLIT<br>GARDEN</div>
+                <div style="font:italic 400 12px/1.55 'Newsreader',serif;color:rgba(238,244,246,.9);margin-top:8px;max-width:210px;margin-left:auto;margin-right:auto">"이 정원의 빛은, 본전시 마지막 방에서 흘러나온 것들이에요."</div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.16);padding-top:8px">
+                <span style="font:400 11px 'Pretendard';color:rgba(238,244,246,.75)">심해의 안내자에게 묻기</span>
+                <span style="font:400 14px 'Bodoni Moda',serif;color:#8fe9f4">→</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 3b Art-house B&W ============ -->
+    <div class="dv-opt" id="3b">
+      <div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a><span class="dv-oname">아트하우스 · Mono Deco</span></div>
+      <p class="dv-odesc">〈For Piano Four Hands〉형. 흑백 필름 스틸 위 라이트 바 그래픽, 오선지 위 콘덴스드 타이포(Oswald), 먼지·스크래치. 실험적·수집가적 무드에 시안 한 줄만 악센트로.</p>
+      <div class="ph-row">
+
+        <!-- 3b title/home -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #0a0a0a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.6);flex:none;background:#111">
+          <div style="flex:1;position:relative;overflow:hidden">
+            <!-- b&w still -->
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 45% 30%,rgba(230,230,228,.32),transparent 58%),linear-gradient(180deg,#4a4a4c 0%,#0d0d0f 100%);filter:grayscale(1) contrast(1.1)"></div>
+            <!-- light bars -->
+            <div style="position:absolute;top:0;left:0;right:0;bottom:158px;display:flex;justify-content:center;gap:17px">
+              <i style="width:22px;background:#efe9dd;display:block"></i><i style="width:22px;background:#efe9dd;display:block"></i><i style="width:22px;background:#efe9dd;display:block"></i><i style="width:22px;background:#efe9dd;display:block"></i><i style="width:22px;background:#efe9dd;display:block"></i>
+            </div>
+            <div style="position:absolute;inset:0;background:url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22140%22%20height=%22140%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.9%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23n)%22/%3E%3C/svg%3E');background-size:130px;opacity:.16;mix-blend-mode:overlay;pointer-events:none"></div>
+            <!-- status -->
+            <div style="position:absolute;top:8px;left:16px;right:16px;display:flex;justify-content:space-between;font:600 10px 'Outfit';color:#0d0d0f;z-index:3"><span>9:41</span><span style="color:#efe9dd">◈</span></div>
+            <!-- bottom paper strip -->
+            <div style="position:absolute;left:0;right:0;bottom:0;height:158px;background:#ece7dd;padding:14px 18px 16px;background-image:repeating-linear-gradient(180deg,transparent 0 26px,rgba(40,36,30,.28) 26px 27px)">
+              <div style="font:400 8.5px 'Space Grotesk',monospace;letter-spacing:.24em;color:#a5251f">AFTERGLOW · SPIN-OFF Nº1</div>
+              <div style="font:600 34px/.9 'Oswald',sans-serif;letter-spacing:.02em;color:#161310;text-transform:uppercase;margin-top:10px">Fantasia<br>of the Deep</div>
+              <div style="font:400 10px 'Pretendard';color:#5a5348;margin-top:12px">심해의 환상 : 두 번째 물결 · 4 scenes</div>
+              <div style="position:absolute;right:16px;bottom:14px;font:400 20px 'Oswald';color:#2a7f8a">▶</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3b scene -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #0a0a0a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.6);flex:none;background:#111">
+          <div style="flex:1;position:relative;overflow:hidden">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse 65% 45% at 58% 36%,rgba(220,224,226,.34),transparent 56%),linear-gradient(180deg,#3e4446 0%,#0b0d0e 100%);filter:grayscale(1) contrast(1.12)"></div>
+            <div style="position:absolute;top:0;left:0;right:0;bottom:186px;display:flex;justify-content:center;gap:19px">
+              <i style="width:20px;background:#efe9dd;display:block"></i><i style="width:20px;background:#efe9dd;display:block"></i><i style="width:20px;background:#efe9dd;display:block"></i><i style="width:20px;background:#efe9dd;display:block"></i><i style="width:20px;background:#efe9dd;display:block"></i>
+            </div>
+            <div style="position:absolute;inset:0;background:url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20width=%22140%22%20height=%22140%22%3E%3Cfilter%20id=%22n%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.9%22%20numOctaves=%222%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23n)%22/%3E%3C/svg%3E');background-size:130px;opacity:.16;mix-blend-mode:overlay;pointer-events:none"></div>
+            <div style="position:absolute;top:8px;left:16px;right:16px;display:flex;justify-content:space-between;font:600 10px 'Outfit';color:#0d0d0f;z-index:3"><span>9:41</span><span style="font:400 9px 'Space Grotesk',monospace;color:#efe9dd">SC. 01/04</span></div>
+            <div style="position:absolute;left:0;right:0;bottom:0;height:186px;background:#ece7dd;padding:14px 18px 16px;background-image:repeating-linear-gradient(180deg,transparent 0 26px,rgba(40,36,30,.28) 26px 27px)">
+              <div style="font:400 8.5px 'Space Grotesk',monospace;letter-spacing:.24em;color:#a5251f">SCENE ONE · 고요함</div>
+              <div style="font:600 30px/.92 'Oswald',sans-serif;color:#161310;text-transform:uppercase;margin-top:9px">The Unlit<br>Garden</div>
+              <div style="font:400 10.5px/1.55 'Pretendard';color:#5a5348;margin-top:11px">이 정원의 빛은 본전시 마지막 방에서 흘러나온 것들이에요.</div>
+              <div style="position:absolute;right:16px;bottom:14px;display:flex;align-items:center;gap:6px;font:400 10px 'Pretendard';color:#2a7f8a">묻기 <span style="font:400 15px 'Oswald'">→</span></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#3a">3a</a>로 5개 화면 전체 여정" · "<a class="dv-oid" href="#3a">3a</a>에 실제 사진 넣을 자리 만들어줘" · "<a class="dv-oid" href="#3b">3b</a> 흑백을 컬러 필름 그레인으로" · "<a class="dv-oid" href="#3a">3a</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+<section class="dv-turn" id="t2" style="border-bottom:1px solid rgba(255,255,255,.08)">
+  <div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">구조가 다른 방향 · 홈 + 씬 뷰어</span></div>
+  <p class="dv-tsub">다크+글로우 톤을 벗어나, 매체·레이아웃 자체가 다른 방향입니다. 미술관 도록(라이트)과 극장 필름(레터박스) — 같은 콘텐츠가 전혀 다른 경험으로 읽힙니다.</p>
+
+  <div class="dv-opts">
+
+    <!-- ============ 2a Gallery White ============ -->
+    <div class="dv-opt" id="2a">
+      <div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a><span class="dv-oname">도록 · Gallery White</span></div>
+      <p class="dv-odesc">라이트 배경의 미술관 도록/월 라벨 미학. 넉넉한 여백, 세리프 에디토리얼 타이포, 작품은 액자 플레이트로 절제되게. 다크 몰입과 정반대의 '차분한 감상' 방향.</p>
+      <div class="ph-row">
+
+        <!-- 2a home / catalog -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #d8d3c8;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.35);flex:none;background:#EDEAE3">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#6b6257;flex-shrink:0"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;padding:22px 22px;overflow:hidden;display:flex;flex-direction:column;color:#22201c">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid #22201c;padding-bottom:9px">
+              <span style="font:700 14px 'Outfit',sans-serif;letter-spacing:.14em">AFTERGLOW</span>
+              <span style="font:400 9.5px 'Space Grotesk',monospace;color:#8a8073;letter-spacing:.1em">SPIN-OFF INDEX</span>
+            </div>
+            <h2 style="font:400 25px/1.28 'Newsreader',serif;margin:20px 0 18px">지금 상영 중인<br><span style="font-style:italic">스핀오프</span></h2>
+            <div style="display:flex;gap:13px;padding:2px 0 15px;border-bottom:1px solid #d0c9bc">
+              <div style="width:60px;height:74px;flex-shrink:0;background:radial-gradient(circle at 60% 35%,#2a5a80,#0a1628);border-radius:2px"></div>
+              <div style="flex:1">
+                <div style="font:400 10px 'Space Grotesk',monospace;color:#a5251f;letter-spacing:.06em">No. 01 · 상설</div>
+                <div style="font:500 15px/1.3 'Newsreader',serif;margin:5px 0 4px">심해의 환상<br>: 두 번째 물결</div>
+                <div style="font:400 10.5px 'Pretendard';color:#8a8073">온라인 + 성수 · 4 scenes</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:13px;padding:15px 0;border-bottom:1px solid #d0c9bc">
+              <div style="width:60px;height:74px;flex-shrink:0;background:radial-gradient(circle at 40% 40%,#5a3a6e,#1f1633);border-radius:2px"></div>
+              <div style="flex:1">
+                <div style="font:400 10px 'Space Grotesk',monospace;color:#8a8073;letter-spacing:.06em">No. 02 · 기간 한정</div>
+                <div style="font:500 15px/1.3 'Newsreader',serif;margin:5px 0 4px">파트너 전시<br>스핀오프</div>
+                <div style="font:400 10.5px 'Pretendard';color:#8a8073">파일럿 파트너 IP</div>
+              </div>
+            </div>
+            <div style="margin-top:auto;padding-top:15px;font:italic 400 11px/1.5 'Newsreader',serif;color:#a5988a">"전시가 끝난 곳에서, 이야기는 이어집니다."</div>
+          </div>
+        </div>
+
+        <!-- 2a scene / wall label -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #d8d3c8;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.35);flex:none;background:#EDEAE3">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#6b6257;flex-shrink:0"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;padding:24px 24px 18px;display:flex;flex-direction:column;color:#22201c">
+            <div style="display:flex;justify-content:space-between;font:400 9.5px 'Space Grotesk',monospace;color:#8a8073;letter-spacing:.14em"><span>SCENE</span><span>01 — 04</span></div>
+            <div style="margin:14px 0;padding:12px;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.08)">
+              <div style="height:210px;background:radial-gradient(circle 90px at 66% 32%,rgba(79,216,235,.4),transparent 70%),linear-gradient(180deg,#0a1628,#10294a)"></div>
+            </div>
+            <div style="width:34px;height:1.5px;background:#22201c;margin:4px 0 10px"></div>
+            <div style="font:400 9.5px 'Space Grotesk',monospace;color:#a5251f;letter-spacing:.1em;text-transform:uppercase">고요함 · 평온</div>
+            <h3 style="font:400 20px/1.3 'Newsreader',serif;margin:7px 0 8px">빛이 닿지 않는 정원</h3>
+            <p style="font:400 11.5px/1.65 'Pretendard';color:#6b6257">당신이 '고요함'을 골랐기에, 이 장면은 조금 더 느리게 숨 쉽니다.</p>
+            <div style="margin-top:auto;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #d0c9bc;padding-top:13px">
+              <span style="font:italic 400 11.5px 'Newsreader',serif;color:#22201c">안내자에게 질문하기</span>
+              <span style="font:400 16px 'Newsreader',serif;color:#a5251f">→</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ============ 2b Cinema ============ -->
+    <div class="dv-opt" id="2b">
+      <div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a><span class="dv-oname">극장 · Cinema</span></div>
+      <p class="dv-odesc">스핀오프를 '한 편의 영화'로. 레터박스 바, 자막형 캡션, 타임코드, 필름 퍼포레이션. 씬 뷰어가 상영관처럼 읽히는 서사·상영 중심 방향.</p>
+      <div class="ph-row">
+
+        <!-- 2b marquee home -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #0a0a0a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.6);flex:none;background:#060606">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#9a9a9a;flex-shrink:0;position:relative;z-index:3"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;position:relative;display:flex;flex-direction:column;justify-content:flex-end;color:#eee;padding:0 22px 26px;background:radial-gradient(ellipse 120% 60% at 50% 20%,#12304d 0%,transparent 55%),#060606">
+            <div style="position:absolute;top:44px;left:0;right:0;text-align:center;font:400 10px 'Space Grotesk',monospace;letter-spacing:.4em;color:#c9a24a">◆ NOW SHOWING ◆</div>
+            <div style="font:400 10px 'Space Grotesk',monospace;letter-spacing:.24em;color:#8a8a8a;margin-bottom:8px">A SPIN-OFF FILM</div>
+            <h2 style="font:800 34px/.98 'Outfit',sans-serif;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:6px">심해의<br>환상</h2>
+            <div style="font:400 12px/1.4 'Newsreader',serif;font-style:italic;color:#b9c6d0;margin-bottom:16px">: 두 번째 물결</div>
+            <div style="font:400 9px/1.7 'Space Grotesk',monospace;color:#7a7a7a;letter-spacing:.05em;border-top:1px solid #222;border-bottom:1px solid #222;padding:10px 0;margin-bottom:16px">DIR. AI CURATOR · 4 SCENES<br>RUNTIME 04:30 · ORIGINAL 2026</div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="flex:1;background:#eee;color:#060606;font:800 13px 'Pretendard';padding:12px;border-radius:4px;text-align:center">▶ 상영 시작</span>
+              <span style="width:44px;height:44px;border:1px solid #444;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#c9a24a">＋</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2b scene / film frame -->
+        <div style="width:272px;height:582px;border-radius:34px;border:8px solid #0a0a0a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.6);flex:none;background:#000">
+          <div style="height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px 'Outfit',sans-serif;color:#8a8a8a;flex-shrink:0;position:relative;z-index:3"><span>9:41</span><span style="display:flex;gap:5px;align-items:center"><span style="display:flex;gap:2px"><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.9"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.6"></i><i style="width:3px;height:8px;background:currentColor;border-radius:1px;display:block;opacity:.3"></i></span><span style="width:20px;height:10px;border:1px solid currentColor;border-radius:3px;display:inline-block;position:relative"><i style="position:absolute;inset:1.5px;width:11px;background:currentColor;border-radius:1px;display:block"></i></span></span></div>
+          <div style="flex:1;position:relative;color:#fff;display:flex;flex-direction:column;justify-content:center;overflow:hidden">
+            <!-- sprockets -->
+            <div style="position:absolute;left:5px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-around;padding:20px 0;z-index:3">
+              <i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i>
+            </div>
+            <div style="position:absolute;right:5px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:space-around;padding:20px 0;z-index:3">
+              <i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i><i style="width:6px;height:12px;background:#181818;border-radius:2px;display:block"></i>
+            </div>
+            <!-- film image -->
+            <div style="height:330px;margin:0 14px;position:relative;background:radial-gradient(circle 110px at 64% 34%,rgba(79,216,235,.34),transparent 70%),linear-gradient(180deg,#0a1628,#10294a)">
+              <div style="position:absolute;top:10px;left:12px;font:400 9.5px 'Space Grotesk',monospace;color:#c9a24a;letter-spacing:.1em">SCENE 01/04</div>
+              <div style="position:absolute;top:10px;right:12px;display:flex;align-items:center;gap:5px;font:400 9.5px 'Space Grotesk',monospace;color:#e0e0e0"><i style="width:6px;height:6px;border-radius:50%;background:#e5484d;display:block;animation:agpulse 1.6s infinite"></i>01:24 / 04:30</div>
+              <!-- subtitle -->
+              <div style="position:absolute;left:16px;right:16px;bottom:20px;text-align:center;font:500 13px/1.5 'Pretendard';color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.9)">"이 정원의 빛은, 본전시 마지막 방에서 흘러나온 것들이에요."</div>
+            </div>
+            <!-- lower bar -->
+            <div style="position:absolute;left:0;right:0;bottom:0;padding:18px 22px 22px;background:#000">
+              <div style="font:400 9px 'Space Grotesk',monospace;letter-spacing:.2em;color:#c9a24a;margin-bottom:5px">SC.01 — 빛이 닿지 않는 정원</div>
+              <div style="height:3px;background:#222;border-radius:2px;margin:8px 0 10px;position:relative"><i style="position:absolute;left:0;top:0;bottom:0;width:30%;background:#eee;border-radius:2px;display:block"></i></div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font:400 11px 'Pretendard';color:#9a9a9a">심해의 안내자에게 대사 걸기</span>
+                <span style="font:400 15px 'Outfit';color:#eee">⌨</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+      </div>
+
+  <p class="dv-next">다음 시도 → "<a class="dv-oid" href="#2a">2a</a>로 본전시+스핀오프 전체 여정" · "<a class="dv-oid" href="#2b">2b</a> 시네마 톤 유지" · "<a class="dv-oid" href="#2a">2a</a>를 인터랙티브 프로토타입으로"</p>
+</section>
+
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;glowColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4FD8EB&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;1a 심해 방향&quot;,&quot;default_options&quot;:[&quot;#4FD8EB&quot;,&quot;#5EEAD4&quot;,&quot;#7DA8FF&quot;,&quot;#C79BF0&quot;]},&quot;glowIntensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:60,&quot;min&quot;:0,&quot;max&quot;:100,&quot;step&quot;:5,&quot;unit&quot;:&quot;%&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;1a 심해 방향&quot;},&quot;showGrain&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;공통&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const glow = this.props.glowColor ?? '#4FD8EB';
+    const blur = ((this.props.glowIntensity ?? 60) / 100 * 40).toFixed(0) + 'px';
+    const grain = (this.props.showGrain ?? true) ? 1 : 0;
+    const frameBase = 'width:272px;height:582px;border-radius:34px;border:8px solid #17141a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 22px 55px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.03);flex:none';
+    const sb = 'height:32px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;font:600 11px "Outfit",sans-serif;flex-shrink:0;position:relative;z-index:5';
+    return {
+      frame1a: frameBase + ';background:#0a1628',
+      frame1b: frameBase + ';background:#160f0c',
+      frame1c: frameBase + ';background:#0a0814',
+      statusbar: sb + ';color:#9DB4C4',
+      statusbarLight: sb + ';color:#cfe0ea',
+      statusbarWarm: sb + ';color:#BCA99A',
+      statusbarAurora: sb + ';color:#a9a2c4',
+    };
+  }
+}
+</script>
+</body>
+</html>

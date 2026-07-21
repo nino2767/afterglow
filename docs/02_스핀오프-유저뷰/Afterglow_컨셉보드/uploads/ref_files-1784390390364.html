@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AFTERGLOW 스핀오프 유저뷰 목업 v0.1</title>
+<style>
+  :root{
+    --sea-deep:#0a1628; --sea-mid:#122642; --sea-light:#1d3a5f;
+    --glow:#4fd8eb; --glow-dim:#2a7f96;
+    --ink:#eaf4f8; --ink-dim:#9db4c4; --ink-faint:#5f7a8c;
+    --page:#f4f2ee; --card:#ffffff; --note:#6b6257;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--page);font-family:'Apple SD Gothic Neo','Pretendard',system-ui,sans-serif;color:#2b2620;padding:40px 30px 60px}
+  h1{font-size:22px;margin-bottom:6px}
+  .sub{color:var(--note);font-size:13px;margin-bottom:36px}
+  .row{display:flex;flex-wrap:wrap;gap:34px;align-items:flex-start}
+  .unit{width:270px}
+  .label{font-size:14px;font-weight:700;margin-bottom:4px}
+  .label span{color:#a8998a;font-weight:400;font-size:12px;margin-left:6px}
+  .phone{width:270px;height:560px;border-radius:28px;background:var(--sea-deep);border:6px solid #241f1a;overflow:hidden;position:relative;display:flex;flex-direction:column;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+  .notes{margin-top:10px;font-size:12px;line-height:1.55;color:var(--note)}
+  .notes b{color:#4a4238}
+  /* shared bits */
+  .wave{background:
+    radial-gradient(ellipse 200% 60% at 50% 110%, var(--sea-light) 0%, transparent 60%),
+    radial-gradient(ellipse 160% 50% at 30% -10%, #16324f 0%, transparent 55%),
+    var(--sea-mid)}
+  .btn{display:block;text-align:center;background:var(--glow);color:#062028;font-weight:800;border-radius:24px;padding:12px;font-size:14px}
+  .btn.ghost{background:transparent;border:1.5px solid var(--glow-dim);color:var(--glow)}
+  .chip{display:inline-block;border:1px solid var(--glow-dim);color:var(--glow);border-radius:14px;padding:4px 11px;font-size:11.5px;margin:3px 2px}
+  .chip.on{background:var(--glow);color:#062028;font-weight:700}
+  .tag{font-size:10px;letter-spacing:.14em;color:var(--glow);text-transform:uppercase}
+  /* S-1 home */
+  .home{padding:22px 18px;color:var(--ink)}
+  .logo{font-size:15px;font-weight:800;letter-spacing:.28em;color:var(--ink)}
+  .logo em{color:var(--glow);font-style:normal}
+  .home h2{font-size:16px;margin:24px 0 12px}
+  .poster-card{border-radius:14px;padding:14px;margin-bottom:12px;position:relative;overflow:hidden}
+  .poster-card .t{font-size:15px;font-weight:800;margin-bottom:4px}
+  .poster-card .d{font-size:11px;color:var(--ink-dim)}
+  .badge{position:absolute;top:12px;right:12px;font-size:9.5px;font-weight:700;border-radius:10px;padding:3px 8px;background:rgba(79,216,235,.15);color:var(--glow)}
+  .soon{border:1.5px dashed #2c4258;background:transparent;color:var(--ink-faint)}
+  /* S0 poster */
+  .poster{flex:1;display:flex;flex-direction:column;justify-content:flex-end;padding:26px 22px;color:var(--ink)}
+  .poster h2{font-size:24px;line-height:1.3;margin:10px 0 8px;font-weight:800}
+  .poster p{font-size:12.5px;color:var(--ink-dim);margin-bottom:18px;line-height:1.6}
+  .origin{font-size:10.5px;color:var(--ink-faint);margin-top:12px}
+  /* S1 onboarding */
+  .onb{flex:1;padding:30px 22px;color:var(--ink);display:flex;flex-direction:column}
+  .onb h2{font-size:19px;line-height:1.45;margin:18px 0 22px;font-weight:800}
+  .choice{border:1.5px solid #2c4258;border-radius:14px;padding:14px;margin-bottom:10px;font-size:13.5px;color:var(--ink)}
+  .choice small{display:block;color:var(--ink-faint);font-size:10.5px;margin-top:3px}
+  .choice.sel{border-color:var(--glow);background:rgba(79,216,235,.08)}
+  .consent{margin-top:auto;font-size:10px;color:var(--ink-faint);line-height:1.5}
+  /* S2 scene */
+  .scene{flex:1;position:relative;color:var(--ink)}
+  .scene-visual{position:absolute;inset:0;background:
+    radial-gradient(circle 90px at 70% 30%, rgba(79,216,235,.28), transparent 70%),
+    radial-gradient(ellipse 140% 45% at 50% 100%, #234c74 0%, transparent 65%),
+    linear-gradient(180deg,#0a1628 0%, #10294a 100%)}
+  .dots{position:absolute;top:16px;left:0;right:0;text-align:center}
+  .dots i{display:inline-block;width:5px;height:5px;border-radius:50%;background:#3a566e;margin:0 3px}
+  .dots i.on{background:var(--glow)}
+  .caption{position:absolute;left:20px;right:20px;top:110px}
+  .caption h3{font-size:16px;font-weight:800;margin:6px 0}
+  .caption p{font-size:11.5px;color:var(--ink-dim);line-height:1.65}
+  .chat{position:absolute;left:12px;right:12px;bottom:14px}
+  .bubble{background:rgba(10,22,40,.85);border:1px solid #2c4258;border-radius:14px;padding:10px 12px;font-size:11.5px;line-height:1.6;color:var(--ink);margin-bottom:8px;backdrop-filter:blur(4px)}
+  .bubble b{color:var(--glow)}
+  .input{display:flex;gap:8px;align-items:center}
+  .input .field{flex:1;border:1px solid #2c4258;border-radius:20px;padding:9px 14px;font-size:11px;color:var(--ink-faint);background:rgba(10,22,40,.7)}
+  .cam{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--glow-dim);display:flex;align-items:center;justify-content:center;font-size:15px}
+  /* S3 archive */
+  .arc{flex:1;padding:24px 20px;color:var(--ink);display:flex;flex-direction:column}
+  .arc h2{font-size:18px;font-weight:800;margin:6px 0 14px}
+  .mosaic{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+  .mo{border-radius:10px;height:74px;background:linear-gradient(135deg,#16324f,#1d3a5f)}
+  .mo.wide{grid-column:span 2;background:linear-gradient(135deg,#10294a,#2a5a80);position:relative}
+  .mo.wide::after{content:'가장 오래 머문 장면';position:absolute;bottom:8px;left:10px;font-size:9.5px;color:var(--glow)}
+  .quote{border-left:2px solid var(--glow);padding:2px 0 2px 10px;font-size:11px;color:var(--ink-dim);line-height:1.6;margin:10px 0 16px;font-style:italic}
+  /* S4 afterglow */
+  .aft{flex:1;padding:20px 18px;color:var(--ink);display:flex;flex-direction:column}
+  .push{background:#f7f9fb;color:#1d2733;border-radius:12px;padding:11px 13px;font-size:11px;line-height:1.5;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+  .push b{display:block;font-size:11.5px}
+  .newscene{margin:16px 0 10px;border:1.5px solid var(--glow);border-radius:12px;padding:12px;font-size:12px;color:var(--glow);text-align:center;font-weight:700;background:rgba(79,216,235,.07)}
+  .thread{margin-top:6px}
+  .thread .bubble{position:static;margin-bottom:8px}
+  .me{background:rgba(79,216,235,.12);border-color:var(--glow-dim);margin-left:34px}
+</style>
+</head>
+<body>
+<h1>AFTERGLOW 스핀오프 유저뷰 목업 v0.1</h1>
+<div class="sub">테마: 상설 데모 전시 〈심해의 환상〉 · 화면 플로우 v0.1 기준 · 논의용 (비주얼은 자리표시)</div>
+
+<div class="row">
+
+  <!-- S-1 -->
+  <div class="unit">
+    <div class="label">S-1 서비스 홈 <span>극장 입구</span></div>
+    <div class="phone">
+      <div class="home">
+        <div class="logo">AFTER<em>GLOW</em></div>
+        <h2>지금 상영 중인 스핀오프</h2>
+        <div class="poster-card wave">
+          <span class="badge">DEMO 상설</span>
+          <div class="tag">Spin-off Exhibition</div>
+          <div class="t">심해의 환상 : 두 번째 물결</div>
+          <div class="d">본전시 〈심해의 환상〉 세계관 · 온라인+성수</div>
+        </div>
+        <div class="poster-card" style="background:linear-gradient(135deg,#3b2a4f,#1f1633)">
+          <div class="tag" style="color:#c9a6f2">Spin-off Exhibition</div>
+          <div class="t">파트너 전시 스핀오프</div>
+          <div class="d">파일럿 파트너 IP · 기간 한정</div>
+        </div>
+        <div class="poster-card soon">
+          <div class="t" style="font-size:13px">Coming Soon</div>
+          <div class="d" style="color:var(--ink-faint)">다음 세계관이 준비 중입니다</div>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Phase 1:</b> 카드 몇 장 수준의 라이트 홈. 데모 전시가 빈 극장 문제 해소 + 고객사 쇼케이스. B2B 소개는 여기 섞지 않음(별도 랜딩).</div>
+  </div>
+
+  <!-- S0 -->
+  <div class="unit">
+    <div class="label">S0 발견 <span>디지털 포스터</span></div>
+    <div class="phone">
+      <div class="poster wave">
+        <div class="tag">Spin-off Exhibition</div>
+        <h2>심해의 환상<br>: 두 번째 물결</h2>
+        <p>전시가 끝난 곳에서, 이야기는 이어집니다.<br>당신이 미처 만나지 못한 심해의 네 장면.</p>
+        <a class="btn">입장하기</a>
+        <div class="origin">원작 전시 · 심해의 환상 (2026.5–7) | 본전시를 안 봤어도 입장할 수 있어요</div>
+      </div>
+    </div>
+    <div class="notes"><b>포인트:</b> 서비스 소개가 아니라 '전시 포스터'. S3 공유 카드가 이 화면과 동일 → 공유=신규 유입(바이럴 루프).</div>
+  </div>
+
+  <!-- S1 -->
+  <div class="unit">
+    <div class="label">S1 입장 <span>온보딩 · 분기 1개</span></div>
+    <div class="phone">
+      <div class="onb">
+        <div class="tag">Entrance</div>
+        <h2>본전시 〈심해의 환상〉,<br>보셨나요?</h2>
+        <div class="choice sel">아니요, 처음이에요
+          <small>취향 키워드로 입장 — 지금 골라주세요</small>
+          <div style="margin-top:8px">
+            <span class="chip on">고요함</span><span class="chip">몽환</span><span class="chip on">압도</span><span class="chip">기괴함</span><span class="chip">따뜻함</span>
+          </div>
+          <div style="margin-top:10px; font-size:10px; border-top:1px dashed rgba(79,216,235,0.2); padding-top:8px; display:flex; justify-content:space-between; align-items:center;">
+            <span style="color:var(--ink-dim)">원작이 궁금하다면?</span>
+            <a href="#" style="color:var(--glow); text-decoration:none; font-weight:700;">본전시 정보 보기 ↗</a>
+          </div>
+        </div>
+        <div class="choice">네, 봤어요
+          <small>기억에 남는 장면 하나를 고르면 연출에 반영돼요</small>
+        </div>
+        <div class="consent">✓ 관람 데이터 수집 동의 (감정 키워드·대화, 아카이브 생성에 사용) · 로그인 없음</div>
+      </div>
+    </div>
+    <div class="notes"><b>원칙:</b> 본전시 분기는 이 질문 하나로 격리. 이후 화면은 본전시를 모름. <b>미관람자:</b> 본전시를 보지 않은 사용자에게는 가벼운 정보 링크(본전시 정보 보기) 제공. Phase 3에선 '예' 경로가 관람 데이터 자동 연동으로 대체.</div>
+  </div>
+
+  <!-- S1.5 -->
+  <div class="unit">
+    <div class="label">S1.5 본전시 상세/예매 <span>신규 추가</span></div>
+    <div class="phone" style="background:#160b0d;">
+      <div style="flex:1; display:flex; flex-direction:column; padding:24px 20px; color:var(--ink); justify-content:space-between; height:100%;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <span class="tag" style="color:#e87b7b;">EXHIBITION INFO</span>
+            <span style="font-size:10px; color:var(--ink-faint); cursor:pointer;">뒤로가기</span>
+          </div>
+          <div style="height:100px; background:radial-gradient(circle, rgba(139,46,74,0.4) 0%, #2b1116 100%); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:24px; color:#e87b7b; margin-bottom:16px;">✦</div>
+          <h2 style="font-size:18px; font-weight:800; line-height:1.3; color:#ffffff; margin-bottom:8px;">빛의 심연<br><span style="font-size:11px; font-weight:400; color:var(--ink-dim);">Abyss of Light</span></h2>
+          <p style="font-size:11.5px; color:var(--ink-dim); line-height:1.55; margin-bottom:18px;">
+            인간의 고독과 안식을 일렁이는 미디어아트로 표현한 몰입형 전시입니다. AI 가이드 음성과 함께 감상해보세요.
+          </p>
+          <div style="border-top:1px solid rgba(232,123,123,0.15); padding-top:12px; font-size:11px; display:flex; flex-direction:column; gap:6px; color:var(--ink-dim);">
+            <div><b>운영 시간:</b> 상시 운영 (10:00 - 20:00)</div>
+            <div><b>장소:</b> 아트홀 서울 B1 특별실</div>
+          </div>
+        </div>
+        <a class="btn" style="background:#8b2e4a; color:#ffffff; font-weight:700; text-decoration:none;">본전시 예매하기</a>
+      </div>
+    </div>
+    <div class="notes"><b>본전시 유도:</b> 스핀오프 입장(S1) 혹은 아카이브(S3) 단계에서 유입되어 본전시 정보와 예약 기능 제공. 예매 버튼 클릭 시 결제 단계로 진입합니다.</div>
+  </div>
+
+  <!-- S1.5.1 -->
+  <div class="unit">
+    <div class="label">S1.5.1 본전시 예매/결제 <span>신규 추가</span></div>
+    <div class="phone" style="background:#160b0d;">
+      <div style="flex:1; display:flex; flex-direction:column; padding:24px 20px; color:var(--ink); justify-content:space-between; height:100%;">
+        <div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+            <span class="tag" style="color:#e87b7b;">EXHIBITION BOOKING</span>
+            <span style="font-size:10px; color:var(--ink-faint);">뒤로가기</span>
+          </div>
+          <h2 style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:14px;">빛의 심연 예약</h2>
+          
+          <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); padding:12px; border-radius:8px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px;">
+              <span>일반 티켓 (15,000원)</span>
+              <span style="display:flex; gap:8px; align-items:center;">
+                <span style="width:20px; height:20px; background:rgba(255,255,255,0.1); border-radius:50%; text-align:center; line-height:20px; cursor:pointer;">-</span>
+                <b>1</b>
+                <span style="width:20px; height:20px; background:rgba(255,255,255,0.1); border-radius:50%; text-align:center; line-height:20px; cursor:pointer;">+</span>
+              </span>
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; font-size:11px; margin-bottom:16px;">
+            <div>
+              <span style="color:var(--ink-faint); display:block; margin-bottom:4px;">예약자명</span>
+              <div style="background:rgba(255,255,255,0.05); padding:8px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); color:#fff;">동도 파트너</div>
+            </div>
+            <div>
+              <span style="color:var(--ink-faint); display:block; margin-bottom:4px;">이메일</span>
+              <div style="background:rgba(255,255,255,0.05); padding:8px 12px; border-radius:6px; border:1px solid rgba(255,255,255,0.1); color:#fff;">partner@afterglow.co.kr</div>
+            </div>
+          </div>
+
+          <div style="font-size:11px;">
+            <span style="color:var(--ink-faint); display:block; margin-bottom:6px;">결제 수단</span>
+            <div style="display:flex; gap:8px;">
+              <span style="flex:1; border:1.5px solid #8b2e4a; background:rgba(139,46,74,0.15); color:#fff; padding:8px 0; text-align:center; border-radius:6px; font-weight:700;">신용카드</span>
+              <span style="flex:1; border:1px solid rgba(255,255,255,0.1); color:var(--ink-dim); padding:8px 0; text-align:center; border-radius:6px;">카카오페이</span>
+            </div>
+          </div>
+        </div>
+        <a class="btn" style="background:#8b2e4a; color:#ffffff; font-weight:700; text-decoration:none;">결제하기 (15,000원)</a>
+      </div>
+    </div>
+    <div class="notes"><b>가상 예약/결제:</b> 티켓 매수 선택 및 예약자 상세 폼 정보를 확인하고 가상 신용카드/카카오페이를 통해 결제하는 모사 기능.</div>
+  </div>
+
+  <!-- S1.5.2 -->
+  <div class="unit">
+    <div class="label">S1.5.2 본전시 예매완료 <span>신규 추가</span></div>
+    <div class="phone" style="background:#160b0d;">
+      <div style="flex:1; display:flex; flex-direction:column; padding:24px 20px; color:var(--ink); justify-content:space-between; height:100%;">
+        <div style="text-align:center; margin-top:20px;">
+          <div style="width:40px; height:40px; border-radius:50%; background:rgba(232,123,123,0.15); color:#e87b7b; display:flex; align-items:center; justify-content:center; font-size:20px; margin:0 auto 12px;">✓</div>
+          <h2 style="font-size:16px; font-weight:800; color:#ffffff; margin-bottom:4px;">예매가 완료되었습니다</h2>
+          <p style="font-size:11px; color:var(--ink-dim);">모바일 Pass를 전시장 입구에서 제시해주세요.</p>
+          
+          <div style="background:linear-gradient(135deg, #2b1116 0%, #160b0d 100%); border:1px solid rgba(232,123,123,0.3); border-radius:12px; padding:16px; margin:24px 0 16px; text-align:left; font-size:11px;">
+            <div style="font-size:9px; color:#e87b7b; font-weight:700; letter-spacing:0.1em; margin-bottom:8px;">MOBILE TICKET PASS</div>
+            <div style="font-size:14px; font-weight:800; color:#fff; margin-bottom:8px;">빛의 심연 (Abyss of Light)</div>
+            <div style="display:flex; justify-content:space-between; border-top:1px dashed rgba(255,255,255,0.1); padding-top:10px; margin-bottom:12px;">
+              <span><b>예약자:</b> 동도 파트너</span>
+              <span><b>매수:</b> 일반 1매</span>
+            </div>
+            <div style="height:24px; background:repeating-linear-gradient(90deg, #e87b7b, #e87b7b 2px, transparent 2px, transparent 6px); opacity:0.8;"></div>
+            <div style="font-size:8px; text-align:center; color:var(--ink-faint); margin-top:4px; font-family:monospace;">AG-20260717-123456</div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <a class="btn" style="background:#8b2e4a; color:#ffffff; font-weight:700; text-decoration:none;">본전시 작품목록 보기</a>
+          <a class="btn ghost" style="border-color:rgba(255,255,255,0.15); color:var(--ink-dim); font-size:12.5px; padding:8px;">홈으로 이동</a>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>모바일 패스 발급:</b> 결제 성공 후 고유 티켓 번호와 바코드가 포함된 가상 관람 티켓이 발급되며 로컬 세션이 활성화 상태로 기록됩니다.</div>
+  </div>
+
+  <!-- S1.5.3 -->
+  <div class="unit">
+    <div class="label">S1.5.3 본전시 목록형 관람 <span>신규 추가</span></div>
+    <div class="phone" style="background:#160b0d;">
+      <div style="flex:1; display:flex; flex-direction:column; padding:16px 14px; color:var(--ink); justify-content:space-between; height:100%;">
+        <div>
+          <!-- 헤더 -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid rgba(232,123,123,0.15);">
+            <span style="font-size:11px; color:#e87b7b; font-weight:700;">✦ 빛의 심연 (본전시)</span>
+            <span style="background:rgba(232,123,123,0.15); font-size:9.5px; border-radius:12px; padding:3px 8px; border:1px solid rgba(232,123,123,0.3); color:#e87b7b; cursor:pointer;">[QR 스캔]</span>
+          </div>
+          
+          <div style="font-size:10px; color:var(--ink-faint); margin-bottom:10px;">작품 선택 후 도슨트 듣기</div>
+          
+          <!-- 작품 목록 -->
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <div style="width:36px; height:36px; border-radius:4px; background:radial-gradient(circle, #8b2e4a 0%, #2b1116 100%); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#e87b7b; font-size:12px;">✦</div>
+              <div style="flex:1;">
+                <div style="font-size:11.5px; font-weight:700; color:#fff;">윤슬</div>
+                <div style="font-size:9.5px; color:var(--ink-faint);">김하늘 · 1구역: 잔물결의 언어</div>
+              </div>
+              <span style="color:var(--ink-faint); font-size:12px;">&gt;</span>
+            </div>
+            
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <div style="width:36px; height:36px; border-radius:4px; background:radial-gradient(circle, #8b2e4a 0%, #2b1116 100%); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#e87b7b; font-size:12px;">✦</div>
+              <div style="flex:1;">
+                <div style="font-size:11.5px; font-weight:700; color:#fff;">심연의 호흡</div>
+                <div style="font-size:9.5px; color:var(--ink-faint);">이태양 · 2구역: 수압의 깊이</div>
+              </div>
+              <span style="color:var(--ink-faint); font-size:12px;">&gt;</span>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <div style="width:36px; height:36px; border-radius:4px; background:radial-gradient(circle, #8b2e4a 0%, #2b1116 100%); flex-shrink:0; display:flex; align-items:center; justify-content:center; color:#e87b7b; font-size:12px;">✦</div>
+              <div style="flex:1;">
+                <div style="font-size:11.5px; font-weight:700; color:#fff;">기억의 잔광</div>
+                <div style="font-size:9.5px; color:var(--ink-faint);">박은하 · 3구역: 물러나는 해안선</div>
+              </div>
+              <span style="color:var(--ink-faint); font-size:12px;">&gt;</span>
+            </div>
+          </div>
+        </div>
+        
+        <a class="btn" style="background:#8b2e4a; color:#ffffff; font-weight:700; text-decoration:none; margin-top:20px; font-size:12px; padding:10px;">오늘의 관람 완료</a>
+      </div>
+    </div>
+    <div class="notes"><b>본전시 목록형 관람:</b> 가상 예약 완료 후 `/artwork` 경로로 진입하여 작품 목록을 보고 도슨트를 듣거나 감정 칩을 등록하고, 최종 퇴장 버튼을 누르는 페이지입니다.</div>
+  </div>
+
+  <!-- S1.6 -->
+  <div class="unit">
+    <div class="label">S1.6 본전시 관람완료 <span>신규 추가</span></div>
+    <div class="phone" style="background:#0d0d0f;">
+      <div style="flex:1; display:flex; flex-direction:column; padding:24px 20px; color:var(--ink); justify-content:space-between; height:100%; text-align:center;">
+        <div>
+          <div style="width:36px; height:36px; border-radius:50%; background:rgba(79, 216, 235, 0.1); display:flex; align-items:center; justify-content:center; margin:0 auto 12px; border:1px solid rgba(79, 216, 235, 0.2);">
+            <span style="color:#4fd8eb; font-size:16px;">✦</span>
+          </div>
+          <h2 style="font-size:15px; font-weight:800; color:#ffffff; margin-bottom:6px;">본전시 관람이 완료되었습니다</h2>
+          <p style="font-size:11px; color:var(--ink-dim); line-height:1.45; margin-bottom:20px;">
+            수집된 감정을 기반으로 특별 스핀오프 전시 초대권이 발행되었습니다.
+          </p>
+
+          <div style="background:linear-gradient(135deg, #091724 0%, #160d20 100%); border:2px solid #4fd8eb; border-radius:12px; padding:16px; text-align:left; font-size:11px; position:relative; box-shadow:0 4px 15px rgba(79,216,235,0.15);">
+            <div style="font-size:8.5px; color:#4fd8eb; font-weight:700; letter-spacing:0.1em; margin-bottom:6px;">SPINOFF TICKET PASS ✦</div>
+            <div style="font-size:13px; font-weight:800; color:#fff; margin-bottom:4px;">어비스 티 라운지 (Abyss Tea Lounge)</div>
+            <p style="font-size:9.5px; color:var(--ink-faint); margin-bottom:10px; line-height:1.3;">"전시가 끝난 곳에서, 이야기는 이어집니다."</p>
+            <div style="display:flex; justify-content:space-between; border-top:1px dashed rgba(79,216,235,0.25); padding-top:8px; margin-bottom:8px; font-size:10px;">
+              <span><b>초대 대상:</b> 동도 파트너님</span>
+              <span style="color:#4fd8eb; font-weight:700;">SP-TEA-1234</span>
+            </div>
+            <div style="height:20px; background:repeating-linear-gradient(90deg, #4fd8eb, #4fd8eb 2px, transparent 2px, transparent 5px); opacity:0.7;"></div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <a class="btn" style="background:#4fd8eb; color:#062028; font-weight:800; text-decoration:none;">스핀오프 전시 보러가기 ↗</a>
+          <a class="btn ghost" style="border-color:rgba(255,255,255,0.15); color:var(--ink-dim); font-size:12px; padding:8px;">내 여운 보관함</a>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>Flow B 스핀오프 연계:</b> 본전시 완료 시 관람 데이터를 기반으로 제작된 스핀오프 특별 초대장을 증정하여 관람객을 다시 스핀오프 전시로 락인(Lock-in)시킵니다.</div>
+  </div>
+
+  <!-- S2 -->
+  <div class="unit">
+    <div class="label">S2 관람 <span>씬 뷰어 — 핵심 화면</span></div>
+    <div class="phone">
+      <div class="scene">
+        <div class="scene-visual"></div>
+        <div class="dots"><i class="on"></i><i></i><i></i><i></i></div>
+        <div class="caption">
+          <div class="tag">Scene 1 / 4</div>
+          <h3>빛이 닿지 않는 정원</h3>
+          <p>당신이 '고요함'을 골랐기에, 이 장면은 조금 더 느리게 숨 쉽니다. 위로 스와이프하면 다음 장면으로.</p>
+        </div>
+        <div class="chat">
+          <div class="bubble"><b>심해의 안내자</b> · 이 정원의 빛은 본전시 마지막 방에서 흘러나온 것들이에요. 무엇이 궁금하세요?</div>
+          <div class="input">
+            <div class="field">안내자에게 물어보기…</div>
+            <div class="cam">📷</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>구조:</b> 장면 3~5개 세로 스와이프, 대화는 오버레이(몰입 유지). 📷 = 오프라인 미니 전시에서 작품 촬영 → 같은 씬 열림. <b>지표:</b> 완주율 · 대화 3턴+.</div>
+  </div>
+
+  <!-- S2 List Mode -->
+  <div class="unit">
+    <div class="label">S2 스핀오프 목록형 관람 <span>신규 추가</span></div>
+    <div class="phone" style="background:#0d0d0f;">
+      <div style="flex:1; display:flex; flex-direction:column; padding:16px 14px; color:var(--ink); justify-content:space-between; height:100%;">
+        <div>
+          <!-- 토글 헤더 -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid rgba(255,255,255,0.06);">
+            <span style="font-size:11px; color:#4fd8eb; font-weight:700;">✦ 도슨트 목록형</span>
+            <span style="background:rgba(255,255,255,0.08); font-size:9.5px; border-radius:12px; padding:3px 8px; border:1px solid rgba(255,255,255,0.15); cursor:pointer;">몰입형 전환</span>
+          </div>
+          
+          <div style="font-size:10px; color:var(--ink-faint); margin-bottom:10px;">스핀오프 장면 골라보기</div>
+          
+          <!-- 모듈형 목록 리스트 -->
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <div style="width:36px; height:36px; border-radius:4px; background:radial-gradient(circle, #2a7f96 0%, #0d131e 100%); flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div style="font-size:11.5px; font-weight:700; color:#fff;">Scene 1. 빛이 닿지 않는 정원</div>
+                <div style="font-size:9.5px; color:var(--ink-faint);">고요함 · 평온</div>
+              </div>
+              <span style="color:var(--ink-faint); font-size:12px;">&gt;</span>
+            </div>
+            
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <div style="width:36px; height:36px; border-radius:4px; background:radial-gradient(circle, #8b2e4a 0%, #130d1e 100%); flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div style="font-size:11.5px; font-weight:700; color:#fff;">Scene 2. 가라앉은 메아리</div>
+                <div style="font-size:9.5px; color:var(--ink-faint);">몽환 · 심오</div>
+              </div>
+              <span style="color:var(--ink-faint); font-size:12px;">&gt;</span>
+            </div>
+
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px; display:flex; align-items:center; gap:10px; cursor:pointer;">
+              <div style="width:36px; height:36px; border-radius:4px; background:radial-gradient(circle, #2a7f96 0%, #0d0d14 100%); flex-shrink:0;"></div>
+              <div style="flex:1;">
+                <div style="font-size:11.5px; font-weight:700; color:#fff;">Scene 3. 심연의 틈새</div>
+                <div style="font-size:9.5px; color:var(--ink-faint);">쓸쓸함 · 압도</div>
+              </div>
+              <span style="color:var(--ink-faint); font-size:12px;">&gt;</span>
+            </div>
+          </div>
+        </div>
+        <a class="btn" style="background:#4fd8eb; color:#062028; font-weight:800; text-decoration:none; margin-top:20px; font-size:12px; padding:10px;">여정 기록하고 아카이브 받기</a>
+      </div>
+    </div>
+    <div class="notes"><b>스핀오프 모듈러 목록:</b> 스와이프를 통한 몰입 관람 방식 외에, 개별 장면을 골라 들을 수 있도록 본전시와 디자인을 완전히 공유화한 목록형 도슨트 뷰(List Mode).</div>
+  </div>
+
+  <!-- S3 -->
+  <div class="unit">
+    <div class="label">S3 기념 <span>자동 아카이브</span></div>
+    <div class="phone">
+      <div class="arc">
+        <div class="tag">My Afterglow</div>
+        <h2>당신의 심해는<br>'고요한 압도'였어요</h2>
+        <div class="mosaic">
+          <div class="mo wide"></div>
+          <div class="mo"></div>
+          <div class="mo"></div>
+        </div>
+        <div>
+          <span class="chip on">#고요함</span><span class="chip on">#윤슬</span><span class="chip">#느린호흡</span>
+        </div>
+        <div class="quote">"빛이 가라앉는 게 아니라, 어둠이 떠오르는 거군요" — 당신과 안내자의 대화 중</div>
+        <a class="btn" style="margin-bottom:8px">공유 카드 만들기</a>
+        <a class="btn ghost" style="margin-bottom:8px">이 순간, 굿즈로 간직하기</a>
+        <a class="btn ghost" style="border-color:var(--glow); color:var(--glow)">본전시 〈심해의 환상〉 보러가기 ↗</a>
+      </div>
+    </div>
+    <div class="notes"><b>제로 에포트:</b> 작성 없음 — 머문 장면·대화·키워드가 자동 조합. 공유 카드=S0 포스터. 굿즈는 마플 POD 후보, 외부 결제. <b>조건부 CTA:</b> 본전시 미관람 유저('아니오' 선택자)에 한해 하단에 본전시 예매 버튼을 노출하여 전환 극대화. <b>지표:</b> 생성률 · 공유 10%+.</div>
+  </div>
+
+  <!-- S4 -->
+  <div class="unit">
+    <div class="label">S4 여운 <span>D+1~7 재방문</span></div>
+    <div class="phone">
+      <div class="aft">
+        <div class="push"><b>AFTERGLOW · D+2</b>심해가 당신의 '고요함'을 기억하고 있어요. 새 장면이 열렸습니다 →</div>
+        <div class="newscene">🌊 다섯 번째 장면이 열렸어요</div>
+        <div class="thread">
+          <div class="bubble"><b>심해의 안내자</b> · 다시 오셨네요. 그날 가장 오래 머무셨던 정원에, 그 후 무슨 일이 있었는지 보여드릴까요?</div>
+          <div class="bubble me">응, 궁금했어</div>
+          <div class="bubble"><b>심해의 안내자</b> · 당신이 떠난 뒤, 빛들은 조금 더 깊은 곳으로 …</div>
+        </div>
+      </div>
+    </div>
+    <div class="notes"><b>재방문 유인:</b> 새 장면 1개 추가 공개 + 이어지는 대화. 리마인드 채널 미정(알림톡 vs 이메일). <b>핵심 지표: 48h 재접속 30%+ · 대화 지속 50%+</b></div>
+  </div>
+
+</div>
+</body>
+</html>

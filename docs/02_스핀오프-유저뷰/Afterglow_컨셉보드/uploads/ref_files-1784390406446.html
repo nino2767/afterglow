@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="../99_문서디자인/support.js"></script>
+<title>AFTERGLOW 방향성 재정의 &amp; 상세기획 (v4.0 draft)</title>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>body{margin:0}</style>
+</helmet>
+<div style="background:#f2f2f3; color:#1d1f20; font-family:Arial, Helvetica, sans-serif; font-size:15px; line-height:1.6; min-height:100vh;">
+    <div style="display:grid; grid-template-columns:230px 1fr; max-width:1180px; margin:0 auto;">
+      <aside style="padding:44px 22px; position:sticky; top:0; align-self:start; height:100vh; overflow-y:auto;">
+        <div style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:24px;">AFTERGLOW</div>
+        <div style="font-size:12px; opacity:.72; margin-top:8px; line-height:1.5;">방향성 재정의 &amp; 상세기획 메모 · v4.0 draft · 트랙 A</div>
+        <nav style="margin-top:26px; display:flex; flex-direction:column; gap:1px;">
+          <a href="#i-s1" style="display:flex; gap:10px; align-items:baseline; padding:8px 6px; color:#1d1f20; text-decoration:none; font-size:13px; border-left:2px solid transparent; font-family:Arial, Helvetica, sans-serif;"><span style="color:#416180; font-size:11px; min-width:16px;">01</span>재정의된 본질</a>
+          <a href="#i-s2" style="display:flex; gap:10px; align-items:baseline; padding:8px 6px; color:#1d1f20; text-decoration:none; font-size:13px; border-left:2px solid transparent; font-family:Arial, Helvetica, sans-serif;"><span style="color:#416180; font-size:11px; min-width:16px;">02</span>MVP 가설</a>
+          <a href="#i-s3" style="display:flex; gap:10px; align-items:baseline; padding:8px 6px; color:#1d1f20; text-decoration:none; font-size:13px; border-left:2px solid transparent; font-family:Arial, Helvetica, sans-serif;"><span style="color:#416180; font-size:11px; min-width:16px;">03</span>비즈니스 모델</a>
+          <a href="#i-s4" style="display:flex; gap:10px; align-items:baseline; padding:8px 6px; color:#1d1f20; text-decoration:none; font-size:13px; border-left:2px solid transparent; font-family:Arial, Helvetica, sans-serif;"><span style="color:#416180; font-size:11px; min-width:16px;">04</span>치명적 리스크</a>
+          <a href="#i-s5" style="display:flex; gap:10px; align-items:baseline; padding:8px 6px; color:#1d1f20; text-decoration:none; font-size:13px; border-left:2px solid transparent; font-family:Arial, Helvetica, sans-serif;"><span style="color:#416180; font-size:11px; min-width:16px;">05</span>파일럿 타임라인</a>
+          <a href="#i-s6" style="display:flex; gap:10px; align-items:baseline; padding:8px 6px; color:#1d1f20; text-decoration:none; font-size:13px; border-left:2px solid transparent; font-family:Arial, Helvetica, sans-serif;"><span style="color:#416180; font-size:11px; min-width:16px;">06</span>구현 우선순위 &amp; 모듈 구조</a>
+          <a href="#i-s7" style="display:flex; gap:10px; align-items:baseline; padding:8px 6px; color:#1d1f20; text-decoration:none; font-size:13px; border-left:2px solid transparent; font-family:Arial, Helvetica, sans-serif;"><span style="color:#416180; font-size:11px; min-width:16px;">07</span>v3.0 유지/수정/폐기 판정</a>
+        </nav>
+        <div style="font-size:11px; opacity:.55; margin-top:24px; padding-top:14px; border-top:1px solid rgba(29,31,32,.16); line-height:1.6;">작성일 2026.07.11 · 기반: v3.0 문서 재검토</div>
+      </aside>
+      
+      <main style="padding:44px 40px 120px; border-left:1px solid rgba(29,31,32,.16);">
+        <!-- Section 1 -->
+        <section id="i-s1" style="margin-bottom:52px;">
+          <h2 style="display:flex; align-items:center; gap:12px; font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:26px; margin:0 0 18px; color:#1d1f20;"><span style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:13px; color:#416180; border:1px solid rgba(29,31,32,.16); padding:3px 9px; letter-spacing:.04em;">01</span>재정의된 본질 (상위기획 결과)</h2>
+          <div style="position:relative; border:1px solid rgba(29,31,32,.16); "><i style="position:absolute; width:11px; height:11px; top:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; top:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><div style="padding:26px; background:#1d2d3d;">
+            <span style="font-family:'Arial Narrow', Arial, sans-serif; font-size:12px; color:#b5d9fd; text-transform:uppercase; letter-spacing:.06em;">한 줄 정의</span>
+            <blockquote style="font-size:20px; line-height:1.55; margin:12px 0 0; color:#fff; font-family:'Arial Narrow', Arial, sans-serif; font-weight:400;">AFTERGLOW는 전시 IP의 세계관을 확장해 '두 번째 작품(스핀오프)'으로 만들어내는 서비스다. 본전시를 봤든 안 봤든 그 자체로 성립하는 독립된 세계관 경험이며, 관람의 여운과 개인 데이터는 이 경험을 더 깊게 만드는 레이어다.</blockquote>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; font-size:14px; margin-top:16px; color:rgba(255,255,255,.78);"><span style="opacity:.6; text-decoration:line-through;">“본전시의 연장 장치”</span> → <strong style="color:#fff;">“세계관을 공유하는 독립된 두 번째 작품”</strong></div>
+            <div style="font-size:13px; margin-top:10px; color:rgba(255,255,255,.85);">본전시 세계관의 확장(독립된 두 번째 작품) · 정보가 아닌 경험 · 여운·개인화는 정체성이 아닌 '강화 레이어'</div>
+            <div style="margin-top:16px; padding:12px 16px; border:1px solid rgba(255,255,255,.22); font-size:13px; color:#e7e7ea;"><strong style="color:#fff;">⚠️ 우선순위 명확화 (2026.07.16):</strong> 1순위 정체성 = 본전시의 새로운 세계관(독립 작품). 여운·개인화는 이를 대체하지 않는 강화 레이어다. 6장(Phase 1 스핀오프는 본전시 데이터 없이 성립, 개인화는 Phase 3 프리미엄)과 언어를 일치시킴. 경쟁력의 무게가 개인화 대신 '새 세계관을 빠르고 일관되게 찍어내는 AI 엔진'으로 이동함에 유의.</div>
+          </div></div>
+          <span style="display:block; font-family:'Arial Narrow', Arial, sans-serif; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#5d5d60; margin:22px 0 8px;">원점 (동기)</span>
+          <ul style="margin:0; padding-left:20px; font-size:14.5px;"><li style="margin:6px 0;">영화/예능의 '스핀오프' 개념을 전시로 — 본편이 끝나도 세계관이 이어진다</li><li style="margin:6px 0;">개인 경험: 전시 후 작가·작품을 검색해도 정보 파편만 있고 허전했음 (이해+감동+연결 모두 미해소)</li><li style="margin:6px 0;">시장 공백(⚠️ 재검증 필요): "전시/미술은 IT 낙후"라는 초기 인상은 수정 필요. 관람 중 가이드 영역은 이미 경쟁 존재 — 오프라인 도슨트 보편화, 국립중앙박물관은 IoT 비콘 기반 위치 자동안내(5개 언어)에 이어 2025.9 AI 검색·지능형 큐레이션 플랫폼 공개, 네이버는 바이브(VIBE) 오디오 탭에서 전시 도슨트 콘텐츠 운영(NCT 127 도슨트, 마티스전 등 — 전시 종료 후에도 콘텐츠 제공), 오디오클립은 2025.12 서비스 종료 확정. 다만 이들은 모두 <strong>관람 중</strong> 서비스이며, <strong>관람 후 세계관 연장(스핀오프)</strong> 영역은 여전히 공백 → AFTERGLOW의 공백 정의를 '전시 IT 전반'이 아니라 '관람 후 구간'으로 좁혀야 함. 상세는 별도 문서 <strong>AFTERGLOW_시장조사리포트_v1.0.md</strong> 참조</li></ul>
+          <p style="margin:14px 0 0; font-size:14.5px;">핵심 동작: 전시 IP(작품, 작가 세계관)를 재료로, AI가 새로운 세계관 경험 — 이어지는 대화, 미니 스핀오프 전시, 커스텀 굿즈 — 을 독립된 '두 번째 작품'으로 만들어낸다. 본전시를 보지 않아도 성립하며(Phase 1), 관람객의 사진·대화 데이터가 붙으면 그 경험이 개인화되어 더 깊어진다(Phase 3 프리미엄).</p>
+          <p style="margin:8px 0 0; font-size:14.5px;">B2B의 위상: 본질이 아니라 전달 경로. 세계관의 주인이 기획사이므로 그들을 통해 관람객에게 닿는다.</p>
+        </section>
+
+        <!-- Section 2 (originally Section 3) -->
+        <section id="i-s2" style="margin-bottom:52px;">
+          <h2 style="display:flex; align-items:center; gap:12px; font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:26px; margin:0 0 18px; color:#1d1f20;"><span style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:13px; color:#416180; border:1px solid rgba(29,31,32,.16); padding:3px 9px; letter-spacing:.04em;">02</span>MVP 가설</h2>
+          <div style="position:relative; border:1px solid rgba(29,31,32,.16); "><i style="position:absolute; width:11px; height:11px; top:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; top:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><blockquote style="margin:0; padding:22px; font-size:16.5px; line-height:1.6; background:#1d2d3d; color:#fff; border:0;">“본전시 관람 여부와 상관없이 스핀오프 전시(두 번째 작품)는 그 자체로 완성도 높은 독자적인 세계관과 경험을 제공하여, 관람객의 깊은 몰입(체류/인터랙션)을 이끌어내고 가치 있는 소비(공유, 굿즈 구매 등)를 독자적으로 성립시킬 수 있다.”</blockquote></div>
+          
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">검증 플로우 및 도식</h3>
+          
+          <!-- Flowchart Diagram -->
+          <div style="display:flex; flex-direction:column; gap:16px; margin:24px 0; font-family:Arial, Helvetica, sans-serif;">
+            <!-- Step 1 -->
+            <div style="background:rgba(29,45,61,0.04); border:1px solid rgba(29,31,32,.16); border-radius:6px; padding:16px; border-top:4px solid #1d2d3d; position:relative;">
+              <div style="font-family:'Arial Narrow', Arial, sans-serif; font-size:11px; color:#416180; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;">STEP 01. 유입 및 진입 (독립적 이원화)</div>
+              <div style="font-size:13.5px; font-weight:700; margin-top:4px; color:#1d1f20;">미관람 독립 유입군 vs 본전시 연계군</div>
+              <div style="font-size:12px; color:#5d5d60; margin-top:6px; line-height:1.5;">미관람자는 외부 홍보/QR로 스핀오프 직접 진입(세계관 프롤로그 제공). 관람객은 본전시 수집 데이터를 연동하여 스핀오프 경험 강화.</div>
+            </div>
+            
+            <!-- Arrow -->
+            <div style="text-align:center; color:#416180; font-size:18px; font-weight:700; margin:-8px 0;">↓</div>
+            
+            <!-- Step 2 -->
+            <div style="background:rgba(29,45,61,0.04); border:1px solid rgba(29,31,32,.16); border-radius:6px; padding:16px; border-top:4px solid #1d2d3d; position:relative;">
+              <div style="font-family:'Arial Narrow', Arial, sans-serif; font-size:11px; color:#416180; font-weight:700; text-transform:uppercase; letter-spacing:0.06em;">STEP 02. 독립적 스핀오프 전시 (온·오프 독립)</div>
+              <div style="font-size:13.5px; font-weight:700; margin-top:4px; color:#1d1f20;">온라인 웹앱 &amp; 오프라인 공간 체험</div>
+              <div style="font-size:12px; color:#5d5d60; margin-top:6px; line-height:1.5;">웹앱에서 AI 변주 확장 세계관(IF 시나리오) 감상. 오프라인에선 본전시 티켓 없이도 감상 가능한 독립적 테마 전시 공간 체험.</div>
+            </div>
+
+            <!-- Arrow Split -->
+            <div style="text-align:center; color:#416180; font-size:15px; margin:-8px 0 0 0;">
+              ┌───────────────────────────┴───────────────────────────┐
+            </div>
+            
+            <!-- Split Paths -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+              <!-- Path A -->
+              <div style="background:rgba(29,45,61,0.04); border:1px solid rgba(29,31,32,.16); border-radius:6px; padding:16px; border-top:4px solid #1d2d3d;">
+                <div style="font-family:'Arial Narrow', Arial, sans-serif; font-size:11px; color:#416180; font-weight:700; text-transform:uppercase;">PATH A. 독립적 소비 전환</div>
+                <div style="font-size:13.5px; font-weight:700; margin-top:4px; color:#1d1f20;">커스텀 굿즈숍 연계</div>
+                <div style="font-size:12px; color:#5d5d60; margin-top:6px; line-height:1.5;">스핀오프 전시 관람 완료 후 커스텀 굿즈숍으로 자연스럽게 전환되어 관람객의 실질적인 유료 구매 행동 유도.</div>
+              </div>
+              <!-- Path B -->
+              <div style="background:rgba(29,45,61,0.04); border:1px solid rgba(29,31,32,.16); border-radius:6px; padding:16px; border-top:4px solid #416180;">
+                <div style="font-family:'Arial Narrow', Arial, sans-serif; font-size:11px; color:#416180; font-weight:700; text-transform:uppercase;">PATH B. 바이럴 및 시너지</div>
+                <div style="font-size:13.5px; font-weight:700; margin-top:4px; color:#1d1f20;">SNS 공유 &amp; 본전시 역유입</div>
+                <div style="font-size:12px; color:#5d5d60; margin-top:6px; line-height:1.5;">나만의 스핀오프 씬/감정 카드 SNS 공유 유도 및 본전시 미관람객의 본전시 예매 링크 역이동 경로 검증.</div>
+              </div>
+            </div>
+          </div>
+
+          <p style="font-size:14.5px; margin-top:16px;">두 경로는 독립적으로 운영되며 본전시 미관람자도 온전히 즐길 수 있습니다. 결과 조합별 판정:</p>
+          
+          <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
+            <thead><tr><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">온라인 스핀오프 몰입</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">오프라인 부스 방문</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">해석 → 다음 방향</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↑</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↑</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">풀 스핀오프 검증 → 정식 팝업 확장 + 디지털 병행 및 연동 고도화</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↑</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↓</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">머무름 및 소장 욕구는 디지털로 충분히 해소 → 디지털 스핀오프 중심 강화, 팝업은 옵션화</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↓</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↑</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">오프라인 공간 경험이 핵심 가치 → 공간 연출 및 한정 굿즈 중심 확장, 웹앱은 브릿지로 간소화</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↓</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">↓</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">독립 스핀오프 콘텐츠 자체의 매력 부족 → 세계관 스토리라인 및 연출 재검토</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">성공 기준 (숫자)</h3>
+          <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
+            <thead><tr><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">지표</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">기준</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">의미</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>[핵심] 스핀오프 완람 및 몰입률</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>평균 체류 5분 이상</strong> &amp; <strong>대화 5턴 이상 완료율 40% 이상</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">독립 작품으로서 관람객을 완전히 몰입시키는가 (독자적 콘텐츠 가치 검증)</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>[핵심] 본전시 미관람 유입 및 예매 전환</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>미관람 유입 40% 이상</strong> &amp; <strong>본전시 역이동 클릭율 15% 이상</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">본전시 없이 독자적 유입이 성립하며, 본전시로의 상호 시너지를 내는가</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">소장용 씬/카드 공유율(SNS 등)</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">15% 이상</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">자발적인 경험 전파와 바이럴이 일어나는가</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">커스텀 굿즈 전환율</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">굿즈숍 방문율 30% 이상 &amp; 실제 구매 전환율 5% 이상</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">독립 전시 경험이 실질적인 소비 행동으로 이어지는가 (BM 검증)</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">기능 범위 IN / OUT</h3>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px;">
+            <div style="position:relative; border:1px solid rgba(29,31,32,.16); "><i style="position:absolute; width:11px; height:11px; top:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; top:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><div style="padding:18px;"><span style="display:block; font-family:'Arial Narrow', Arial, sans-serif; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#5d5d60; margin:22px 0 8px;">IN</span><ul style="margin:0; padding-left:20px; font-size:13.5px;"><li style="margin:6px 0;">웹앱형 AI 큐레이터 (핵심 작품 3~5개 대화 해설) — v3.0 유지, 단 진입은 <strong>사진 인식 기반</strong>(QR은 보조, 촬영 불가 시 작품 선택 폴백)</li><li style="margin:6px 0;">사진 촬영 → 자동 아카이브/리뷰 초안 생성 — 신규</li><li style="margin:6px 0;"><strong>관람 후에도 이어지는 세계관 대화</strong> (작가·작품 심층 대화) — 신규, 본질 직결</li><li style="margin:6px 0;">미니 스핀오프 전시 1개 공간 (세계관 기반 새 장면 관람 + 출구 굿즈 1~2종)</li><li style="margin:6px 0;">상설 데모 전시 1개 (v3.0 '심해의 환상' 시뮬레이션의 실구현) — 홈 라인업 채움 + 고객사 세일즈 데모 + 장면 제작 파이프라인 테스트베드</li><li style="margin:6px 0;">내부용 AI 기획 어시스턴트 (부스 컨셉·굿즈 생성용, 노출 안 함)</li></ul></div></div>
+            <div style="position:relative; border:1px solid rgba(29,31,32,.16); "><i style="position:absolute; width:11px; height:11px; top:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; top:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;left:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><i style="position:absolute; width:11px; height:11px; bottom:-6px;right:-6px; opacity:.5; background:linear-gradient(#1d1f20,#1d1f20) center/1px 11px no-repeat, linear-gradient(#1d1f20,#1d1f20) center/11px 1px no-repeat;"></i><div style="padding:18px;"><span style="display:block; font-family:'Arial Narrow', Arial, sans-serif; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#5d5d60; margin:22px 0 8px;">OUT</span><ul style="margin:0; padding-left:20px; font-size:13.5px;"><li style="margin:6px 0;">정식 팝업 공간 운영 대행 (21일 연장 운영 등) → 검증 후</li><li style="margin:6px 0;">네이티브 앱, 자체 결제, 실시간 도면 생성, 다국어 — v3.0 OUT 유지</li><li style="margin:6px 0;">전시 검색 기능</li><li style="margin:6px 0;">기획사용 대시보드 (파일럿에선 수동 리포트로 대체)</li></ul></div></div>
+          </div>
+        </section>
+
+        <!-- Section 3 (originally Section 4) -->
+        <section id="i-s3" style="margin-bottom:52px;">
+          <h2 style="display:flex; align-items:center; gap:12px; font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:26px; margin:0 0 18px; color:#1d1f20;"><span style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:13px; color:#416180; border:1px solid rgba(29,31,32,.16); padding:3px 9px; letter-spacing:.04em;">03</span>비즈니스 모델</h2>
+          <ul style="margin:0; padding-left:20px; font-size:14.5px;">
+            <li style="margin:6px 0;">MVP: 파트너 기획사 1곳 <strong>무료 파일럿</strong> (IP 제공 ↔ 데이터 리포트 무상 제공)</li>
+            <li style="margin:6px 0;">검증 후: v3.0의 RS 모델 재검토 — 단, 수익원 우선순위가 바뀔 수 있음 (팝업 매출 중심 → 관람객 구독/굿즈 + 기획사 리포트 구독 가능성). 재접속 데이터를 보고 결정</li>
+            <li style="margin:6px 0;">부스 굿즈는 현장 결제/외부 링크 (v3.0 OUT 기준 유지)</li>
+          </ul>
+        </section>
+
+        <!-- Section 4 (originally Section 5) -->
+        <section id="i-s4" style="margin-bottom:52px;">
+          <h2 style="display:flex; align-items:center; gap:12px; font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:26px; margin:0 0 18px; color:#1d1f20;"><span style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:13px; color:#416180; border:1px solid rgba(29,31,32,.16); padding:3px 9px; letter-spacing:.04em;">04</span>치명적 리스크</h2>
+          <ol style="margin:0; padding-left:20px; font-size:14.5px;">
+            <li style="margin:6px 0;"><strong>IP 2차 활용 라이선스</strong>: 작품 이미지·세계관을 AI가 재가공·개인화하는 것에 대한 기획사/작가의 명시적 동의 필수. 파일럿 협약서에 재가공 범위 명시</li>
+            <li style="margin:6px 0;"><strong>개인정보 (사진·감정 데이터)</strong>: 온보딩 시 수집·활용 동의 플로우 필수. 관람객 사진에 타인이 찍히는 경우의 처리 기준 필요</li>
+          </ol>
+        </section>
+
+        <!-- Section 5 (originally Section 6) -->
+        <section id="i-s5" style="margin-bottom:52px;">
+          <h2 style="display:flex; align-items:center; gap:12px; font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:26px; margin:0 0 18px; color:#1d1f20;"><span style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:13px; color:#416180; border:1px solid rgba(29,31,32,.16); padding:3px 9px; letter-spacing:.04em;">05</span>파일럿 타임라인</h2>
+          <ul style="margin:0; padding-left:20px; font-size:14.5px;">
+            <li style="margin:6px 0;">1~2주: 파트너 1곳 확정, IP 자산 확보, 라이선스 협약</li>
+            <li style="margin:6px 0;">3~4주: AI 큐레이터 + 아카이브 웹앱 구축, 미니 스핀오프 전시 기획 (내부 AI 어시스턴트 활용)</li>
+            <li style="margin:6px 0;">5~6주: 현장 운영 (QR 배치, 부스 오픈), 데이터 수집</li>
+            <li style="margin:6px 0;">7주: 지표 분석 → 성공 기준 대비 판정 → 다음 단계 결정</li>
+          </ul>
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">판정 후 분기</h3>
+          <ul style="margin:0; padding-left:20px; font-size:14.5px;">
+            <li style="margin:6px 0;"><strong>독립 몰입 및 미관람 유입 성공 (체류/완독 완료율 ≥ 40% &amp; 미관람 유입 ≥ 40%)</strong>: 본질 검증 성공 → 독립 스핀오프 전시 라인업 확장 및 정식 팝업 비즈니스화, B2B 스핀오프 제작 기획 엔진 고도화</li>
+            <li style="margin:6px 0;"><strong>부분 성공 (체류/완독 완료율 20~40% 또는 미관람 유입 20~40%)</strong>: 상세기획 내 조정 (세계관 스토리라인의 대중성 확보, 온보딩 흐름 개선, 대화 가이드라인 최적화 후 재시도)</li>
+            <li style="margin:6px 0;"><strong>실패 (체류/완독 완료율 &lt; 20%)</strong>: 상위기획 복귀 → 독립 스핀오프 전시라는 포맷 자체의 매력도 및 기획 방향성 근본적 재검토</li>
+          </ul>
+        </section>
+
+        <!-- Section 6 (originally Section 7) -->
+        <section id="i-s6" style="margin-bottom:52px;">
+          <h2 style="display:flex; align-items:center; gap:12px; font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:26px; margin:0 0 18px; color:#1d1f20;"><span style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:13px; color:#416180; border:1px solid rgba(29,31,32,.16); padding:3px 9px; letter-spacing:.04em;">06</span>구현 우선순위 &amp; 시스템 모듈 구조</h2>
+          
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">구현 순서</h3>
+          <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
+            <thead><tr><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">순위</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">대상</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">내용</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>1</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">스핀오프 전시 유저뷰</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">AFTERGLOW의 메인 서비스. IP 세계관만으로 성립하는 독립 경험</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>2</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">스핀오프 운영 어드민</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">고객사가 본전시 IP 자산을 업로드 → AI가 스핀오프 콘텐츠 생성·운영 (기획 모듈 엔진 편입)</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>3</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">본전시 유저뷰</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">AI 큐레이터, 사진→아카이브, 본전시 티켓 예매/구매 연동. 어드민은 공통 코어라 약간의 고도화로 충분</td></tr>
+            </tbody>
+          </table>
+
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">핵심 설계 원칙: Phase 1 스핀오프는 본전시 데이터 없이 성립해야 한다</h3>
+          <ul style="margin:0; padding-left:20px; font-size:14.5px;">
+            <li style="margin:6px 0;">1순위 시점에는 관람객의 본전시 데이터(사진·대화)가 존재하지 않음</li>
+            <li style="margin:6px 0;">따라서 Phase 1 스핀오프 = <strong>본전시를 안 본 사람도 즐길 수 있는 IP 세계관 경험</strong> (진짜 스핀오프의 정의와 일치)</li>
+            <li style="margin:6px 0;">개인화(관람 데이터 연동)는 Phase 3에서 본전시 모듈이 붙을 때 켜지는 <strong>프리미엄 기능</strong></li>
+            <li style="margin:6px 0;">지표 조정: Phase 1 지표는 본전시 연계 재접속률이 아닌, <strong>스핀오프의 독자적 유입력(미관람자 비율 40%+)과 독립 콘텐츠로서의 체류/완독성(체류 5분+, 대화 5턴+ 완료율 40%+)</strong>을 기반으로 성공 여부를 판정함. 본전시 연계 재접속 및 초개인화 데이터 연동 지표는 Phase 3(A+B 결합 상품) 시점에서 검증.</li>
+          </ul>
+
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">시스템 모듈 구조도</h3>
+          
+          <!-- System Module Architecture CSS Diagram -->
+          <div style="display:flex; flex-direction:column; align-items:center; gap:16px; margin:24px 0; font-family:Arial, Helvetica, sans-serif;">
+            <!-- Core Block -->
+            <div style="background:#1d2d3d; border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:20px; width:100%; max-width:600px; color:#fff; text-align:center; position:relative; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+              <i style="position:absolute; width:11px; height:11px; top:-6px;left:-6px; opacity:.5; background:linear-gradient(#fff,#fff) center/1px 11px no-repeat, linear-gradient(#fff,#fff) center/11px 1px no-repeat;"></i>
+              <i style="position:absolute; width:11px; height:11px; top:-6px;right:-6px; opacity:.5; background:linear-gradient(#fff,#fff) center/1px 11px no-repeat, linear-gradient(#fff,#fff) center/11px 1px no-repeat;"></i>
+              <div style="font-size:11px; color:#b5d9fd; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">COMMON CORE (공통 코어)</div>
+              <div style="font-size:15px; font-weight:700; margin-bottom:10px;">IP 세계관 엔진 &amp; 플랫폼 인프라</div>
+              <div style="display:flex; justify-content:center; gap:10px; font-size:12px; opacity:0.85;">
+                <span style="background:rgba(255,255,255,0.08); padding:4px 8px; border-radius:4px;">세계관 DB 구축</span>
+                <span style="background:rgba(255,255,255,0.08); padding:4px 8px; border-radius:4px;">관람객 프로필</span>
+                <span style="background:rgba(255,255,255,0.08); padding:4px 8px; border-radius:4px;">어드민 엔진</span>
+              </div>
+            </div>
+
+            <!-- Vertical Connection Line -->
+            <div style="width:2px; height:20px; background:#416180;"></div>
+
+            <!-- Shared Features Block -->
+            <div style="background:rgba(29,45,61,0.04); border:1px solid rgba(29,31,32,.16); border-top:4px solid #416180; border-radius:8px; padding:20px; width:100%; max-width:600px; text-align:center; position:relative; box-shadow:0 2px 6px rgba(0,0,0,0.02);">
+              <div style="font-size:11px; color:#416180; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;">SHARED FEATURE MODULES (공통 기능 모듈)</div>
+              <div style="font-size:14px; font-weight:700; color:#1d1f20; margin-bottom:12px;">양대 유저뷰 모듈에서 공통으로 재사용하는 핵심 기능</div>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:12px; font-weight:700; color:#1d1f20; max-width:540px; margin:0 auto; text-align:left;">
+                <span style="background:#fff; border:1px solid rgba(29,31,32,.12); padding:8px 12px; border-radius:4px; display:flex; align-items:center; gap:8px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:#416180; border-radius:50%; flex-shrink:0;"></span>
+                  AI 대화 엔진 (큐레이터 &amp; 세계관 대화)
+                </span>
+                <span style="background:#fff; border:1px solid rgba(29,31,32,.12); padding:8px 12px; border-radius:4px; display:flex; align-items:center; gap:8px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:#416180; border-radius:50%; flex-shrink:0;"></span>
+                  비전 인식 엔진 (사진 촬영 기반 인식)
+                </span>
+                <span style="background:#fff; border:1px solid rgba(29,31,32,.12); padding:8px 12px; border-radius:4px; display:flex; align-items:center; gap:8px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:#416180; border-radius:50%; flex-shrink:0;"></span>
+                  감정 분석 엔진 (경험/취향 코드 분석)
+                </span>
+                <span style="background:#fff; border:1px solid rgba(29,31,32,.12); padding:8px 12px; border-radius:4px; display:flex; align-items:center; gap:8px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:#416180; border-radius:50%; flex-shrink:0;"></span>
+                  공유용 카드 렌더러 (소장용 이미지 빌드)
+                </span>
+                <span style="grid-column:span 2; background:#fff; border:1px solid rgba(29,31,32,.12); padding:8px 12px; border-radius:4px; display:flex; align-items:center; justify-content:center; gap:8px;">
+                  <span style="display:inline-block; width:5px; height:5px; background:#416180; border-radius:50%; flex-shrink:0;"></span>
+                  커머스 브릿지 (예매/굿즈 전환 트래킹)
+                </span>
+              </div>
+            </div>
+
+            <!-- Vertical Connection Line -->
+            <div style="width:2px; height:20px; background:#416180;"></div>
+
+            <!-- Modules Grid -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; width:100%; max-width:600px; position:relative;">
+              <!-- Horizontal connection line overlay -->
+              <div style="position:absolute; top:-2px; left:25%; right:25%; height:2px; background:#416180;"></div>
+              
+              <!-- Module A -->
+              <div style="background:#fff; border:1px solid rgba(29,31,32,.16); border-radius:8px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; border-top:4px solid #416180;">
+                <div>
+                  <div style="font-size:11px; color:#416180; font-weight:700; letter-spacing:0.04em; margin-bottom:6px;">MODULE A (본전시 모듈)</div>
+                  <div style="font-size:14px; font-weight:700; color:#1d1f20; margin-bottom:10px;">오프라인 가이드 &amp; 아카이브 루프</div>
+                  <ul style="margin:0; padding-left:16px; font-size:12px; color:#5d5d60; line-height:1.6; list-style-type:square;">
+                    <li>도슨트 가이드 구성 (공통 대화/비전 엔진 호출)</li>
+                    <li>감정 데이터 수집 및 아카이빙 (공통 분석 엔진)</li>
+                    <li>관람 리포트 이미지 공유 (공통 카드 렌더러)</li>
+                    <li>본전시 티켓 예매 연계 (공통 브릿지 모듈)</li>
+                  </ul>
+                </div>
+                <div style="margin-top:14px; font-size:10.5px; font-weight:700; color:#416180; background:#eef6ff; padding:3px 8px; border-radius:4px; text-align:center; width:fit-content;">Phase 3 프리미엄</div>
+              </div>
+
+              <!-- Module B -->
+              <div style="background:#fff; border:1px solid rgba(29,31,32,.16); border-radius:8px; padding:18px; display:flex; flex-direction:column; justify-content:space-between; border-top:4px solid #1d2d3d;">
+                <div>
+                  <div style="font-size:11px; color:#1d2d3d; font-weight:700; letter-spacing:0.04em; margin-bottom:6px;">MODULE B (스핀오프 모듈)</div>
+                  <div style="font-size:14px; font-weight:700; color:#1d1f20; margin-bottom:10px;">세계관 확장형 두 번째 작품</div>
+                  <ul style="margin:0; padding-left:16px; font-size:12px; color:#5d5d60; line-height:1.6; list-style-type:square;">
+                    <li>온라인 스핀오프 씬 뷰어 (외전 감상)</li>
+                    <li>스핀오프 씬 카드 공유 (공통 카드 렌더러)</li>
+                    <li>미니 오프라인 부스 전시 연계 (감정 분석 연동)</li>
+                    <li>B2C 커스텀 굿즈 주문 (공통 비전/브릿지 호출)</li>
+                    <li>(공통 AI 대화 엔진 호출 연동)</li>
+                  </ul>
+                </div>
+                <div style="margin-top:14px; font-size:10.5px; font-weight:700; color:#1d2d3d; background:#e2eaf3; padding:3px 8px; border-radius:4px; text-align:center; width:fit-content;">Phase 1~2 메인 핵심</div>
+              </div>
+            </div>
+          </div>
+
+          <h3 style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:16px; margin:28px 0 10px; color:#1d1f20;">판매 조합 (B2B 상품 구조)</h3>
+          <table style="width:100%; border-collapse:collapse; font-size:13.5px;">
+            <thead><tr><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">조합</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">제공 가치</th><th style="text-align:left; font-size:11px; letter-spacing:.06em; text-transform:uppercase; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60; font-weight:600;">비고</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">A만 (본전시)</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">AI 큐레이터 가이드 고도화</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">기존 오디오가이드 대체 시장</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>B만 (스핀오프)</strong></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">전시 IP의 두 번째 작품화</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;"><strong>메인 상품</strong> — 종료된 전시 IP에도 판매 가능</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">A+B</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">데이터 루프 완성 — 관람 데이터 기반 초개인화 스핀오프</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16); vertical-align:top;">최상위 상품. v3.0의 개인화 시나리오가 여기서 부활</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Section 7 (originally Section 2) -->
+        <section id="i-s7" style="margin-bottom:52px;">
+          <h2 style="display:flex; align-items:center; gap:12px; font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:26px; margin:0 0 18px; color:#1d1f20;"><span style="font-family:'Arial Narrow', Arial, sans-serif; font-weight:600; font-size:13px; color:#416180; border:1px solid rgba(29,31,32,.16); padding:3px 9px; letter-spacing:.04em;">07</span>v3.0 유지/수정/폐기 판정</h2>
+          <table style="width:100%; border-collapse:collapse; font-size:14px;">
+            <thead><tr><th style="width:22%; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.06em; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60;">v3.0 요소</th><th style="width:15%; text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.06em; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60;">판정</th><th style="text-align:left; font-size:11px; text-transform:uppercase; letter-spacing:.06em; padding:8px 10px 8px 0; border-bottom:1px solid rgba(29,31,32,.16); color:#5d5d60;">내용</th></tr></thead>
+            <tbody>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">AI 큐레이터</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; border:1px solid #5980a6; color:#5980a6; background:transparent;">🔧 수정</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">'팝업 전환용 데이터 수집 장치' → <strong>세계관 안내자</strong>. 핵심 가치는 관람 후에도 대화가 이어진다는 것. 검색-허전함을 직접 대체</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">스핀오프 팝업</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; border:1px solid #5980a6; color:#5980a6; background:transparent;">🔧 수정(강등)</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">서비스 본체 → 스핀오프의 <strong>형식 중 하나</strong>. MVP에서는 미니 스핀오프 전시로 축소 검증 — 굿즈숍이 아니라 '또 하나의 작은 전시'</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">사진→리뷰/아카이브화</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; background:#eef6ff; color:#2c455d;">✅ 신규 IN</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">관람 중 사진이 자동으로 개인 아카이브·리뷰가 됨. 스핀오프 입장권 역할</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">AI 기획 모듈 4종</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; border:1px solid #5980a6; color:#5980a6; background:transparent;">🔧 수정(이원화)</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><strong>B2B에겐 셀링포인트 유지</strong> — "다양한 컨셉의 스핀오프 전시를 모듈화로 빠르게 뽑아낸다"가 수동 기획 대행(프로젝트렌트 등)과의 결정적 차별점. <strong>B2C에겐 비가시 엔진</strong> — 관람객에게 스핀오프는 '작품'으로 보여야 하며 AI 제작 과정은 노출하지 않음. MVP에선 스핀오프 콘텐츠 생성에 필요한 만큼만 구현</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">B2B RS 수익모델</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; background:#eef6ff; color:#2c455d;">✅ 유지(후순위)</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">전달 경로로 유효. MVP는 파트너 1곳 무료 파일럿</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">지표 "팝업 전환율 20%"</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; background:#f5f5f8; color:#424244;">❌ 폐기</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">'연장 장치' 관점 지표 → <strong>독립 작품으로서의 몰입 및 소비 지표</strong>로 교체 (단순 머무름이 아닌 독자적 콘텐츠 가치 검증)</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">전시 검색 기능</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; background:#f5f5f8; color:#424244;">❌ OUT</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">MVP 불필요, 차기 버전 검토</td></tr>
+              <tr><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">타깃 파트너 (피플리, 세라핌컴퍼니)</td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);"><span style="display:inline-flex; align-items:center; font-size:10.5px; letter-spacing:.02em; padding:3px 9px; border-radius:2px; white-space:nowrap; background:#eef6ff; color:#2c455d;">✅ 유지</span></td><td style="padding:10px 10px 10px 0; border-bottom:1px solid rgba(29,31,32,.16);">세계관 주인 확보는 전제조건. 접근 전략(중소→대형) 유지</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+</div>
+</x-dc>
+</body>
+</html>
