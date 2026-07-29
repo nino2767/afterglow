@@ -1,0 +1,390 @@
+diff --git a/src/App.jsx b/src/App.jsx
+index 9132b09..20a4aa3 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -6,6 +6,7 @@ import Monitor    from "./pages/operator/Monitor.jsx";
+ import Report     from "./pages/operator/Report.jsx";
+ import Settlement from "./pages/operator/Settlement.jsx";
+ import ClientMgmt from "./pages/super-admin/ClientManagement.jsx";
++import { CLIENTS, defaultSelection, getProject } from "./data/projects.js";
+ 
+ const OPERATOR_PAGES = [
+   { id: "dashboard",  label: "대시보드",    component: Dashboard },
+@@ -23,31 +24,35 @@ export default function App() {
+   const [mode, setMode] = useState(envMode || "operator");
+   const [page, setPage] = useState("dashboard");
+ 
++  // 전역 전시 선택 상태 (스위처가 바꾸고, 모든 전시-스코프 화면이 읽음)
++  const [selection, setSelection] = useState(defaultSelection());
++  const project = getProject(selection.clientId, selection.projectId);
++  const onSelectProject = (clientId, projectId) => setSelection({ clientId, projectId });
++
++  const scopeProps = {
++    setPage, activePage: page,
++    clients: CLIENTS,
++    clientId: selection.clientId,
++    projectId: selection.projectId,
++    project,
++    mode,
++    onSelectProject,
++  };
++
+   const CurrentPage = mode === "super"
+     ? ClientMgmt
+     : (OPERATOR_PAGES.find(p => p.id === page)?.component ?? Dashboard);
+ 
+   return (
+     <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
+-      {/* Show the dev switcher only in local development (unlocked mode) as a floating button in the bottom-right corner */}
+       {!isLocked && (
+         <button
+           onClick={() => setMode(mode === "operator" ? "super" : "operator")}
+           style={{
+-            position: "fixed",
+-            bottom: "80px",
+-            right: "20px",
+-            zIndex: 99999,
+-            fontSize: "11px",
+-            padding: "8px 14px",
+-            borderRadius: "30px",
+-            cursor: "pointer",
+-            background: "#0D0D0F",
+-            color: "#C9A84C",
+-            border: "1px solid rgba(201,168,76,0.4)",
+-            boxShadow: "0 4px 15px rgba(0,0,0,0.4)",
+-            fontFamily: "monospace",
+-            fontWeight: "bold",
++            position: "fixed", bottom: "80px", right: "20px", zIndex: 99999,
++            fontSize: "11px", padding: "8px 14px", borderRadius: "30px", cursor: "pointer",
++            background: "#0D0D0F", color: "#C9A84C", border: "1px solid rgba(201,168,76,0.4)",
++            boxShadow: "0 4px 15px rgba(0,0,0,0.4)", fontFamily: "monospace", fontWeight: "bold",
+             transition: "all 0.2s"
+           }}
+           onMouseEnter={e => { e.currentTarget.style.transform = "scale(1.05)"; }}
+@@ -57,7 +62,7 @@ export default function App() {
+         </button>
+       )}
+       <div>
+-        <CurrentPage setPage={setPage} activePage={page} />
++        <CurrentPage {...scopeProps} />
+       </div>
+     </div>
+   );
+diff --git a/src/components/ProjectSwitcher.jsx b/src/components/ProjectSwitcher.jsx
+new file mode 100644
+index 0000000..535d57d
+--- /dev/null
++++ b/src/components/ProjectSwitcher.jsx
+@@ -0,0 +1,116 @@
++import { useState, useEffect, useRef } from "react";
++import { ChevronDown, ChevronUp, Check, Circle } from "lucide-react";
++
++/**
++ * 전시(프로젝트) 선택 스위처
++ *
++ * props:
++ *  - clients:   CLIENTS 배열
++ *  - clientId:  현재 고객사 id (운영자는 고정, 슈퍼는 선택 가능)
++ *  - projectId: 현재 전시 id
++ *  - mode:      "operator" | "super"
++ *  - onSelect:  (clientId, projectId) => void
++ *  - compact:   모바일 등 좁은 영역용 (선택)
++ */
++export default function ProjectSwitcher({ clients = [], clientId, projectId, mode = "operator", onSelect = () => {}, compact = false }) {
++  const [open, setOpen] = useState(false);
++  const ref = useRef(null);
++
++  useEffect(() => {
++    const onDoc = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
++    document.addEventListener("mousedown", onDoc);
++    return () => document.removeEventListener("mousedown", onDoc);
++  }, []);
++
++  const client = clients.find((c) => c.id === clientId);
++  const project = client?.projects.find((p) => p.id === projectId);
++
++  // 슈퍼: 전체 고객사. 운영자: 본인 고객사만.
++  const visibleClients = mode === "super" ? clients : clients.filter((c) => c.id === clientId);
++
++  const pick = (cid, pid) => { onSelect(cid, pid); setOpen(false); };
++
++  return (
++    <div ref={ref} style={{ position: "relative", display: "inline-block" }}>
++      {/* Trigger */}
++      <button
++        onClick={() => setOpen(!open)}
++        aria-haspopup="listbox"
++        aria-expanded={open}
++        style={{
++          display: "flex", alignItems: "center", gap: 7,
++          background: "white", border: "1px solid rgba(0,0,0,0.12)",
++          borderRadius: 8, padding: compact ? "5px 9px" : "6px 11px",
++          cursor: "pointer", fontFamily: "'DM Sans',sans-serif",
++          marginTop: 3, maxWidth: "100%",
++        }}
++      >
++        <span style={{ fontSize: compact ? 12.5 : 13.5, fontWeight: 600, color: "#0D0D0F", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
++          {project ? project.title : "전시 선택"}
++        </span>
++        {client && <span style={{ fontSize: 11.5, color: "#9A9490", whiteSpace: "nowrap" }}>· {client.name}</span>}
++        {open
++          ? <ChevronUp size={14} color="#9A9490" style={{ flexShrink: 0 }} />
++          : <ChevronDown size={14} color="#9A9490" style={{ flexShrink: 0 }} />}
++      </button>
++
++      {/* Panel */}
++      {open && (
++        <div
++          role="listbox"
++          style={{
++            position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 60,
++            minWidth: 260, maxWidth: 320, maxHeight: 380, overflow: "auto",
++            background: "white", border: "1px solid rgba(0,0,0,0.1)",
++            borderRadius: 12, boxShadow: "0 12px 36px rgba(0,0,0,0.16)",
++            padding: 6, fontFamily: "'DM Sans',sans-serif",
++          }}
++        >
++          {visibleClients.map((c) => (
++            <div key={c.id} style={{ marginBottom: 4 }}>
++              <div style={{
++                fontSize: 11, color: "#9A9490", fontFamily: "'DM Mono',monospace",
++                padding: "8px 10px 5px", letterSpacing: "0.02em",
++              }}>
++                {c.name} — 전시 {c.projects.length}
++              </div>
++              {c.projects.map((p) => {
++                const selected = c.id === clientId && p.id === projectId;
++                return (
++                  <button
++                    key={p.id}
++                    role="option"
++                    aria-selected={selected}
++                    onClick={() => pick(c.id, p.id)}
++                    style={{
++                      width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
++                      gap: 10, padding: "10px 10px", border: "none", cursor: "pointer",
++                      borderRadius: 8, background: selected ? "rgba(201,168,76,0.12)" : "transparent",
++                      fontFamily: "'DM Sans',sans-serif", textAlign: "left",
++                    }}
++                    onMouseEnter={(e) => { if (!selected) e.currentTarget.style.background = "#F7F5F0"; }}
++                    onMouseLeave={(e) => { if (!selected) e.currentTarget.style.background = "transparent"; }}
++                  >
++                    <span style={{ display: "flex", alignItems: "center", gap: 9, minWidth: 0 }}>
++                      {selected
++                        ? <Check size={15} color="#C9A84C" style={{ flexShrink: 0 }} />
++                        : <Circle size={6} fill="#D4CFC5" color="#D4CFC5" style={{ flexShrink: 0, margin: "0 4.5px" }} />}
++                      <span style={{
++                        fontSize: 14, fontWeight: selected ? 600 : 400,
++                        color: selected ? "#8B6914" : "#2A2A2A",
++                        whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
++                      }}>{p.title}</span>
++                    </span>
++                    <span style={{ fontSize: 11.5, color: p.statusColor || "#9A9490", flexShrink: 0, fontFamily: "'DM Mono',monospace" }}>
++                      {p.status}
++                    </span>
++                  </button>
++                );
++              })}
++            </div>
++          ))}
++        </div>
++      )}
++    </div>
++  );
++}
+diff --git a/src/data/projects.js b/src/data/projects.js
+new file mode 100644
+index 0000000..5519595
+--- /dev/null
++++ b/src/data/projects.js
+@@ -0,0 +1,44 @@
++// 멀티테넌트 목업 데이터
++// 계층: CLIENT(고객사) 1 ──< PROJECT(전시) N ──< 세션/관람 데이터
++// 실제 연동 시 이 파일을 API 응답으로 대체하면 됩니다.
++// 운영자(기획자)는 본인 client_id 하위 전시 전부를 열람할 수 있고,
++// 슈퍼 어드민(에프터글로우)은 client 경계 없이 전체를 봅니다.
++
++export const CLIENTS = [
++  {
++    id: "cl_peoply",
++    name: "피플리",
++    projects: [
++      { id: "pj_abyss", title: "빛의 심연", status: "운영 중",  statusColor: "#4CAF7C", date: "2026.05.16" },
++      { id: "pj_moon",  title: "달빛 정원", status: "팝업 준비", statusColor: "#C9A84C", date: "2026.06.01" },
++      { id: "pj_time",  title: "시간의 결", status: "종료",     statusColor: "#9A9490", date: "2026.03.10" },
++    ],
++  },
++  {
++    id: "cl_seraphim",
++    name: "세라핌컴퍼니",
++    projects: [
++      { id: "pj_bloom", title: "무한의 정원", status: "운영 중", statusColor: "#4CAF7C", date: "2026.05.20" },
++    ],
++  },
++];
++
++// 현재 로그인한 운영자가 속한 고객사 (실제로는 인증 토큰의 client_id)
++export const CURRENT_OPERATOR_CLIENT_ID = "cl_peoply";
++
++export function getClient(clientId) {
++  return CLIENTS.find((c) => c.id === clientId) || null;
++}
++
++export function getProject(clientId, projectId) {
++  const client = getClient(clientId);
++  if (!client) return null;
++  return client.projects.find((p) => p.id === projectId) || null;
++}
++
++// 운영자의 기본 진입 전시 (해당 고객사의 첫 번째 전시)
++export function defaultSelection(clientId = CURRENT_OPERATOR_CLIENT_ID) {
++  const client = getClient(clientId);
++  const first = client?.projects[0];
++  return { clientId, projectId: first?.id || null };
++}
+diff --git a/src/pages/operator/ConceptBot.jsx b/src/pages/operator/ConceptBot.jsx
+index 532ac2f..02ce99b 100644
+--- a/src/pages/operator/ConceptBot.jsx
++++ b/src/pages/operator/ConceptBot.jsx
+@@ -5,6 +5,7 @@ import {
+   RefreshCw, Download, ChevronDown, ChevronUp, Zap,
+   Package, Map, BookOpen, Star, X, Menu, Info
+ } from "lucide-react";
++import ProjectSwitcher from "../../components/ProjectSwitcher.jsx";
+ 
+ function useWindowWidth() {
+   const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+@@ -51,8 +52,10 @@ const CONCEPTS = [
+   },
+ ];
+ 
+-export default function ConceptBotResponsive({ setPage = () => {}, activePage = "concept" }) {
++export default function ConceptBotResponsive({ setPage = () => {}, activePage = "concept", clients = [], clientId, projectId, project, mode = "operator", onSelectProject = () => {} }) {
+   const width = useWindowWidth();
++  const clientName = clients.find(c => c.id === clientId)?.name || "";
++  const projTitle = project?.title || "전시 미선택";
+   const isMobile = width < 768;
+   const isTablet = width >= 768 && width < 1024;
+   const [drawerOpen, setDrawerOpen] = useState(false);
+@@ -110,7 +113,7 @@ export default function ConceptBotResponsive({ setPage = () => {}, activePage =
+             <div className="nav-item" style={{ justifyContent:isTablet?"center":"flex-start", padding:isTablet?"12px":"10px 16px" }}><Settings size={16} strokeWidth={1.8}/>{!isTablet&&"설정"}</div>
+             {!isTablet && <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 16px", marginTop:6 }}>
+               <div style={{ width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#8B6914)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:600,color:"#0D0D0F",flexShrink:0 }}>S</div>
+-              <div><div style={{ color:"#D4CFC5", fontSize:13, fontWeight:500 }}>기획자 S</div><div style={{ color:"#4A4A4A", fontSize:11 }}>피플리 담당</div></div>
++              <div><div style={{ color:"#D4CFC5", fontSize:13, fontWeight:500 }}>기획자 S</div><div style={{ color:"#4A4A4A", fontSize:11 }}>{clientName} 담당</div></div>
+             </div>}
+           </div>
+         </aside>
+@@ -140,7 +143,7 @@ export default function ConceptBotResponsive({ setPage = () => {}, activePage =
+             {isMobile && <button onClick={() => setDrawerOpen(true)} style={{ background:"none", border:"none", cursor:"pointer", color:"#2A2A2A", padding:4 }}><Menu size={20}/></button>}
+             <div>
+               <div style={{ fontFamily:"'Playfair Display',serif", fontSize:isMobile?18:22, fontWeight:600, color:"#0D0D0F" }}>Concept Bot</div>
+-              {!isMobile && <div style={{ color:"#9A9490", fontSize:12, marginTop:1, fontFamily:"'DM Mono',monospace" }}>빛의 심연 · IP 분석 완료 → 스핀오프 컨셉 3종 생성됨</div>}
++              <div style={{ marginTop:3 }}><ProjectSwitcher clients={clients} clientId={clientId} projectId={projectId} mode={mode} onSelect={onSelectProject} compact={isMobile} /></div>
+             </div>
+           </div>
+           <div style={{ display:"flex", gap:8, alignItems:"center" }}>
+@@ -163,7 +166,7 @@ export default function ConceptBotResponsive({ setPage = () => {}, activePage =
+               <button onClick={() => setShowIPSummary(!showIPSummary)} style={{ width:"100%", background:"none", border:"none", cursor:"pointer", padding:"14px 16px", display:"flex", justifyContent:"space-between", alignItems:"center" }}>
+                 <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+                   <Info size={14} color="#C9A84C"/>
+-                  <span style={{ fontSize:13, fontWeight:600, color:"#E8E4DC", fontFamily:"'Playfair Display',serif" }}>빛의 심연 — IP 분석 결과</span>
++                  <span style={{ fontSize:13, fontWeight:600, color:"#E8E4DC", fontFamily:"'Playfair Display',serif" }}>{projTitle} — IP 분석 결과</span>
+                 </div>
+                 {showIPSummary ? <ChevronUp size={14} color="#6B6B6B"/> : <ChevronDown size={14} color="#6B6B6B"/>}
+               </button>
+@@ -182,8 +185,8 @@ export default function ConceptBotResponsive({ setPage = () => {}, activePage =
+             <div style={{ background:"#0D0D0F", borderRadius:14, padding:"18px 24px", border:"1px solid rgba(201,168,76,0.18)", display:"flex", gap:28, alignItems:"flex-start", flexWrap:"wrap" }}>
+               <div>
+                 <div style={{ fontSize:11, color:"#C9A84C", fontFamily:"'DM Mono',monospace", letterSpacing:"0.1em", marginBottom:6 }}>IP ANALYSIS RESULT</div>
+-                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:18, color:"#E8E4DC", fontWeight:600 }}>빛의 심연</div>
+-                <div style={{ fontSize:12, color:"#5A5A5A", marginTop:2 }}>피플리 · 분석 완료 4시간 전</div>
++                <div style={{ fontFamily:"'Playfair Display',serif", fontSize:18, color:"#E8E4DC", fontWeight:600 }}>{projTitle}</div>
++                <div style={{ fontSize:12, color:"#5A5A5A", marginTop:2 }}>{clientName} · 분석 완료 4시간 전</div>
+               </div>
+               <div style={{ flex:1, display:"flex", gap:20, flexWrap:"wrap" }}>
+                 <div>
+diff --git a/src/pages/operator/Monitor.jsx b/src/pages/operator/Monitor.jsx
+index e3e7068..62ba5ca 100644
+--- a/src/pages/operator/Monitor.jsx
++++ b/src/pages/operator/Monitor.jsx
+@@ -4,6 +4,7 @@ import {
+   Settings, Bell, Users, MessageSquare, TrendingUp, Zap,
+   Activity, ChevronRight, Menu, X, Sparkles
+ } from "lucide-react";
++import ProjectSwitcher from "../../components/ProjectSwitcher.jsx";
+ 
+ function useWindowWidth() {
+   const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+@@ -54,8 +55,10 @@ const HOURLY = [28,35,42,38,52,67,89,124,156,178,201,189,212,198,176,203,234,267
+ const currentHour = 17;
+ const maxH = Math.max(...HOURLY);
+ 
+-export default function MonitorResponsive({ setPage = () => {}, activePage = "monitor" }) {
++export default function MonitorResponsive({ setPage = () => {}, activePage = "monitor", clients = [], clientId, projectId, project, mode = "operator", onSelectProject = () => {} }) {
+   const width = useWindowWidth();
++  const clientName = clients.find(c => c.id === clientId)?.name || "";
++  const projTitle = project?.title || "전시 미선택";
+   const isMobile = width < 768;
+   const isTablet = width >= 768 && width < 1024;
+   const [drawerOpen, setDrawerOpen] = useState(false);
+@@ -92,7 +95,7 @@ export default function MonitorResponsive({ setPage = () => {}, activePage = "mo
+         <div className="nav-item" style={{ justifyContent:isTablet?"center":"flex-start", padding:isTablet?"12px":"10px 16px" }}><Settings size={16} strokeWidth={1.8}/>{!isTablet&&"설정"}</div>
+         {!isTablet && <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 16px", marginTop:6 }}>
+           <div style={{ width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#8B6914)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:600,color:"#0D0D0F",flexShrink:0 }}>S</div>
+-          <div><div style={{ color:"#D4CFC5", fontSize:13, fontWeight:500 }}>기획자 S</div><div style={{ color:"#4A4A4A", fontSize:11 }}>피플리 담당</div></div>
++          <div><div style={{ color:"#D4CFC5", fontSize:13, fontWeight:500 }}>기획자 S</div><div style={{ color:"#4A4A4A", fontSize:11 }}>{clientName} 담당</div></div>
+         </div>}
+       </div>
+     </aside>
+@@ -151,7 +154,7 @@ export default function MonitorResponsive({ setPage = () => {}, activePage = "mo
+             {isMobile && <button onClick={()=>setDrawerOpen(true)} style={{ background:"none", border:"none", cursor:"pointer", color:"#2A2A2A", padding:4 }}><Menu size={20}/></button>}
+             <div>
+               <div style={{ fontFamily:"'Playfair Display',serif", fontSize:isMobile?18:22, fontWeight:600, color:"#0D0D0F" }}>관람 모니터</div>
+-              {!isMobile && <div style={{ color:"#9A9490", fontSize:12, marginTop:1, fontFamily:"'DM Mono',monospace" }}>빛의 심연 · 피플리 · 2026.05.16</div>}
++              <div style={{ marginTop:3 }}><ProjectSwitcher clients={clients} clientId={clientId} projectId={projectId} mode={mode} onSelect={onSelectProject} compact={isMobile} /></div>
+             </div>
+           </div>
+           <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+diff --git a/src/pages/operator/Report.jsx b/src/pages/operator/Report.jsx
+index e4abbb0..1237168 100644
+--- a/src/pages/operator/Report.jsx
++++ b/src/pages/operator/Report.jsx
+@@ -5,6 +5,7 @@ import {
+   ShoppingBag, Zap, CheckCircle2, ArrowUpRight, ArrowDownRight,
+   Star, RefreshCw, Menu, X, Sparkles, ChevronDown, ChevronUp
+ } from "lucide-react";
++import ProjectSwitcher from "../../components/ProjectSwitcher.jsx";
+ 
+ function useWindowWidth() {
+   const [w, setW] = useState(typeof window !== "undefined" ? window.innerWidth : 1200);
+@@ -60,8 +61,10 @@ const fmt = (n) => n>=10000000?`${(n/10000000).toFixed(1)}천만`:n>=10000?`${Ma
+ const totalRevenue = GOODS.reduce((s,g)=>s+g.revenue,0);
+ const maxWeekRev = Math.max(...WEEKLY.map(w=>w.revenue));
+ 
+-export default function ReportResponsive({ setPage = () => {}, activePage = "report" }) {
++export default function ReportResponsive({ setPage = () => {}, activePage = "report", clients = [], clientId, projectId, project, mode = "operator", onSelectProject = () => {} }) {
+   const width = useWindowWidth();
++  const clientName = clients.find(c => c.id === clientId)?.name || "";
++  const projTitle = project?.title || "전시 미선택";
+   const isMobile = width < 768;
+   const isTablet = width >= 768 && width < 1024;
+   const [drawerOpen, setDrawerOpen] = useState(false);
+@@ -119,7 +122,7 @@ export default function ReportResponsive({ setPage = () => {}, activePage = "rep
+             <div className="nav-item" style={{ justifyContent:isTablet?"center":"flex-start", padding:isTablet?"12px":"10px 16px" }}><Settings size={16} strokeWidth={1.8}/>{!isTablet&&"설정"}</div>
+             {!isTablet && <div style={{ display:"flex", alignItems:"center", gap:10, padding:"12px 16px", marginTop:6 }}>
+               <div style={{ width:32,height:32,borderRadius:"50%",background:"linear-gradient(135deg,#C9A84C,#8B6914)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:600,color:"#0D0D0F",flexShrink:0 }}>S</div>
+-              <div><div style={{ color:"#D4CFC5", fontSize:13, fontWeight:500 }}>기획자 S</div><div style={{ color:"#4A4A4A", fontSize:11 }}>피플리 담당</div></div>
++              <div><div style={{ color:"#D4CFC5", fontSize:13, fontWeight:500 }}>기획자 S</div><div style={{ color:"#4A4A4A", fontSize:11 }}>{clientName} 담당</div></div>
+             </div>}
+           </div>
+         </aside>
+@@ -149,7 +152,7 @@ export default function ReportResponsive({ setPage = () => {}, activePage = "rep
+             {isMobile && <button onClick={()=>setDrawerOpen(true)} style={{ background:"none", border:"none", cursor:"pointer", color:"#2A2A2A", padding:4 }}><Menu size={20}/></button>}
+             <div>
+               <div style={{ fontFamily:"'Playfair Display',serif", fontSize:isMobile?18:22, fontWeight:600, color:"#0D0D0F" }}>성과 리포트</div>
+-              {!isMobile && <div style={{ color:"#9A9490", fontSize:12, marginTop:1, fontFamily:"'DM Mono',monospace" }}>빛의 심연 · 피플리 · D+24 (팝업 운영 12일차)</div>}
++              <div style={{ display:"flex", alignItems:"center", gap:8, marginTop:3 }}><ProjectSwitcher clients={clients} clientId={clientId} projectId={projectId} mode={mode} onSelect={onSelectProject} compact={isMobile} />{!isMobile && <span style={{ fontSize:11.5, color:"#9A9490", fontFamily:"'DM Mono',monospace" }}>D+24 · 팝업 12일차</span>}</div>
+             </div>
+           </div>
+           <div style={{ display:"flex", gap:8, alignItems:"center" }}>
