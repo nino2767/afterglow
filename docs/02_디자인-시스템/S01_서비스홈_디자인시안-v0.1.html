@@ -95,42 +95,15 @@
       gap: 28px;
     }
 
-    /* [2] 메인 극장 쇼케이스 & 필터 */
+    /* [2] 메인 극장 쇼케이스 */
     .section-title {
       font-size: 20px;
       font-weight: 700;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .section-title span {
       color: var(--glow-cyan);
-    }
-
-    /* 탭 필터 바 */
-    .tab-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-    }
-
-    .tab-item {
-      padding: 6px 12px;
-      border-radius: 16px;
-      font-size: 12px;
-      font-weight: 600;
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-sub);
-      border: 1px solid transparent;
-      cursor: pointer;
-      white-space: nowrap;
-    }
-
-    .tab-item.active {
-      background: var(--glow-dim);
-      color: var(--glow-cyan);
-      border-color: var(--glow-cyan);
     }
 
     .exhibition-list {
@@ -190,12 +163,6 @@
       background: rgba(52, 211, 153, 0.2);
       color: #34d399;
       border: 1px solid #34d399;
-    }
-
-    .badge-past {
-      background: rgba(168, 85, 247, 0.2);
-      color: #c084fc;
-      border: 1px solid #c084fc;
     }
 
     .badge-soon {
@@ -296,6 +263,55 @@
       text-decoration: none;
     }
 
+    /* 슬라이드 햄버거 메뉴 오버레이 */
+    .drawer-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: none;
+      justify-content: flex-end;
+    }
+
+    .drawer-overlay.active {
+      display: flex;
+    }
+
+    .drawer-content {
+      width: 85%;
+      max-width: 360px;
+      background: var(--bg-dark);
+      height: 100%;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      border-left: 1px solid var(--border-glow);
+    }
+
+    .drawer-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-menu-item {
+      padding: 14px 0;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .drawer-menu-item.highlight {
+      color: var(--glow-cyan);
+    }
+
   </style>
 </head>
 <body>
@@ -305,7 +321,7 @@
     <!-- [1] 상단 GNB 헤더 -->
     <header class="gnb-header">
       <a href="#" class="gnb-logo">AFTERGLOW</a>
-      <button class="hamburger-btn">☰</button>
+      <button class="hamburger-btn" onclick="toggleDrawer()">☰</button>
     </header>
 
     <!-- 메인 콘텐츠 바디 -->
@@ -315,14 +331,6 @@
       <section>
         <div class="section-title">
           지금 경험하는 <span>두 번째 전시들</span>
-        </div>
-
-        <!-- 탭 필터 바 -->
-        <div class="tab-bar">
-          <button class="tab-item active">전체</button>
-          <button class="tab-item">NOW EXHIBITING</button>
-          <button class="tab-item">COMING SOON</button>
-          <button class="tab-item">PAST ARCHIVE (지난 전시)</button>
         </div>
 
         <div class="exhibition-list">
@@ -352,19 +360,7 @@
             </div>
           </a>
 
-          <!-- 카드 3: 지난 전시 아카이브 (신설) -->
-          <a href="#" class="exhibition-card">
-            <div class="card-visual" style="background: linear-gradient(135deg, #2a1538 0%, #1e0d2b 100%);">
-              <span class="badge badge-past">PAST ARCHIVE</span>
-            </div>
-            <div class="card-info">
-              <div class="card-title">《어둠 속의 정원 : 잔광의 기억》</div>
-              <div class="card-subtitle">종료된 전시 · 디지털 씬 감상 및 AI 대화 아카이브 다시보기 지원</div>
-              <button class="card-cta-btn" style="background: rgba(168, 85, 247, 0.2); color: #c084fc; border: 1px solid #c084fc;">아카이브 다시보기 ➔</button>
-            </div>
-          </a>
-
-          <!-- 카드 4: Coming Soon -->
+          <!-- 카드 3: Coming Soon -->
           <div class="exhibition-card" style="opacity: 0.7;">
             <div class="card-visual" style="background: linear-gradient(135deg, #1c1c1f 0%, #2b2b30 100%);">
               <span class="badge badge-soon">COMING SOON</span>
@@ -379,7 +375,7 @@
       </section>
 
       <!-- [3] 브랜드 스토리 미니 배너 -->
-      <section class="brand-banner">
+      <section class="brand-banner" onclick="alert('S10 서비스 소개 페이지로 이동합니다.');">
         <div class="brand-banner-title">전시가 끝난 곳에서, 이야기는 이어집니다</div>
         <div class="brand-banner-desc">AFTERGLOW는 전시 IP의 세계관을 확장하여 독립된 두 번째 작품으로 재창조하는 서비스입니다.</div>
         <div class="brand-link">AFTERGLOW 정체성 & IP 확장 로드맵 알아보기 ↗</div>
@@ -401,6 +397,36 @@
     </footer>
 
   </div>
+
+  <!-- 우측 슬라이드 햄버거 메뉴 오버레이 -->
+  <div class="drawer-overlay" id="drawer">
+    <div class="drawer-content">
+      <div class="drawer-header">
+        <div style="font-family: 'Playfair Display', serif; font-weight: 700; font-size: 18px;">MENU</div>
+        <button class="hamburger-btn" onclick="toggleDrawer()">✕</button>
+      </div>
+
+      <div style="background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 12px;">
+        <div style="font-weight: 700; font-size: 15px; margin-bottom: 4px;">👤 고요한 윤슬 님</div>
+        <div style="font-size: 12px; color: var(--text-sub);">회원 계정 세션 활성화 중</div>
+      </div>
+
+      <nav>
+        <a href="/spinoff/home" class="drawer-menu-item">🏠 서비스 홈</a>
+        <a href="/spinoff/past-exhibitions" class="drawer-menu-item highlight">🏛️ 지난 전시 모아보기 ↗</a>
+        <a href="/spinoff/mypage" class="drawer-menu-item">👤 마이페이지 & 보관함</a>
+        <a href="/spinoff/about" class="drawer-menu-item">ℹ️ 서비스 소개</a>
+        <a href="/spinoff/terms" class="drawer-menu-item">❓ 고객안내 & 약관</a>
+      </nav>
+    </div>
+  </div>
+
+  <script>
+    function toggleDrawer() {
+      const drawer = document.getElementById('drawer');
+      drawer.classList.toggle('active');
+    }
+  </script>
 
 </body>
 </html>
