@@ -1,0 +1,24 @@
+{
+  "name": "afterglow-admin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:operator": "vite --mode operator",
+    "dev:super": "vite --mode super",
+    "build": "vite build",
+    "build:operator": "vite build --mode operator",
+    "build:super": "vite build --mode super",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.383.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.2"
+  }
+}
